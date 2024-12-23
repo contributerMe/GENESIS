@@ -12,7 +12,9 @@
 
 ## **Architecture Workflow**
 
-![GENESIS Architecture](Model Outline.png)
+<p align="center">
+  <img src="https://github.com/contributerMe/GENESIS/blob/main/Model%20Outline.png" alt="GENESIS Architecture">
+</p>
 
 ### **1. User Input**
 - **Objective**: Gather the necessary details from the user to customize the GENESIS workflow.
