@@ -25,7 +25,7 @@
 
 ---
 
-### **2. Agent 1: Research Agent**
+### **2. Agent 1: Researcher Agent**
 - **Task**: This agent performs retrieval tasks to gather company-specific and industry-specific insights.
 - **Subtasks**:
   - Search the web for company profiles, articles, or annual reports.
@@ -83,7 +83,7 @@
 
 ---
 
-## **Recommended Tools**
+## **Tools**
 - **Web Scraping**: BeautifulSoup, Scrapy, Selenium.
 - **Data Retrieval**: LangChain, Pinecone, FAISS.
 - **Language Models**: OpenAI GPT-3.5/4, Hugging Face models.
@@ -92,5 +92,3 @@
 - **Frontend**: Streamlit/Flask for user interaction.
 
 ---
-
-This README provides an overview of how each agent works within the **GENESIS** system, highlighting its role in gathering, generating, and reporting on AI/GenAI use cases specific to industries and companies. Each agent is designed to work autonomously but cooperatively within the larger system, ensuring an efficient and seamless workflow.
