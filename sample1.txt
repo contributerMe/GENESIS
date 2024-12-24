@@ -1,0 +1,2562 @@
+AI Principles
+Progress Update
+2023Table of contents
+Preface: Google’s AI Principles 03
+Introduction 06
+Internal governance & risk management 08
+Resources, research, tools & responsible practices 18
+Product impact 27
+Supporting global dialogue, standards & policy 36
+Conclusion 38
+Appendix 41
+2Preface
+Google’s AI Principles:
+Objectives for AI applications
+1. Be socially beneficial.
+The expanded reach of new technologies increasingly touches society as a whole. Advances
+in AI will have transformative impacts in a wide range of fields, including healthcare, security,
+energy, transportation, manufacturing, and entertainment. As we consider potential
+development and use of AI technologies, we will take into account a broad range of social and
+economic factors, and will proceed where we believe that the overall likely benefits substantially
+exceed the foreseeable risks and downsides.
+AI also enhances our ability to understand the meaning of content at scale. We will strive
+to make high-quality and accurate information readily available using AI, while continuing
+to respect cultural, social, and legal norms in the countries or regions where we operate.
+And we will continue to thoughtfully evaluate when to make our technologies available on
+a non-commercial basis.
+2. Avoid creating or reinforcing unfair bias.
+AI algorithms and datasets can reflect, reinforce, or reduce unfair biases. We recognize that
+distinguishing fair from unfair biases is not always simple, and differs across cultures and
+societies. We will seek to avoid unjust impacts on people, particularly those related to sensitive
+characteristics such as race, ethnicity, gender, nationality, income, sexual orientation, ability,
+and political or religious belief.
+3. Be built & tested for safety.
+We will continue to develop and apply strong safety and security practices to avoid unintended
+results that create risks of harm. We will design our AI systems to be appropriately cautious, and
+seek to develop them in accordance with best practices in AI safety research. In appropriate
+cases, we will test AI technologies in constrained environments and monitor their operation
+after deployment.
+34. Be accountable to people.
+We will design AI systems that provide appropriate opportunities for feedback, relevant
+explanations, and appeal. Our AI technologies will be subject to appropriate human direction
+and control.
+5. Incorporate privacy design principles.
+We will incorporate our privacy principles in the development and use of our AI technologies.
+We will give opportunity for notice and consent, encourage architectures with privacy
+safeguards, and provide appropriate transparency and control over the use of data.
+6. Uphold high standards of scientific excellence.
+Technological innovation is rooted in the scientific method and a commitment to open inquiry,
+intellectual rigor, integrity, and collaboration. AI tools have the potential to unlock new realms
+of scientific research and knowledge in critical domains like biology, chemistry, medicine, and
+environmental sciences. We aspire to high standards of scientific excellence as we work to
+progress AI development.
+We will work with a range of stakeholders to promote thoughtful leadership in this area,
+drawing on scientifically rigorous and multidisciplinary approaches. And we will responsibly
+share AI knowledge by publishing educational materials, best practices, and research that
+enable more people to develop useful AI applications.
+7. Be made available for uses that accord with these principles.
+Many technologies have multiple uses. We will work to limit potentially harmful or abusive
+applications. As we develop and deploy AI technologies, we will evaluate likely uses in light
+of the following factors:
+• Primary purpose and use: the primary purpose and likely use of a technology and
+application, including how closely the solution is related to or adaptable to a harmful use
+• Nature and uniqueness: whether we are making available technology that is unique
+or more generally available
+• Scale: whether the use of this technology will have significant impact
+• Nature of Google’s involvement: whether we are providing general-purpose tools,
+integrating tools for customers, or developing custom solutions
+4AI applications we will not pursue
+In addition to the above objectives, we will not design or deploy AI in the following
+application areas:
+1. Technologies that cause or are likely to cause overall harm. Where there is
+a material risk of harm, we will proceed only where we believe that the benefits
+substantially outweigh the risks, and will incorporate appropriate safety constraints.
+2. Weapons or other technologies whose principal purpose or implementation
+is to cause or directly facilitate injury to people.
+3. Technologies that gather or use information for surveillance violating internationally
+accepted norms.
+4. Technologies whose purpose contravenes widely accepted principles of international
+law and human rights.
+As our experience in this space deepens, this list may evolve.
+5Introduction
+This is the 5th edition of our annual AI Principles progress report, where we provide consistent
+transparency into how we put our principles into practice. We first published the AI Principles
+in 2018 to share the company’s technology ethics charter and hold ourselves accountable
+for how we research and develop AI responsibly. Generative AI is no exception. In this report,
+we share details of the principled approach used throughout the research and development
+lifecycle for our novel generative AI models, including the Gemini family of models.
+Principles are only effective once put into practice. This is why we offer this annual report —
+including tough lessons learned — to enable others across the AI ecosystem to learn from
+our experience.
+For Google and throughout the industry, this year marks a turning point for AI both as a
+research discipline and a commercial technology. Exciting new generative AI applications are
+writing poetry and computer code. Advanced AI applications can help diagnose diseases with
+accuracy and help communities around the world address the effects of climate change, from
+wildfires to flooding. At the same time, 2023 marks a milestone moment in the young history
+of global AI governance. In July, we joined other industry peers in making voluntary industry
+commitments for safe, secure, and trustworthy AI at the White House. This was followed in
+October by the latest Executive Order, which is focused on new standards for AI safety and
+security, and managing AI risks. Toward the end of this year, the G7 released an international
+code of conduct for responsible AI. The United Nations announced an AI advisory group and
+the UK held an international summit on AI safety. And, in December, policy makers in the
+European Union reached a preliminary political agreement on the AI Act, the first law
+to regulate AI.
+As a result, from these actions and many others in 2023, we can see the beginnings of an
+international, shared framework for responsible AI innovation taking shape. This occurs
+alongside frameworks and standards on AI risks and mitigations from organizations such as
+the US National Institute of Standards and Technology (NIST), Organization for Economic Co-
+operation and Development (OECD), and Organization for Standardization (ISO). In addition,
+governing efforts are underway in nations such as Singapore, Brazil, Canada, and India.
+6At the same time, non-governmental organizations like the Partnership on AI, ML Commons,
+and the Frontier Model Forum are also sharing best practices and helping to advance the state
+of the art in AI evaluations, benchmarking, and safety testing. And multi-stakeholder initiatives
+like the World Economic Forum AI Governance Alliance are helping to encourage responsible
+releases of transparent and inclusive AI systems.
+Promoting alignment on industry best practices is imperative for building advanced AI
+applications that have social benefit, avoid unfair bias, are built and tested for safety and
+privacy, and are accountable to people. The dawn of generative AI offers an opportunity for
+us to guide the development of an unprecedented technology with principled practices.
+Since we first published our AI Principles in 2018, we’ve centered our internal AI governance
+and operations efforts in four key areas:
+1. Culture and education: Employee training, resources, and workshops
+on the ethical development of AI
+2. Structures and processes: Risk assessments and AI Principles reviews
+3. Tools, techniques, and infrastructure: Technical solutions and resources, such
+as responsible AI safety filters and classifiers, model and data cards, built-in techniques
+such as fine-tuning and reinforcement learning, and automated adversarial testing
+4. External engagement and partnerships: Collaboration with industry peers and civil
+society and efforts across the external AI ecosystem, including with academia, start-
+ups, and governments
+We’re committed to thoughtful iteration and to constantly sharing and learning, within
+our industry and across the greater society, in order to build AI that benefits everyone.
+7Internal governance & risk
+management
+As Google increasingly incorporates AI into all of our products and services, we are
+increasingly integrating our AI review work into our holistic Enterprise Risk Management
+frameworks for assuring the quality of our offerings. This evolution helps us further the scale
+of our work and integration into existing governance and company-wide infrastructure and
+accountability processes.
+Google’s enterprise risk frameworks, tools, and systems of record provide a foundation
+for first-line reviews of AI-related issues, and help assure compliance with evolving legal,
+regulatory, and standards benchmarks. This approach will help us fulfill new directives such
+as the US White House’s Executive Order on AI, the G7’s International Guiding Principles for
+Organizations Developing Advanced AI Systems, and the AI Act in the EU.
+Our AI governance teams collaborate closely with teams and subject matter experts across
+machine learning (ML) research, product policy, user-experience research and design, public
+policy, law, human rights, and the social sciences, among many other disciplines. For many
+years we have been on a journey of formalizing, expanding, and institutionalizing our machine-
+learning and artificial-intelligence reviews across a growing range of products and services.
+In close coordination with central teams, some of our product areas have developed their own
+specialized review processes, deploying approaches tailored to their unique circumstances.
+For example, Google Cloud’s Responsible AI team helps enterprises develop effective AI
+safety and responsibility risk management strategies, through conversations and shared best
+practices with customers.
+Google Cloud deploys a shared fate model, in which select customers are provided with
+tools — such as those like SynthID for watermarking images generated by AI. Customers test
+the tools in line with their own AI principles or other responsible innovation frameworks. This
+shared fate model offers a closer interaction with customers, including tailoring practices
+and tooling to their needs and risk management strategies. As we continue to develop our
+AI platforms, systems, and foundational models, Cloud will continue to invest in end-to-end
+governance tools and guidance on best practices to help our customers keep their data
+and AI models safe.
+8This year, Cloud’s AI products and services for enterprises expanded to include additional
+security solutions with Security AI Workbench, an industry-leading platform of tools
+(Mandiant Threat Intelligence, Chronicle Security Operations, and Security Command Center);
+governance and compliance controls for AI workloads, built on Vertex AI; and security-focused
+AI collaboration and assistance with Duet AI.
+To provide a more comprehensive approach to safe, secure, and trustworthy AI development
+across products, we’re working to integrate and expand many of our internal AI Principles
+operations efforts across different functions. Generative AI raises new issues, such as the
+potential for model misinterpretations of data (commonly referred to as “hallucinations”).
+As we continue to integrate generative AI into more products and features, our teams
+leverage decades of experience and take a comprehensive approach to better anticipate
+and test for potential new risks. We continue to have senior-management oversight of both
+new and emerging issues in AI and compliance with evolving standards and practices.
+As we continue to integrate generative AI into more products
+and features, our teams leverage decades of experience and
+take a comprehensive approach to better anticipate and test
+for potential new risks.
+These reviews often require consideration of the trade-offs between ethical risks of certain
+new applications and potential social benefits. For example, in the case of generated
+photorealistic images of people, we discussed the risks of deepfakes and misinformation
+versus the social benefits of enabling small businesses and creators to make high-quality
+content to grow their businesses and contribute to their communities. We agreed on an
+approach that seeks to make generative AI image technology available, subject to strict
+testing and clear guardrails (like the use of safety classifiers and filters).
+Evolving generative AI pre-launch ethics reviews
+Our AI Principles ethics reviews and impact assessments are part of a larger, end-to-end
+pre-launch process that includes technical safety testing and standard privacy and security
+reviews. The AI Principles review process offers tailored guidance for applying the principles
+as a practical framework for the development of new products and services.
+9This year, we more than doubled our AI Principles reviews (to more than 500) with most
+focused on the implementation of generative AI research models into products, services,
+and features. To accommodate the increasing numbers of generative AI reviews and scale
+AI Principles assurance, our cross-company pre-launch process assesses early product
+designs against known legal requirements, emerging legislation, standards, and our AI
+Principles. Teams may address identified issues through technical or policy mitigations or
+guardrails, such as additional safety filters or continued model refinement. Product teams
+continue to adopt other best practices for responsible AI research and development
+throughout the launch and operations processes.
+A risk-based approach to generative AI
+Our risk assessment framework seeks to identify, measure, and analyze risks throughout the
+product development lifecycle. AI Principles reviews map these risks to appropriate mitigations
+and interventions, drawing upon our best practices from our cross-company enterprise risk
+management efforts.
+We conduct AI Principles reviews for all generative AI projects, with particular focus on certain
+areas. These include inherently large scale applications in domains such as:
+• Government-related
+• Recommendation, personalization, and ranking systems
+• Critical technology infrastructure
+• Environmental sustainability
+• Social impact
+• Health, fitness, and well-being
+• Finance, education, and employment
+• Surveillance and/or biometrics
+• Ambient computing, affective technology, and wearables
+10AI Principles reviews assess a range of harms, taking into account impacts ranging from
+unfair biases and stereotypes, poor product experiences, and social harms such as the spread
+of misinformation. In addition, as we’ve reported in detail in our 2022 AI Principles Progress
+Update, we engage external experts to conduct human rights impact assessments
+as appropriate.
+We also draw on feedback from more than 1,000 Googlers around the world who represent
+the international diversity of the people who use our products, with more than 50% living and
+working outside of the US. They represent 39 different countries and regions and speak more
+than 85 different languages. This feedback is shared with teams working to automate more
+of our adversarial testing.
+Policies & practices for responsible generative
+AI development
+To guide product teams internally, we’ve established a framework to define the types
+of harmful content that we do not permit our models to generate. It also guides how we
+protect personal identifiable information (such as Social Security Numbers). We leveraged
+our experience launching conversational products like Google Assistant and content features
+such as featured snippets in Search to understand how to minimize offensive and
+low-quality answers.
+This framework — which serves as a standardized policy recommendation for all generative
+AI products and modalities — also reflects our commitment to product inclusion and equity.
+Based on Google’s extensive experience with harm mitigation and rigorous research, and
+reflecting our established approach to product safety, our policy says that generative AI
+products must not create harmful content, such as child sexual abuse and exploitation, hate
+speech, harassment, violence and gore, or obscenity and profanity; dangerous content that
+facilitates, promotes, or enables access to harmful goods, services, and activities;
+or malicious content, such as spam or phishing. The framework also targets the harms
+caused by misinformation or unfair bias, with guidelines focused on providing neutral
+answers grounded in authoritative, consensus facts, or providing multiple perspectives.
+11As with all of our product policies, we aim to regularly review and update this generative AI
+framework to respond to emerging safety enforcement trends, new product features, and
+new ways products are used — to protect against misuse.
+We conduct adversarial testing and red teaming, or “ethical hacking,” of our products to
+test for policy violations and to measure how well a model is following the policy framework.
+While we generally expect our generative AI products to restrict the content set out in the
+framework, there are some important exceptions. Similar to other Google products — for
+example, featured snippets on Search — we make an exception when there is an educational,
+documentary, scientific, or artistic benefit to showing or translating content that might
+otherwise be perceived as offensive within these specific, beneficial contexts, as we do
+within the Bard experience.
+Adversarial testing is just one of three essential practices for building responsible generative AI
+that we shared publicly this year, based on trends and patterns we observed in hundreds of AI
+Principles reviews conducted in 2023:
+1. Design for responsibility
+2. Conduct adversarial testing
+3. Communicate simple, helpful explanations
+Our first essential practice, designing for responsible generative AI, is a proactive approach
+that begins by first identifying and documenting potential harms (for example, unfair bias
+in AI model outputs within a product, which could lead to toxic content or loss of economic
+opportunity for specific groups of people). These harms can then be mitigated with the use
+of responsible datasets, classifiers and filters, and in-model mitigations such as fine tuning,
+reasoning, few-shot prompting, data augmentation, and controlled decoding to address
+potential harms proactively.
+Our second essential practice, adversarial testing, refers to systematic evaluation of a model
+by providing malicious or inadvertently harmful inputs across a range of scenarios to identify
+and mitigate potential safety and fairness risks. We conduct this testing before major model
+and product launches, including our Gemini family of models (see the technical paper
+for details).
+12For Bard, which lets people collaborate with generative AI through conversational prompts,
+we conducted testing to identify situations where the model could be mistakenly perceived
+as human. Such anthropomorphization can lead to potentially harmful misunderstandings.
+To intervene, we limit Bard’s self-reference to personal pronouns, human identity, and claims
+of implicit or explicit humanness. We are continuing to conduct research into this domain to
+develop our approach to managing anthropomorphization identified in testing.
+We continue to experiment with new forms of adversarial testing. For example, we hosted
+an internal, company-wide large language model (LLM) red teaming “Hack-AI-thon” with
+hundreds of security, safety, and other experts.
+We conduct adversarial testing and red teaming, or “ethical
+hacking,” of our products to test for policy violations and to
+measure how well a model is following the policy framework.
+In addition to adversarial testing for safety and fairness, we’ve also established a dedicated
+Google AI Red Team focused on testing AI models and products for security, privacy and
+abuse risks. Externally, we participated in the White House-sponsored red teaming event
+at DEFCON, which drew over 2,000 people to test industry-leading LLMs in an effort to better
+understand risks and limitations of these advanced technologies. We also continue to innovate
+with methods for scaled automated testing using LLM-based auto-raters to enable efficiency
+and scaling.
+Our third essential practice, communicating simple, helpful explanations, requires:
+1. Making it clear to users when and how generative AI is used
+2. Showing how people can offer feedback, and
+3. Showing how people are in control as they use an AI-powered product or service.
+Maintaining transparency documentation for developers, governments, and policy leaders
+is also key. This can mean releasing detailed technical reports or model or data cards that
+appropriately make public essential information based on our internal documentation of safety
+and other model evaluation details. These transparency artifacts are more than communication
+vehicles; they can offer guidance for AI researchers, deployers, and downstream developers
+on the responsible use of the model.
+13To build upon these practices, we provide self-service guides and continue to catalog
+patterns of generative AI risks and common interventions and mitigations. These include
+common risks known across the industry, such as hallucinations, for which we apply
+mitigations such as technical tooling for identifying AI-generated content, a prohibited use
+policy, clear explanations of the risk of hallucination, and feedback mechanisms to report
+concerns such as potentially harmful outputs. Other common generative AI risks include
+model outputs that reflect or reinforce unfair biases or outputs that are extremely similar
+to or indistinguishable from those created by humans, which can lead to misunderstandings
+such as perceived sentience.
+We have internal guides to help product and research teams across Google better understand
+and proactively mitigate these risks.
+Common generative AI interventions
+14By sharing the common risks that we find in our AI Principles reviews, we can offer
+transparency into our emerging best practices to mitigate these risks. These range from
+the technical, such as SynthID or About this image, tools we developed this year that can
+help identify mis- and dis-information when generative AI tools are used by malicious actors,
+to explainability techniques such as increasing explanatory information throughout the AI
+product, not just at the moment of decision.
+And we continue to conduct foundational research to gain additional insight on these risks.
+For example, we recently worked with Gallup, Inc. to survey perceptions and attitudes around
+technology to gain insights into how anthropomorphism influences people’s use of generative
+AI chatbots and other technology. Such insights help us understand potential benefits and
+dangers of humanizing technology and the development of new interventions, mitigations,
+and guardrails to help people use AI appropriately.
+We’re committed to reporting specific capabilities, limitations,
+risks, and mitigations we’ve applied into our generative
+AI-powered systems, and contributing to shared industry
+standards on model transparency.
+We’ve also begun to look ahead and expand our threat research to assess large models’
+cyber capabilities, which can lead to potential cyber weapons used by adversaries. We’re
+also researching the security benefits and risks of our largest model in the Gemini family of
+generative models. This has included scoping new evaluation techniques, as well as joining
+relevant external fora, such as the UK’s new Biosecurity Leadership Council.
+Generative AI is a nascent technology, so there are many risks yet to be discovered and
+defined – as well as benefits. For example, generative AI can be used to help identify and track
+harmful, fake information, even that of which is generated by AI. We’re committed to reporting
+specific capabilities, limitations, risks, and mitigations we’ve applied into our generative AI-
+powered systems, and contributing to shared industry standards on model transparency.
+This year, we’re piloting a transparency artifact specifically for the integration of research
+generative AI models into AI-powered systems. This artifact is called a generative AI system
+card. It builds upon our work of designing widely referenced and adopted transparency
+artifacts such as model and data cards.
+15Our first version is intended to provide structured, easy-to-find information for non-technical
+audiences ranging from third-party auditors and policy makers to journalists, enterprise clients,
+and clients and advertisers, as well as users. The cards offer an overview of the capabilities
+and limitations of a generative AI model as integrated into a larger system that people interact
+with as a product or service. (See appendix for an example, documenting the December 2023
+update of Bard with specifically tuned Gemini Pro).
+Equipping employees to practice the
+AI Principles
+We broadly share knowledge among our employees on how to execute upon our responsible
+practices and policies via a frequently updated AI Principles hub, featuring current product
+policies and guidance, along with self-service content and training. Usage of this hub has more
+than doubled since last year.
+Given the rapidly evolving nature of generative AI and emerging best practices, this year we
+launched virtual AI Principles boot camps open to any and all Googlers. These boot camps
+include interactive sessions in which participants test their knowledge of the AI Principles and
+engage in mock ethics reviews of AI products.
+Other educational offerings for employees include an expansion of our live interactive Moral
+Imagination Workshops, which involve deep engagement in philosophical approaches to
+product development scenarios. The number of product teams engaging in Moral Imagination
+sessions has more than doubled since they launched in 2021. The workshop was presented
+externally at the Affective Computing + Intelligent Interaction conference in the fall of 2023.
+Elements of the workshop will be integrated into onboarding training for senior hires beginning
+in the first quarter of 2024.
+Also this year, building on the Responsible Innovation Challenge, a game-like exercise that
+tested employees’ recall of the AI Principles and has been completed by more than 20,000
+Googlers, we designed and launched a new internal game-like AI ethics training experience.
+The training encourages technical Googlers to focus on best practices for building AI products
+responsibly, including how to document safe and unsafe practices, testing AI model outputs
+for fair outcomes, and filing bugs if improvement is needed. Approximately 1,800 Googlers
+have completed this new course.
+16We’re committed to sharing our practices externally as well. This year, we’ve launched
+educational, hands-on resources that reflect key concepts in our internal educational
+resources. These include Introduction to Responsible AI for developers, and Technomoral
+Scenarios for Responsible Innovation for industry professionals.
+17Resources, research, tools &
+responsible practices
+We invest in ongoing research into Responsible AI development. Our online database of more
+than 200 publications since 2012 serves as a resource for the research community and the
+larger AI ecosystem.
+We continue to develop new techniques to advance our ability to discover unknown failures,
+explain model behaviors, and improve model output through training, responsible generation,
+and failure mitigation.
+However, understanding and mitigating generative AI safety risks is both a technical and
+social challenge. Safety perceptions are intrinsically subjective and influenced by a wide
+range of intersecting factors. Our study on how demographic characteristics influence safety
+perceptions explored the effects of rater demographics (such as gender and age) and content
+characteristics (such as degree of harm) on safety assessments of generative AI outputs. Our
+disagreement analysis framework highlighted a variety of disagreement patterns between
+raters from different backgrounds, including “ground truth” expert ratings. Our NeurIPS 2023
+publication introduced the DICES (Diversity In Conversational AI Evaluation for Safety) dataset
+to facilitate nuanced safety evaluations of large language models, accounting for cultural
+variance, ambiguity, and diversity.
+We continue to pursue research into using societal context knowledge to foster responsible AI.
+This year, we piloted a tool to convert system dynamics models of complex societal problems
+into reinforcement-learning environments, opening up the ability for AI to be more socially
+beneficial through deep problem understanding, and released a more comprehensive identity
+lexicon, TIDAL.
+18Techniques & datasets to help avoid unfair bias
+A key part of our ML work involves developing techniques to build models that are more
+inclusive. Informed by sociology and social psychology, we focus on working toward scalable
+solutions that enable nuanced measurement and mitigation in areas such as studying the
+differences in human perception and annotation of skin tone in images using the Monk
+Skin Tone scale.
+We’re developing methodologies to build models for people from a diversity of backgrounds.
+For example, our exploration of the design of participatory systems allows individuals to
+choose whether to disclose sensitive attributes with explicit consent when an AI system
+makes predictions. This approach suggests a way to reconcile the challenging tension
+between avoiding unfair bias and applying privacy design.
+We’ve also strengthened our community-based research efforts, focusing on historically
+marginalized communities or groups of people who may experience unfair outcomes of AI.
+This ranged from evaluations of gender-inclusive health to mitigate harms for people with
+queer and non-binary identities, to explorations on how to scale automatic speech recognition
+by using a large unlabeled multilingual dataset to pre-train and fine-tune a model to recognize
+under-represented languages and adapt to new languages and data.
+We’ve made the Monk Skin Tone Examples (MST-E) dataset publicly available to enable AI
+practitioners everywhere to create more consistent, inclusive, and meaningful skin tone
+annotations as they create computer vision products that work well for all skin tones. It
+contains 1,515 images and 31 videos of 19 subjects spanning the 10 point Monk Skin Tone (MST)
+scale, where the subjects and images were sourced through TONL, a stock photography
+company focusing on diversity. The 19 subjects include individuals of different ethnicities and
+gender identities to help human annotators decouple the concept of skin tone from perceived
+race. The primary goal of this dataset is to enable practitioners to train their human annotators
+and test for consistent skin tone annotations across various environment capture conditions.
+Since we launched the MST scale last year, we’ve been using it to improve Google’s computer
+vision systems to make equitable image tools for everyone and to improve representation of
+skin tone in Search. Computer vision researchers and practitioners outside of Google, like
+the curators of Meta’s Casual Conversations dataset, have also recognized the value of MST
+annotations to provide additional insight into diversity and representation in datasets.
+19Because AI models are often trained and evaluated on human-annotated data, we also
+advance human-centric research on data annotation. We have developed methods to
+account for rater diversity, and in the recent past, we’ve shared responsible practices for data
+enrichment sourcing. These methods enable AI practitioners to better ensure diversity in
+annotation of datasets used to train models, by identifying current barriers and
+re-envisioning data work practices.
+This year, we sought to create new, inclusive datasets as well. For example, Project Elevate
+Black Voices (EBV) is a first-of-its-kind collaboration between Responsible AI UX, Speech,
+and Assistant to responsibly collect and transcribe a dataset of African American English
+in partnership with Howard University and other Historically Black Colleges and Universities
+to reduce racial disparities in automatic speech recognition and improve our overall
+speech model.
+Human-centered AI research
+Our researchers explore generative AI within the lens of human-centered topics, from using
+language models to create generative agents to an exploratory study with five designers
+(presented at the CHI conference) that looks at how people with no machine learning
+programming experience or training can use prompt programming to quickly prototype
+functional user interface mock-ups. This prototyping speed can help enable user research
+sooner in the product design process.
+The growth of generative large language models has also opened up new techniques to solve
+important long-standing problems. Agile classifiers are one research approach we’re taking to
+solve classification problems related to better online discourse, such as nimbly blocking newer
+types of toxic language. The big advance here is the ability to develop high-quality classifiers
+from very small datasets — as small as 80 examples. This suggests a positive
+future for online discourse and better moderation of it.
+Now, instead of collecting millions of examples to attempt to create universal safety classifiers
+for all use cases over months or years, more agile classifiers might be created by individuals or
+small organizations and tailored for their specific use cases, and then iterated on and adapted
+in the time-span of a day (such as to block a new kind of harassment being received or to
+correct unintended biases in models). As an example of their utility, these methods recently
+won a SemEval competition to identify and explain sexism.
+20We’ve also developed new state-of-the-art explainability methods to identify the role of
+training data on model behaviors and misbehaviors. By combining training data attribution
+methods with agile classifiers, we found that we can identify mislabelled training examples.
+This makes it possible to reduce the noise in training data, leading to significant improvements
+on model accuracy.
+Collectively, these methods are critical to help the scientific community improve generative
+models. They provide techniques for fast and effective content moderation and dialogue
+safety methods that help support creators whose content is the basis for generative models’
+amazing outcomes. In addition, they provide direct tools to help debug model misbehavior,
+which leads to better generation.
+A systematic research approach to safety
+The unprecedented capabilities of generative AI models are accompanied by new challenges
+including hallucination (model output that contains factual inaccuracies). To that end,
+our safety research has focused on three directions:
+1. Scaled adversarial data generation
+We create test sets containing potentially unsafe model inputs that stress the model
+capabilities under adverse circumstances. We focus on identifying societal harms
+to the diversity of user communities impacted by our models.
+2. Automated test set evaluation and community engagement
+We scale the testing process with automated test set evaluation to offer many
+thousands of model responses and quickly evaluate how the model responds across a
+wide range of potentially harmful scenarios. We also participate in external community
+engagement to identify “unknown unknowns” and to seed the data generation process.
+3. Rater diversity
+Safety evaluations rely on human judgment, which is shaped by community and culture
+and is not easily automated. To address this, we prioritize research on rater diversity.
+21To provide the high-quality human input required to seed the scaled processes, we partner
+with groups such as the Equitable AI Research Round Table (EARR), and with our internal ethics
+teams to ensure that we are representing the diversity of communities who use our models.
+We continue to expand our reach in terms of collaborating with underrepresented groups; for
+example, researchers are currently exploring collaborative AI development projects with the US
+federally-recognized Fort Peck Tribes (the Assiniboine and Sioux Tribes), such as developing a
+Siouan language model together.
+The Adversarial Nibbler Challenge also engages external users to understand potential harms
+of unsafe, biased, or violent outputs to end users. We’re committed to a global approach, so
+we gather feedback by collaborating with the international research community. For example,
+we addressed adversarial testing challenges for generative AI in The ART of Safety workshop
+at the Asia-Pacific Chapter of the Association for Computational Linguistics Conference
+(IJCNLP-AACL 2023).
+One of our technical research approaches to scaled data generation is reflected in our paper
+on AI-Assisted Red Teaming (AART). AART generates evaluation datasets with high diversity
+(such as sensitive and harmful concepts specific to a wide range of cultural and geographic
+regions), steered by AI-assisted recipes to define, scope, and prioritize diversity within an
+application context.
+To catalog our research in responsible data use for generative AI, we maintain an internal
+centralized data repository with use-case and policy-aligned prompts. We have also developed
+multiple synthetic data generation tools based on LLMs that prioritize the generation of data
+sets that reflect diverse societal contexts and integrate data quality metrics for improved
+dataset quality and diversity.
+22Our data quality metrics include:
+• Analysis of language styles, including query length, query similarity, and diversity
+of language styles
+• Measurement across a wide range of societal and multicultural dimensions, leveraging
+datasets such as SeeGULL, SPICE, TIDAL and the Societal Context Repository
+• Measurement of alignment with Google’s generative AI policies and intended use cases
+• Analysis of adversariality to ensure that we examine both explicit (the input is clearly
+designed to produce an unsafe output) and implicit (where the input is innocuous but
+the output is harmful) queries
+In addition, we explore understanding of when and why our evaluations fall short using
+participatory systems, which explicitly enable joint ownership of predictions and allow
+people to choose whether to disclose on sensitive topics.
+Collaborating with the research community
+An essential component of our research philosophy is supporting the free exchange of ideas
+and maintaining close contact with the broader scientific community.
+This year, we committed to supporting MLCommons’ development of standard AI safety
+benchmarks. Though there has been significant work done on AI safety, there are as of yet
+no industry-standard benchmarks for AI safety. Standard benchmarks already exist in machine
+learning (ML) and AI technologies: for instance, MLCommons operates the MLPerf benchmarks
+that measure the speed of cutting-edge AI hardware such as Google’s TPUs.
+MLCommons proposes a multi-stakeholder process for selecting tests and grouping them
+into subsets to measure safety for particular AI use-cases, and translating the highly technical
+results of those tests into scores that everyone can understand.
+23Throughout the year, we’ve engaged with cross-disciplinary research communities to examine
+the relationship between AI, culture, and society, through our recent and upcoming workshops
+on Cultures in AI/AI in Culture, Ethical Considerations in Creative Applications of Computer
+Vision, and Cross-Cultural Considerations in NLP. Our recent research has also sought out
+perspectives of particular communities known to be less represented in ML development
+and applications. For example, we have investigated gender bias in contexts such as gender-
+inclusive healthcare.
+This year, Google DeepMind researchers introduced the area
+of model evaluation for extreme risks...These evaluations are
+likely to inform responsible decisions about model training,
+deployment, and security.
+Our researchers continue to explore new areas of AI risk. Current approaches to building
+general-purpose AI systems tend to produce systems with both beneficial and harmful
+capabilities. Further progress in AI development could lead to capabilities that pose extreme
+risks, such as offensive cyber capabilities or strong manipulation skills. This year, Google
+DeepMind researchers introduced the area of model evaluation for extreme risks. Developers
+must be able to identify dangerous capabilities (through “dangerous capability evaluations”)
+and the potential for harmful outcomes (through “alignment evaluations”). These evaluations
+are likely to inform responsible decisions about model training, deployment, and security.
+Society-Centered AI as a research method
+Our research is inspired by the transformative potential of AI technologies to benefit society
+and our shared environment at a scale and swiftness that wasn’t possible before. From helping
+address the climate crisis to helping transform healthcare, to making the digital world more
+accessible, our goal is to apply AI responsibly to be helpful to more people around the globe.
+Achieving global scale requires researchers and communities to think ahead — and act —
+collectively across the AI ecosystem.
+24We call this approach Society-Centered AI. It is both an extension and an expansion of
+Human-Centered AI focusing on the aggregate needs of society, informed by the needs of
+individual users, from understanding diseases that affect millions of people or protecting
+the environment.
+Multi-disciplinary AI research can help address society-level,
+shared challenges from forecasting hunger to predicting
+diseases to improving productivity.
+Recent AI advances offer unprecedented, societal-level capabilities. In 2023, for example,
+Google DeepMind’s new AI model that classifies missense variants, genetic mutations that
+can affect the function of human proteins and can lead to diseases such as cystic fibrosis,
+sickle-cell anemia, or cancer, was used to create a catalog of “missense” mutations that
+categorized 89% of all 71 million possible missense variants as either likely pathogenic or likely
+benign. By contrast, only 0.1% have been confirmed by human experts. This knowledge is
+crucial to faster diagnosis and developing life-saving treatments. And our recent research with
+Boston Consulting Group also found that AI also has the potential to mitigate 5-10% of global
+greenhouse gas emissions by 2030.
+Multi-disciplinary AI research can help address society-level, shared challenges from
+forecasting hunger to predicting diseases to improving productivity. To help promote diverse
+perspectives in this work, we announced that 70 professors were selected for the 2023 Award
+for Inclusion Research Program, which supports academic research that addresses the needs
+of historically marginalized groups globally.
+25Our research seeks to:
+•
+Understand society’s needs
+We focus our efforts on goals society has agreed should be prioritized, such as the
+United Nations’ 17 Sustainable Development Goals, a set of interconnected goals
+jointly developed by more than 190 countries to address global challenges.
+•
+Address those needs collectively
+Collective efforts bring stakeholders (such as local and academic communities,
+NGOs, private-public collaborations) into a joint process of design, development,
+implementation, and evaluation of AI technologies as they are being developed
+and deployed to address societal needs.
+•
+Measure success by how well the effort addresses society’s needs
+We identify primary and secondary indicators of impact that we optimized through
+our collaborations with stakeholders.
+Our research will continue to promote AI applications that support the UN’s Sustainable
+Development Goals and our efforts to help non-profits use these tools.
+26Product impact
+Our responsible approach to AI research and governance helps our product teams working
+on applications for consumers, developers, and enterprises.
+We have applied this approach to Gemini — our family of base and instruction-tuned models
+of various parameter-based sizes, all of which are natively multimodal. Gemini is flexible
+and optimized for three sizes: Gemini Nano, Gemini Pro, and Gemini Ultra. Gemini Pro
+and Nano are starting to roll out to our products. We will be making Gemini Ultra available
+to select customers, developers, partners, and safety and responsibility experts for early
+experimentation and feedback before rolling it out to developers and enterprise customers in
+early 2024. Gemini is designed with responsibility as a core goal: addressing challenges from
+new capabilities, such as multimodality, and implementing state-of-the-art safeguards.
+Across our products, we apply a risk-based, principles-driven process — which can also
+mean taking a cautious and gradual go-to-market approach involving rigorous testing.
+For example:
+AI Principle #1: Be socially beneficial
+This principle helps teams consider how the overall benefits of generative AI exceed risks
+in areas such as content quality and AI’s impact on industries and sectors.
+Consider our decision to develop Universal Dubbing, a generative AI-automated video lip
+dubbing service. This technology carries risk, as it could be misused for highly believable
+deepfakes. Rigorous research with partners at the University of Arizona showed the method
+clearly helped non-native English speakers learn a language faster when watching a realistic,
+automatically dubbed video. AI Principles reviewers approved the project with a strict gating
+process for research and educational purposes based on clear benefits for students. As we
+expand this service, we’re implementing guardrails to help prevent misuse and we make it
+accessible only to authorized partners.
+This principle also can be applied on a broader level. For example, it’s reflected in YouTube’s
+approach to music generative AI experiments and YouTube’s product-specific guidance for
+working with creators.
+27YouTube is actively collaborating with a diversity group of leading musicians for their input
+on developing generative AI tools to enable expression while protecting music artists and the
+integrity of their work.
+This year, we expanded our ads policies to require advertisers to disclose when their election
+ads include material that’s been digitally altered or generated and depicts real or realistic-
+looking people or events in all countries where we have election ads verification. And we
+expanded our ongoing work in information literacy to support AI literacy. We launched About
+this image, a tool that provides more context to help people evaluate visual content they come
+across online. The tool offers details on when an image and similar images were first indexed by
+Google, where it may have first appeared, and where else it’s been seen online (like on news,
+social, or fact-checking sites). With this background information on an image, people might
+be able to see that news articles pointed out that an image was AI-generated.
+AI Principle #2: Avoid creating or reinforcing
+unfair bias
+We have taken a phased approach to launches to account for rigorous adversarial testing
+for fairness. While we can’t disclose some of the details of our fairness testing methods for
+security reasons, we can report that we release publicly available generative AI experiences
+only after they have incorporated recommended or conditional mitigations.
+This year, we’ve been testing how generative AI in Search can help people find what they’re
+looking for in new, faster ways. The experience helps with a variety of information needs,
+including those that benefit from multiple perspectives to avoid unfair bias.
+As we’ve continually improved the experience, we’ve also expanded internationally beyond
+the United States with recent launches in India and Japan, with the majority of feedback
+positive. In our largest global expansion, we’ve brought generative AI in Search to more than
+120 countries and territories including Mexico, Brazil, South Korea, Indonesia, Nigeria, Kenya,
+and South Africa, with support for four new languages: Spanish, Portuguese, Korean, and
+Indonesian. So if, for example, you’re a Spanish speaker in the US, you can now use
+generative AI in Search with your preferred language.
+28Case study: Lookout
+Lookout is an assistive Android app that uses a phone’s camera to create accessibility tools
+for people who are blind or have low vision (BLV). Lookout helps people complete common
+tasks by making the visual world more accessible. Its newest flagship feature — Image Q&A —
+enables people to not only get a much more detailed description of an image, but also to ask
+questions about a photo, and receive AI-powered responses.
+Describing images is inherently challenging. If an image contains people, it’s even more
+complex, as difficult questions arise about how to describe those people in a way that’s
+both useful and respectful of a person’s identity. Gender is a particularly challenging trait to
+describe based on an image, as a person’s gender may not be obvious from their appearance.
+While developing Lookout, the product team had to balance AI Principle # 1 (Be socially
+beneficial) and # 2 (Avoid creating or reinforcing unfair bias). Though it may be beneficial to
+include gender in the description of a person, doing so also risks potential unfair bias.
+The team incorporated a Google DeepMind visual language model (VLM), heavily customized
+for this use case, with several rounds of feedback from BLV people and from trans and non-
+binary people. VLMs enable people to ask natural language questions about an image. The new
+Lookout question and answer feature allows users to go beyond captions and ask about the
+image details that matter to them the most.
+29This functionality allows the team to provide captions without perceived gender, but if the
+user asks a question about a person’s gender, the model can provide a best guess of perceived
+gender, using cues from the person’s appearance. The Lookout team tested this approach
+with end users who were BLV and non-binary and found that these users thought the
+approach was both useful and respectful.
+The approach isn’t perfect. The model will still make mistakes with perceived gender, and
+people with visual impairments still need to request details that typically sighted people
+receive effortlessly. The Lookout team believes this launch is both a step in the right
+direction, and an area where we can continue to learn and improve with the BLV community.
+AI Principle #3: Be built and tested for safety
+We design all of our products to be secure-by-default — and our approach to AI is no different.
+In 2023, we introduced our Secure AI Framework (SAIF) to help organizations secure AI
+systems, and we expanded our bug hunters programs (including our Vulnerability Rewards
+Program) to incentivize research around AI safety and security.
+To address international frameworks and guidance for safe, secure, and trustworthy AI, we’re
+prioritizing cybersecurity safeguards. Our goal is to protect proprietary and unreleased
+models and we’re participating in industry-wide events to support broader protections for
+governments, companies, and civil society, like the Defense Advanced Research Projects
+Agency’s (DARPA) AI Cyber Challenge, which will aim to identify and fix software
+vulnerabilities using AI.
+As we introduce generative AI technology to younger users aged 13-17, we strive to strike the
+right balance in creating benefits while prioritizing safety, family controls, and developmental
+needs. Informed by research and experts in teen development, we’ve built additional
+safeguards into the experience. For example, for our expansion of Search Generative
+Experience to teens, to prevent inappropriate or harmful content from surfacing, we put
+stronger guardrails in place for outputs related to illegal or age-gated substances or bullying,
+among other issues.
+30Case study: Search Generative Experience
+Search Generative Experience (SGE), was introduced through Search Labs this year as a
+generative AI experiment. Search powered by generative AI can help people quickly get the
+gist of any topic, find new ideas and inspiration, and easily follow up on questions to deepen
+their understanding. Generative AI in Search makes it easier for people to ask more specific
+and complex questions like “How to make learning math fun for a ten-year-old?” People can
+also ask follow-ups without having to repeat context or try suggested follow-ups, and get AI-
+powered overviews with links to explore fresh perspectives from across the web.
+We are rolling out SGE thoughtfully, to develop this experience responsibly, leaning on Search
+protections like automated systems that work to prevent policy-violating responses and
+filtering images that violate our prohibited use policy for generative AI. Other approaches
+include adding metadata and watermarks indicating that images are AI-generated.
+LLMs can generate responses that seem to reflect opinions or emotions, since they have
+been trained on a range of language. We trained the models that power SGE to refrain from
+reflecting a persona. They are not designed to respond in the first person, for example,
+and we fine-tuned the model to provide objective, neutral responses that are corroborated
+with web results.
+31By making generative AI in Search first available through Search Labs, we were transparent that
+the technology was still in an early phase. We’re committed to a thoughtful cadence of global
+expansions after careful testing with audiences around the world.
+Over time, we will continue to conduct evaluations and adversarial testing and share
+information on SGE’s capabilities and limitations. In many cases, we have already made
+improvements with model updates and additional fine-tuning. Generative AI has the potential
+to transform the current Search experience by organizing and presenting information in ways
+that help people get — and do — more from a single search.
+AI Principle #4: Be accountable to people
+When we launch products, we seek to provide relevant information and opportunities
+for feedback. For example, for Bard’s initial launch in May, some of our explainability
+practices included:
+• The “Google it” button, providing relevant Search queries to help users validate
+responses to factual questions
+• Thumbs-up and -down icons as feedback channels
+• Links to report problems and offer operational support to ensure rapid response
+to user feedback
+• User controls for storing or deleting Bard activity
+We also try to let users know when they are engaging with a new generative AI technology
+and document how a generative AI service or product works. For Bard’s launch, this included
+a comprehensive overview of the cap on the number of interactions to ensure quality and
+accuracy, efforts to prevent potential personification, other details on safety, and a privacy
+notice to help users understand how Bard handles their data.
+In addition, we’re broadly focused on ensuring that new generative AI technologies have
+equal guardrails and accountability mechanisms when addressing concerns such as image
+provenance. In addition to SynthID, our efforts include clear disclosure of images generated
+by Google AI tools (as in Virtual Try On or Da Vinci Stickies).
+32Case study: Bard
+Bard is Google’s generative conversational AI experience, launched in early 2023. Bard can
+support people’s productivity, creativity, and curiosity. From planning a party (Bard can come
+up with a to-do list) to writing a blog post (Bard can provide an outline), people now have a
+new and helpful creative collaborator.
+The models behind Bard have been extensively trained and tested. As a result of potential
+unfair bias in training data, generative AI products can produce offensive or factually
+inaccurate output.
+In the course of developing and launching Bard, we developed a number of new responsible
+AI policies. For example, which types of content Bard is and is not allowed to generate
+influenced our company-wide content frameworks for generative AI models. The team’s
+thoughtful approach to development also shaped our understanding of emerging best
+practices for responsible generative AI development, including adversarial testing and
+the inclusion of clear, helpful explanations.
+Bard was launched gradually so that the team could learn from real-world use by trusted
+testers from a diversity of backgrounds and make adjustments as needed. Before launching
+Bard, we conducted extensive adversarial testing to identify harmful outputs and make
+improvements to the model. Bard continues to regularly undergo adversarial testing,
+especially as new features are added.
+33The Bard interface also makes it clear to people they’re interacting with a generative AI model.
+Additionally, people can offer feedback on the quality of responses using the “thumbs up”
+and “thumbs down” feature.
+AI Principle #5: Incorporate privacy design
+principles
+Our foundational privacy protections for giving users choice and control over their private
+data applies to generative AI. We’re applying these protections to new product features we’re
+currently developing, like improved prompt suggestions that help people using Workspace
+get the best results from Duet AI generative features. These are developed with clear privacy
+protections that keep people in control.
+We’re committed to protecting your personal information. If you choose to use the Workspace
+extensions, your content from Gmail, Docs, and Drive isn’t seen by human reviewers, used by
+Bard to show you ads, or used to train the Bard model. You’re always in control of your privacy
+settings when deciding how you want to use these extensions, and you can turn them off at
+any time.
+As we continue to develop, improve, and expand audiences for our generative AI experiences,
+we will update these protections and share more information on the Bard Privacy Help Hub
+and elsewhere.
+AI Principle #6: Uphold high standards of
+scientific excellence
+At our I/O event in May of 2023, we announced over 25 new AI-powered products and
+features. This brings the latest in advanced AI capabilities directly to people — including
+consumers, developers, and enterprises of all sizes around the world. Our most novel models
+are developed with scientific rigor and transparency. In addition, we evaluate against multiple
+criteria and, as appropriate, with external reviews.
+For example, Med-PaLM 2, which was trained by our health research teams with medical
+knowledge, can answer questions and summarize insights from a variety of dense
+medical texts.
+34It was assessed for scientific consensus, medical reasoning, knowledge recall, bias, and
+likelihood of possible harm by clinicians and non-clinicians from a range of backgrounds and
+countries. Med-PaLM 2 was opened up to a small group of Cloud customers for feedback to
+identify safe, helpful use cases.
+AI Principle #7: Be made available for uses
+that accord with these principles
+All advanced technologies have multiple uses, including potentially harmful or abusive
+applications. Our AI Principles guide how we limit harms for people. As we learn more about
+the emerging risks unique to generative AI, we are working to address these potential harms
+with technical innovation. For example, we launched a beta version of SynthID to a limited
+number of Vertex AI customers as a digital watermarking feature for Imagen, one of our text-
+to-image models that uses input text to create photorealistic images. And we offer image
+markups for publishers to indicate when an image they post to our platforms is AI generated.
+We remain committed to sharing best practices with our customers and developers. That’s
+why we publish Cloud Responsible AI Guides for enterprises. And when AI-powered asset
+generation for Performance Max was first rolling out to advertisers in the US this year, we
+offered information in the Google Ads Help Center for advertisers to learn more about asset
+generation in Performance Max, along with our AI Essentials guide.
+35Supporting global dialogue,
+standards & policy
+Building AI responsibly must be a collective effort. It’s necessary to involve academics and
+labs proactively across the research community, as well as social scientists, industry-specific
+experts, policy makers, creators, publishers, and people using AI in their daily lives. We engage
+in broad-based efforts — across government, companies, universities, and more — to help
+translate technological breakthroughs into widespread benefits, while mitigating risks.
+For example, this year we:
+• Participated in the White House-sponsored red teaming event at DEFCON, which drew
+over 2,000 people to test industry-leading LLMs in an effort to better understand risks
+and limitations of these advanced technologies.
+• Co-established, with industry partners, the Frontier Model Forum to develop standards
+and benchmarks for emerging safety and security issues of frontier models.
+• Contributed to the Partnership on AI (PAI)’s efforts on a Synthetic Media Framework to
+help develop and foster best practices across the industry for the development and
+sharing of media created with generative AI; PAI’s Data Enrichment Sourcing Guidelines;
+and PAI’s Guidance for Safe Model Deployment.
+• Participated in a number of information sharing sessions about generative AI, including
+at the Inter-American Development Bank, National Governors Association, US National
+Conference of State Legislatures Summit, the UK Summit, and more.
+• Collaborated with IPSOS on a study on how and why people across 10 countries
+expect AI will affect privacy in the future, resulting in a paper presented at the 2023
+Symposium on Usable Privacy and Security conference.
+• Updated our Machine Learning for Policy Leaders workshop with generative AI-specific
+interactive sessions for policy makers.
+36A policy agenda for responsible progress in AI
+We’re not only focused on identifying risks and benefits of advanced AI. We’ve been hard at
+work supporting the larger AI ecosystem with practical, scalable recommendations. Earlier this
+year, we shared a detailed policy agenda for responsible progress in AI. We outlined a three-
+pillared approach for governments to collaborate with the private sector, academia, and other
+stakeholders to develop shared standards, protocols, and governance so we can boldly realize
+and maximize AI’s potential for more people around the world.
+The three pillars are:
+1. Opportunity: Maximize AI’s economic promise, such as increased productivity
+and upskilling
+2. Responsibility: Create standards and share practices, and, as appropriate, prepare
+for regulation
+3. Security: Align human values while building complex AI to prevent malicious use
+Our collaborations across the industry and alongside civil society and academia are building
+common technical standards that could help align practices globally. These industry-wide
+codes and standards could serve as a cornerstone for building regulatory frameworks that
+can promote policy alignment for a worldwide technology.
+Putting into place a framework that encourages interoperability across the world can be an
+opportunity to prevent a very real risk of a fractured regulatory environment, which could
+delay consumer access to helpful products across borders. This could make it challenging
+for start-ups and entrepreneurs without the resources to comply with a complex set of
+uncoordinated AI regulation. These outcomes could slow the global development of powerful
+new technologies, and undermine responsible development efforts described in this extensive
+report. Sound government policies are essential to unlocking opportunity, promoting
+responsibility, and enhancing security, along with individual best practices and shared industry
+standards for principled AI innovation.
+37Conclusion
+With the rapid advancements in advanced AI capabilities, we stand on the cusp of a new era
+not only for computing, but also for society. Responsible AI innovation will help businesses
+of all sizes thrive and grow, and support society in finding solutions to our toughest
+collective challenges.
+But to unlock the economic opportunity that advanced AI offers while minimizing workforce
+disruptions, policymakers will need to invest in innovation and competitiveness, promote legal
+frameworks that support innovation, and prepare workers for potential economic impacts
+of these evolving technologies.
+To bring this vision to fruition and sustain it over time, safely, a multi-stakeholder approach
+to governance is necessary. Across industries and nations, we can learn from the experience
+of the internet’s growth over decades to develop common standards, shared best practices,
+and appropriate risk-based regulation.
+To do all of the above safely and securely, governments will need to explore next-generation
+trade control policies for specific applications of risky AI-powered software. Governments,
+academia, civil society, and companies will need a better shared understanding, via common
+definitions and consistently structured transparency documents that describe not only the
+capabilities of AI models when integrated into products and services, but also their limitations.
+We’re building a strong foundation to enable ourselves and others to embrace AI’s
+transformative promise and continue to evolve for years to come, to help today’s workforce
+thrive, and support future generations:
+38• To better understand how knowledge workers expect generative AI may affect their
+industries in the future, we conducted participatory research workshops for seven
+different industries, with a total of 54 participants across three US cities.
+• We’re expanding our Google Cybersecurity Certificate program, which can help anyone
+prepare for a career in cybersecurity globally. For example, in Japan participants can
+earn a professional certificate from Google through the Japan Reskilling Consortium.
+This is in addition to existing partnerships with CERT-IN in India and Cyber Security
+Agency of Singapore, through which we’re offering 125,000 scholarships across the
+Asia-Pacific region.
+• To enable businesses and enterprises of all sizes, we’ve developed brand-new generative
+AI training options and are constantly adding to our training catalog on Google Cloud
+Skills Boost. This includes two learning paths that each feature comprehensive content:
+one is for the non-technical audience, Introduction to Generative AI, and the other,
+Generative AI for Developers, is for technical practitioners (more advanced). Individual
+courses are also available on their own.
+• For AI engineers and product designers, we’re updating the People + AI Guidebook with
+generative AI best practices. For the same audience, we continue to design AI Explorables,
+including how and why models sometimes make incorrect predictions confidently.
+• For tomorrow’s AI engineers and designers, we’ve launched Experience AI, a new
+educational program that offers cutting-edge resources for students aged 11-14 and
+their teachers on artificial intelligence and machine learning. This was developed in
+collaboration with teachers.
+• In 2024, Google will be opening a free after-school Code Next Lab for high schoolers
+in Inglewood, California, a city where 9 in 10 individuals identify as Black and/or Latinx.
+Google will be designing, building, and opening the new facility for an immersive
+computer-science education program to develop the next generation of US Black,
+Latinx, and Indigenous tech leaders.
+39Our mission, since we were founded 25 years ago, has always been to organize the world’s
+information and make it universally accessible and useful. Making AI helpful for everyone will
+be how we deliver on this mission and improve lives everywhere. A big part of accomplishing
+our mission means making information open and accessible on how Google’s core
+technologies work. We’ve done this consistently in the transparent tradition of “How Search
+Works,” which we made public a decade ago in 2013. A decade later, advanced AI is no
+exception. In addition to this annual report, we regularly publish technical reports and research
+papers that include, or complement, model cards for AI models that are incorporated into
+AI-powered experiences.
+We’re encouraged to see governments around the world calling for ongoing transparency
+into internal AI governance processes and reporting on AI models’ capabilities and limitations.
+Governments and civil society have been seriously addressing how to develop the right
+policy frameworks for AI innovation this year, and we look forward to supporting their efforts
+in years to come. At Google, we’ve been bringing AI into our products and services for over
+a decade and making them available to people who use our products steadily, guided by
+our AI Principles. We know we’re at an exciting inflection point in our journey as an AI-first
+company. Some observers have tried to reduce this moment in the history of technology to a
+competitive AI race across our industry. But what matters most to us is the race to build
+AI responsibly, together with others so that we get it right – for everyone.
+40Appendix
+41December 2023
+Generative AI System Card: Bard
+with specifically tuned Gemini Pro
+Bard with Gemini Pro is a conversational AI service that is available in English and in over 170
+countries and territories. It will be made available in more languages and places, like Europe,
+in the near future.
+The AI system that powers this service uses a specifically tuned version (in English) of Gemini
+Pro, a foundational large language model (LLM). LLMs are trained deep-learning models
+that understand and generate text, images, video, and speech in a human-like fashion. LLMs
+build statistical models of the language they are learning, trying to predict which words
+are frequently used together across different types of texts and contexts to model the
+relationships and interactions between words. When given a prompt, they generate a response
+by selecting, one word at a time, from words that are likely to come next. LLMs must be trained
+on a vast amount of multimodal data: text, images, video, and speech before they can learn
+the patterns and structures of language. The information in this document refers only to
+the version of Bard with Gemini Pro launched in December 2023.
+Capabilities
+Gemini Pro in Bard (as of December 2023) is specifically tuned for understanding,
+summarizing, reasoning, coding, and planning capabilities. It works for text-based prompts
+and provides generated text at this time. Other capabilities of Gemini Pro in Bard include
+creative writing, composition, language translation, and complex problem solving, including
+in math and science. At this time, Bard also uses Google Lens technology. We expect to
+unlock advanced multi-modal capabilities in Bard over time.
+Despite the growing range of LLM capabilities, there are known limitations to the use of
+LLMs in AI-powered systems. There is a continued need for ongoing research and
+development on how to improve verifiable model outputs so that they are more reliable
+(e.g., to avoid “hallucinations”). Even when LLMs perform well against model performance
+benchmarks, they can struggle with tasks requiring high-level reasoning abilities, like causal
+understanding and logical deduction. Over time, it is necessary to develop more challenging
+and robust evaluations in these areas.
+42Intended use and current integrations
+Bard is intended for creative collaboration and conversational AI assistance for consumer use.
+Bard Extensions, available in English at this time, integrates with Google tools like Gmail, Docs,
+Drive, Google Maps, YouTube, and Google Flights for more helpful responses. As of December
+2023, third-party extensions are not yet available in Bard. Google is currently exploring features
+that will enable users to connect with third-party services.
+Data
+Data Sources used to train Gemini Pro:
+Gemini Pro is trained on datasets that are both multimodal and multilingual. Our pre-training
+datasets use data from publicly available web documents, books, and code, and include image,
+audio, and video data.
+Safeguards:
+We have implemented the following measures to improve the safety and quality of the LLMs
+for use in products like Bard.
+• Harms mitigation: Prior to training, various steps were taken to mitigate potential
+downstream harms at the data curation and data collection stage for Gemini Pro.
+Training data was filtered for high-risk content and to ensure all training data is
+sufficiently high quality. Beyond filtering, steps were taken to ensure all data collected
+meets Google DeepMind’s best practices on data enrichment.
+• Mitigations for quality and safety, specific to Gemini Pro: Quality filters were
+applied to all datasets used to train the pre-trained Gemini Pro model. Safety filtering
+was applied to remove harmful content. Evaluation sets were filtered from the training
+corpus. The final data mixtures and weights were determined through ablations on
+smaller models. Training was staged to alter the mixture composition during training —
+increasing the weight of domain-relevant data towards the end of training.
+Additional mitigation measures are applied in Google’s products, including Bard, over time (as
+described in Google’s AI Principles Progress Updates).
+43Personal data collected and processed in providing the Bard service:
+When people interact with Bard, Google collects:
+• Conversations
+• Location
+• Feedback
+• Usage information
+This data helps provide, improve, and develop Google products, services, and machine-
+learning technologies, like those that power Bard. Bard shows user-interface elements at the
+bottom of the Menu that offer continuous transparency about location data processed by
+Bard. Users can review their prompts, delete Bard activity, and turn off Bard activity at any
+time. For more details, visit the Bard Privacy Help Hub, and read the Google Privacy Policy and
+the Bard Privacy Notice.
+Model Training Process
+Pre-training
+LLMs are pre-trained on the pre-processed data. Pre-training helps LLMs learn the patterns
+and relationships in data (which ultimately will be used to generate responses for Bard in
+Gemini Pro’s case).
+LLMs built on Transformer1 architecture fundamentally map the statistical relationships
+between words, phrases, and sentences, to predict what next words, images, video, or other
+content will be most likely to follow when prompted with a new set of words. These models
+first build these relationships in an “unsupervised” way — that is, without the data being
+categorized or labeled. To do that, they need large quantities of language and language-like
+data (such as code, math proofs, etc.) that cover the spectrum of use of language to model all
+the possible relationships that exist across the vast breadth and complexity of words in a single
+language and among the many languages used around the world.
+1 A Transformer is a deep learning neural network architecture that Google introduced in 2017 (see https://ai.googleblog.
+com/2017/08/transformer-novel-neural-network.html).
+44Gemini models are trained to accommodate textual input interleaved with a wide variety of
+audio and visual inputs, such as natural images, charts, screenshots, PDFs, and videos, and
+they can produce text, image, video, and audio outputs.
+Pre-training large AI systems requires substantial computational, human, and energy
+resources, and currently can take substantial time to complete. While Google continues to
+work to reduce such costs,2 these practical and technical challenges significantly limit how
+often new foundational LLMs can be pre-trained. For details on the training infrastructure of
+Gemini models, please see the Gemini technical paper.
+Fine-tuning
+Once a pre-trained model is created, it is then adjusted and adapted for use in a specific
+application. This fine-tuning process takes additional data, some of which the model may have
+already seen, and formats it in a way to match the expectations of the application the model is
+being used in.
+This process is undertaken with human supervision/feedback and by using reinforcement
+learning. Fine-tuning can relatively quickly adapt LLMs to new policies and allow for more
+experimentation to optimize outputs.
+Instruction tuning encompasses supervised fine tuning (SFT) and reinforcement learning
+through human feedback (RLHF) using a reward model. Instruction tuning was applied in both
+text and multimodal settings. Instruction tuning for Gemini Pro in Bard was carefully designed
+to balance the increase in helpfulness with decrease in model harms related to safety and
+hallucinations. Curation of “quality” data included a mix of data to balance the metrics on
+helpfulness (such as instruction following, creativity) and reduction of model harms.
+Risks of harmful text generation for Gemini Pro are mitigated with technical approaches. For
+example, a dataset of potential harm-inducing queries was generated to reflect risks and
+societal harms, guided by the AI Principles. For Gemini Pro, this overall approach was able to
+mitigate a majority of identified text harm cases without any perceptible decrease in response
+helpfulness. These mitigations were made before integration into the Bard service.
+2 See, e.g. how Google is minimizing our AI carbon footprint:
+https://blog.google/technology/ai/minimizing-carbon-footprint/, https://ai.googleblog.com/2022/02/good-news-about-carbon-
+footprint-of.html, and https://cloud.google.com/blog/topics/systems/tpu-v4-enables-performance-energy-and-co2e-efficien-
+cy-gains.
+45Model evaluations
+Google engages in extensive evaluation and testing to ensure classifiers and other safeguards
+are operating effectively in all of our novel generative AI models that power services like Bard,
+including the following:
+1. Pre-Launch testing: Prior to launch, our AI Principles, Trust & Safety and Responsible AI
+teams engage in rigorous testing of safety guardrails, including classifiers, to evaluate
+Bard’s performance after these guardrails are put in place. The teams generate large
+sets of adversarial queries, as well as queries in sensitive verticals, to evaluate how
+often an unsafe response is generated. Our Trust & Safety team consistently evaluates
+such safety metrics to ensure the rates meet launch goals.
+2. Targeted adversarial testing and red teaming: The Trust & Safety, AI Principles and
+Responsible AI teams also conduct targeted adversarial testing and red teaming to
+better understand how Bard, and the classifiers it leverages, are performing against
+certain areas and identify failure patterns that need to be addressed.
+3. Feedback: Google analyzes and measures the feedback our users provide. Users
+have the ability to provide feedback if a response by Bard is low quality in the form
+of a “thumbs-down” vote. A user submitting such feedback then indicates whether a
+response is unsafe/offensive, not factually correct, or they can specify another reason.
+Deployment and continued iteration
+Specialized models built off the base LLM can be further fine-tuned for the specific needs of
+the product or service where they are deployed. For example, Bard uses a specialized model
+fine-tuned from the Gemini Pro base model. We continue to iterate on the Bard fine-tuning
+recipe (data mixtures, fine-tuning parameters).
+46Risk Assessment and AI Principles Review outcomes
+Google’s AI Principles team conducted a risk assessment and review of Bard. Recommendations
+resulted in additional extensive deep-dive dogfooding and adversarial testing in the areas of
+safety, accountability, and inclusion to prepare for the initial experimental rollout of Bard and
+subsequent updates. Further cross-functional work helped to ensure appropriate mitigations
+were adopted before Bard and its updates, such as Bard with Gemini Pro, launched. These
+product mitigations included the following:
+• Clear and relevant explanations to set appropriate expectations that describe Bard as a
+helpful service that offers collaboration with AI for specific types of tasks. Explanations
+make clear that this AI-powered system is useful for brainstorming ideas, developing
+plans, creating first drafts of written outlines, emails, blog posts, or for quick summaries
+of complex topics.
+• Disclosures in the Bard Privacy Notice stating that people should not rely on Bard’s
+responses as medical, legal, financial or other professional advice.
+• Disclosure in product stating that Bard responses should be double-checked for
+information accuracy.
+• Added ability to use Google Search to find content that helps users assess and further
+research the information they get from Bard.
+• Feedback channels and operational support were defined and built to help ensure rapid
+response to user feedback to improve the model and address issues.
+47Testing
+For Bard and its updates, the testing approach is:
+• Red teaming for security using the Secure AI Framework (SAIF)
+• Adversarial testing for unfair bias
+• Applying mitigations, for example, for content policy violations or abuse
+• Conducting ongoing trusted testing of Bard with external users
+in experimental releases
+Safeguards
+A set of “model policies” guided the model development of Gemini Pro and evaluations.
+Model policy definitions act as a standardized criteria and prioritization schema for responsible
+development and as an indication of launch-readiness. Gemini model policies cover a number
+of domains including child safety, hate speech, factual accuracy, fairness and inclusion,
+and harassment.
+Other outcomes of ongoing AI Principles reviews of Bard and its updates include the following:
+• Dedicated Bard safety teams and policies
+• Review of Bard user safety feedback
+• Technical safeguards such as classifiers and filters were used to enforce policies
+• A restricted use or gating policy is used when appropriate
+• A Generative AI Additional Terms of Service exists
+• Ongoing technical testing to inform decisions and improvements
+48In addition, ongoing AI Principles guidance for transparency and user control practices have
+been implemented, including:
+• Disclosure in product stating that Bard should be double-checked for
+information accuracy
+• Bard Privacy Help Hub
+• FAQs
+• Help article(s)
+• In-product safety guardrails to add contextual help, like Bard’s “Google it” button to
+more easily double-check answers
+• Feedback opportunities for users
+• Clear user controls
+Note: information on Google’s overall model safety strategy and classifiers is highly confidential, commercially sensitive, and
+proprietary information of Google. Any public availability of this information could expose people who use Google’s products and
+the greater public to security and safety risks. As clear, consistent directives emerge, we aim to share additional transparency
+artifacts in the context of scientific excellence (as stated in AI Principle # 6), with appropriate third parties on how best to offer
+additional details while both remaining competitive and prioritizing people’s safety. At this time, for the responsible reasons stated
+above, this document doesn’t offer specific details on any model size, training methods or compute, or other similarly proprietary
+or sensitive information. The design and details of our transparency artifacts evolve over time to reflect the evolution of
+technologies, product specifications, and user interface design. The content may be adjusted for the needs of various audiences.
+49
+
+****************************************************************************************************An AI Opportunity
+Agenda for India04 Executive Summary
+06 Introduction
+07 India's AI Opportunity
+Improving access to quality healthcare
+Boosting agricultural productivity and sustainability
+Improving educational and employment opportunities
+Harnessing India’s linguistic and socio-cultural diversity
+Enhancing citizen engagement with public services
+Improving financial inclusion
+12 An Affirmative AI Policy Vision for India
+13 Investing in Innovation Infrastructure
+Strengthening and democratising compute capacity
+Adopting a cloud-first approach
+Enhancing the accessibility and quality of open government datasets
+Investing in R&D
+Pro-Innovation Legal Frameworks
+20 Building an AI-ready workforce
+Modernising Skilling Programs for the AI Era
+Supporting workers in transition
+223
+Promoting Inclusive Adoption and Accessibility
+Promoting inclusive access to foundational infrastructure for AI, with
+particular attention to marginalised communities
+Government Adoption of AI
+India's AI Opportunity Small Business and Traditional Industries
+Enabling Regulatory Framework
+27 Conclusion
+An Affirmative AI Policy Vision for India
+3Executive Summary
+Executive Summary
+We stand at a pivotal moment in the development of Infrastructure (DPI), including in healthcare, education,
+artificial intelligence (AI) in India. India’s outstanding tech e-governance and finance, will help unleash AI’s potential
+talent, growing economy and vibrant start-up ecosystem and accelerate the benefits of DPI.
+mean that the country is well placed to fulfil its potential
+for AI global leadership. By maximising the potential of AI, At Google, we are deeply committed to working with
+India can drive productivity growth, raise living standards public and private sector stakeholders to realise India’s
+and tackle some of the country’s most pressing social AI ambitions. Our work with our partners in India has three
+problems. To do so, stakeholders must come together to core components:
+build a comprehensive AI opportunity agenda to help
+• Investing in foundational infrastructure for AI
+deliver the IndiaAI Mission and harness the power of AI for
+development: Google's ongoing investments in
+the benefit of India’s citizens.
+India's compute infrastructure, including the launch
+With the right policy framework in place, AI can help of cloud regions in Mumbai and Delhi, demonstrate
+accelerate the transformation of India’s economy, its commitment to the country's digital growth.
+society, and public services. These efforts are crucial for scaling operations and
+democratising AI technology across India, fostering
+First, if fully harnessed, AI has the potential to innovation and development in various sectors.
+substantially boost the Indian economy. AI will play
+a crucial role in delivering the target of a $1 trillion digital • Improving AI skills through training: Google is
+economy by 2028, which is expected to account for 20 continually developing its AI courses, such as the
+percent of India’s GDP. A Google-commissioned report AI Essentials online course, and partnerships with
+estimated that at least INR 33.8 lakh crore of economic the Indian public sector to help workers enhance
+value from AI adoption can be achieved in India in 2030. their AI skills. Google in India has a clear goal to
+empower 10 million people with AI digital literacy
+Secondly, AI can accelerate positive social including students, job seekers, educators, startups
+transformation and social inclusion in India. Applied to and developers and civil officials, and offer technical
+agriculture, AI can improve agricultural sustainability and knowledge to help contribute towards building an
+help prevent diseases. Agrostar, for example, launched a AI-ready workforce.
+multilingual mobile app using Google Cloud that is helping
+to boost crop yields and encourage sustainable practices • Developing innovative AI services and use cases:
+for small farmers in India. This is contributing to raising Google is partnering with public and private sector
+rural living standards in poorer parts of the country. stakeholders to foster AI innovations in essential
+sectors and build a robust AI ecosystem across the
+Thirdly, India has a unique opportunity to become country.
+a global leader in leveraging AI for public services.
+Further integrating AI across India’s Digital Public
+4Executive Summary
+• Through a collaboration with the Government Building on these efforts, we offer three key
+of Maharashtra, Google will leverage its AI recommendations in this report on how India can
+capabilities to provide AI-enabled solutions harness AI responsibly and to its fullest potential:
+across sectors like agriculture, healthcare,
+sustainability, education, and startups in the
+State. To maximise the AI Opportunity for India,
+collaborative efforts across government, industry,
+• Google and the Government of Tamil Nadu and civil society must prioritise three key areas:
+are collaborating to drive technological
+advancement and foster AI innovation in the • Invest in infrastructure and innovation -
+State, focusing on initiatives in key areas optimising the opportunities presented by this
+such as AI start-up enablement, skilling, and technology by investing in AI research and
+industrial ecosystem enablement including development, access to and quality of digital
+MSMEs, to create impactful, scalable AI infrastructure and compute capacity, and
+solutions. providing a balanced regulatory environment
+to convert ideas and data into new discoveries,
+• Google is contributing to the agriculture
+products and services.
+sector in partnership with local players
+through AI-powered solutions that address
+• Build human capital and an AI-empowered
+challenges across the entire farming lifecycle.
+workforce - investing in people to ensure they
+By leveraging AI, stakeholders gain landscape
+can use and benefit from AI, from students
+insights, digital management tools, farmer-
+to workers, and from small businesses to
+focused resources, real-time crop prices, and
+traditional industries.
+personalised information platforms. All these
+AI-driven collaborations foster innovation,
+• Promote widespread adoption and
+inclusivity, and efficiency, ultimately benefiting
+universal accessibility - harnessing AI
+farmers, consumers, and the environment.
+across governments and all sectors of
+the society to address major societal and
+economic challenges and ensure the benefits
+of AI are widely shared.
+5Introduction
+Introduction
+The choices made by governments, industry, and civil Building on Google’s three-pillar agenda for responsible AI
+society at early stages of technological development will progress – unlocking opportunity, promoting responsibility,
+determine the speed and scale of adoption and the extent and enhancing security — this paper proposes three key
+to which all parts of Indian society can benefit. AI has recommendations for Indian policymakers, companies,
+the potential to fundamentally change the ways we live, and civil society to deliver AI's benefits to as broad a range
+work and learn through its ability to assist, complement, of people as possible. To achieve this, we must work in
+empower and inspire people in almost every field of human partnership to:
+endeavour. It is already opening up new possibilities in India,
+such as helping with flood forecasting, making it easier
+1. Invest in innovation infrastructure;
+to identify diabetic retinopathy, supporting agricultural
+sustainability and maternal healthcare, improving
+reading proficiency and gaining a richer understanding
+2. Build an AI-ready workforce; and
+of language diversity across India.
+3. Promote inclusive adoption and accessibility.
+Google believes that AI can drive innovative solutions
+tailored to India's defining challenges. The possibilities
+are immense: from addressing major public health
+challenges, to boosting productivity and living standards,
+and providing high-quality fulfilling jobs for many more
+Indians.
+Together, we must ensure that AI is introduced safely in a
+way that improves wellbeing, helps solve India’s complex
+challenges and enables India to lead globally in unique
+areas of research and innovation. It is important that the
+private sector works in partnership with the Government,
+civic society and other bodies to help India meet the
+ambitious goals outlined in the IndiaAI Mission.
+6India's AI Opportunity
+India’s AI Opportunity
+With its world-leading AI skills and start-up ecosystem,
+technologically optimistic population and strong public
+and private sector investment in digital transformation,
+India can leverage its unique strengths to harness
+the AI opportunity. AI has the potential to bring real
+societal benefits to India, boost economic growth, lift
+living standards and provide India’s economy with the
+competitive advantages it needs to be a global leader.
+Improving access to quality
+healthcare
+AI has the potential to transform healthcare, potentially
+saving millions of Indian lives through earlier diagnosis,
+broader access and better understanding of diseases.
+The use of AI in imaging and diagnostics is already speeding
+up the diagnostic process. Google Cloud is working with
+Karkinos Healthcare, an AI-powered oncology platform,
+to provide hundreds of thousands of underinsured Indians
+with easier access to cancer risk assessments, screening
+and treatments.
+AI is also being used to tackle health problems that have
+a particularly devastating impact on parts of the Indian
+population. The direct causes of maternal mortality are
+largely avoidable and treatable with sufficiently early
+intervention. Google has partnered with ARMMAN to
+help them build a solution that uses AI to identify Indian
+women at risk of dropping out from their health information
+programme, which is designed to target preventative care
+information to expectant and new mothers. The AI-powered
+early targeting system helps ARMANN personalise
+interventions and retain these individuals.
+New AI applications are also improving accessibility to
+healthcare for people living in remote or rural areas. Practo,
+India’s largest digital healthcare start-up, seeks to promote
+access to healthcare and increase the ease of navigating
+the system by bridging the gap between patients and
+healthcare providers. It uses AI and data analytics to deliver
+affordable and personalised healthcare insights for people
+in underserved communities.
+7India's AI Opportunity
+Boosting agricultural productivity
+and sustainability
+Agriculture is an essential part of India’s economy, with
+70% of rural households depending on agriculture for their
+livelihood and 82% of farmers being small-scale. Extreme
+climate events such as floods, droughts, and infestations
+are devastating for the livelihoods of India’s agricultural
+workers. AI-driven data analytics can help India’s farmers
+minimise these climate risks and optimise agricultural
+productivity and sustainability.
+AnthroKrishi and Google Partner Innovation, two teams
+at Google, are leveraging AI to tackle this challenge. To
+enhance agricultural sustainability, the teams are currently
+exploring the use of AI-powered technologies to organise
+and utilise India’s agricultural data. By combining satellite
+imagery and machine learning to draw boundaries
+between fields, their work has the potential to enable
+sustainable farming practices and improve crop yields.
+AI is also empowering India’s farmers with access to
+real-time crop pricing information, levelling the playing
+field with buyers and safeguarding farm livelihoods. Jiva,
+a mobile app aimed at improving smallholder farmers’
+livelihoods, provides services for farmers built with
+Google’s Vertex AI. This includes providing farmers access
+to adequate financing, high-quality agricultural inputs,
+agronomic advisory services, and a fair market to sell
+crops at harvest.
+AI is further assisting farmers by providing early warning of
+potential crop threats, enabling them to implement timely
+mitigation strategies. A recipient of Google.org’s grant
+funding, Wadhwani AI supports Indian farmers with pest
+control through CottonAce, its AI-powered early warning
+system. Cropin, an Indian start-up, provides farmers with
+valuable insights into potential infestations and diseases by
+combining AI, remote sensing, and geographic information
+systems.
+Farmer Empowerment: This initiative, in partnership with
+Protean, ONEST, and ONDC, empowers farmers with
+end-to-end solutions. By leveraging Google's location-
+based insights, AI recommendations, and generative AI
+8India's AI Opportunity
+capabilities, farmers gain access to valuable information,
+wider markets, and simplified processes for listing and
+selling their produce.
+Farmer Bot: This AI-powered voicebot provides farmers
+with real-time crop price information in multiple Indian
+languages. By integrating with the e-NAM portal API and
+utilising Google Cloud's Chat Bison model, Farmerbot
+ensures accessibility and delivers accurate market data
+to farmers.
+Improving educational and
+employment opportunities
+High-quality education is integral to maintaining
+India’s rapid economic growth. Despite considerable
+improvement in recent decades, India still has important
+educational gaps, as highlighted by the 2023 Annual Status
+of Education Report (ASER). AI can help bridge these
+gaps, support underserved communities to gain access
+to high quality education and improve employment
+opportunities.
+To this end, Google is partnering with the Rocket Learning
+Foundation to use AI to improve early education for
+children in India. Rocket Learning provides an AI coach
+that creates localised content, automated grading and
+personalised learning paths, making education more
+accessible and effective.
+AI is not only changing what the skills are that need to
+be adopted, but also how these skills can be taught
+and disseminated. It presents an opportunity to
+personalise learning, reach more people, and maximise
+impact. Initiatives like the Read Along Initiative (Bolo),
+which uses voice-recognition technology to help
+improve learning skills, demonstrate AI’s potential.
+Additionally, AI is helping job seekers identify suitable
+opportunities. APNA, a professional networking
+platform using Google Vertex AI, is connecting millions
+of Indian workers with opportunities and delivering
+personalised job-matching based on their skills and
+experience.
+9India's AI Opportunity
+Harnessing India’s linguistic and
+socio-cultural diversity
+India’s vast linguistic diversity and the presence of multiple
+dialects – even within a single district like Muzaffarpur
+- underscore the need for innovations that bridge the
+linguistic divides. Project Navrassa, based on Google’s
+Gemma family of open models, is already training large
+language models (LLMs) on multiple Indic languages to
+make AI accessible across a wide Indian audience.
+As part of its commitment to ensuring an equitable AI
+landscape that reflects India’s linguistic and socio-
+cultural diversity, Google has also launched Project Bindi
+(Bias Interventions for Natural Language Processing and
+Data in the Indian context). The project aims to address
+biases related to technology access and socio-cultural
+factors including gender and caste, helping to ensure
+the responsible development and implementation of AI
+across India.
+Enhancing citizen engagement with
+public services
+AI holds significant potential to build on India’s successful
+Digital Public Infrastructure (DPI) model, facilitating
+innovation, reducing bureaucracy, and boosting citizen
+engagement through personalised services.
+India is leading the way in using AI to improve public
+services. According to a report by EY, generative AI is now
+extending these benefits to more citizens across India,
+particularly in underserved communities.
+In collaboration with Axis My India, Google Cloud
+introduced an AI-powered multilingual super-app
+designed to build awareness of government social welfare
+schemes, healthcare benefits and day-to-day amenities.
+AI has allowed the app to provide personalised, real-time
+answers to citizen queries about public services, in their
+preferred language.
+10India's AI Opportunity
+Improving financial inclusion
+Improving financial inclusion remains a crucial goal in India.
+According to the 2021 World Bank Findex, India has a large
+unbanked population, accounting for nearly 17 percent of
+global unbanked adults. This issue often intersects with other
+social challenges, disproportionately affecting poorer and
+rural Indians. To tackle this, organisations are increasingly
+turning to AI to enhance financial inclusion.
+India’s Unified Payments Interface (UPI), to which Google Pay
+has played a pivotal role, has made significant strides in this
+area. AI is now further offering new ways for underbanked
+communities to access financial services. Platforms like
+OnFinanceAI, for example, are using AI to analyse data on
+mobile phone usage patterns and e-commerce payments, to
+help identify and onboard unbanked individuals.
+11An Affirmative AI Policy Vision for India
+An Affirmative AI Policy Vision for India
+The examples above only scratch the surface of what The IndiaAI Mission has clearly displayed India’s ambition to
+is possible. There is potential for AI to do so much more develop a robust AI ecosystem that catalyses large-scale
+for India, significantly improving the lives of everyone in socio-economic transformation. If India wants to fully
+the country. However, as we have seen from prior waves harness AI’s transformative potential, it must focus
+of technology, these benefits are not automatic. Unless its attention on what it wants to achieve, not just what
+people trust and see the benefits in using the technology, it wants to avoid.
+it will not be adopted at scale.
+In this light, we offer three key recommendations on how India can harness AI responsibly and to its fullest
+potential:
+Invest in infrastructure and innovation - meeting the moment of this technology by investing in
+compute capacity, cloud infrastructure, cybersecurity measures, open government datasets, AI research
+and development; and establishing policy frameworks / principles that enable responsible innovation.
+Build an AI-ready workforce - investing in skilling to make sure people can use and benefit from AI,
+from students to workers, and from small businesses to traditional industries.
+Promote inclusive adoption and accessibility - harnessing AI across governments and all sectors of
+the society to address major societal and economic challenges and ensure the benefits of AI are widely
+shared, while adopting a regulatory framework that supports a healthy AI ecosystem.
+12Investing in Innovation Infrastructure
+Investing in Innovation Infrastructure
+Countries have historically excelled when they support technological
+change and harness it to improve living standards. India’s openness to
+technological development positions it well in this regard. For India to unlock
+the immense AI opportunity, it will require sound and deliberate investment
+in innovation infrastructure, which includes not just technical infrastructure
+but also legal and policy frameworks that enable responsible AI innovation.
+There is no one AI investment strategy that will work for all governments,
+but one basic formula for success is to invest in basic and applied
+research and technologies (such as graphics processing units
+and supercomputers), cloud infrastructure, and open government
+datasets – and then to put in place policies encouraging private sector
+innovation and product development that are built on top of these
+foundational initiatives. Such a model can drive innovation leadership
+by creating a sense of shared responsibility between the public and
+private sectors for developing AI and other emerging technologies.
+Strengthening and democratising compute capacity
+Substantial investment in compute capacity – essential for building
+India’s own foundation models and delivering AI solutions at scale – will
+propel India on its path to global leadership in AI. The IndiaAI Mission
+has outlined the clear direction of procuring 10,000 or more Graphics
+Processing Units (GPUs) through partnering with the private sector. This
+provides important momentum. Looking ahead, India will benefit from a fair
+and transparent procurement process for these GPUs and other AI compute
+infrastructure.
+Meanwhile, India will benefit from taking a holistic approach to strengthening
+compute capacity, further articulating government objectives in promoting
+investment in cloud adoption, data centres and server optimisation
+algorithms, and development of software to build AI systems. This is
+important for ensuring that all three layers of the compute stack – hardware,
+infrastructure, and software – meet the growing demands of Indian
+start-ups and research communities to promote AI innovation.
+13Investing in Innovation Infrastructure
+Democratising access to compute is key to metrics, and transparent vendor management.
+strengthening India’s AI ecosystem. The success of The roadmaps should also prioritise promoting
+India’s Digital Public Infrastructure (DPI) in fostering competition to create value for governments and
+digital inclusion may be instructive in how to inclusively avoid restrictive practices that hinder long-term
+scale up compute capacity. Increasing investment in flexibility.
+subsea cables can further deliver better connectivity by
+expanding the supply of international bandwidth, which • Conduct targeted cloud and AI opportunity
+is a crucial enabler of high-performance computing. assessments, focusing on services with the
+greatest potential for citizen impact. Sectors like
+Adopting a cloud-first approach healthcare, education, and transportation should
+be prioritised. This can be done in partnership with
+industry, which can help governments deploy AI
+Cloud computing is the gateway through which
+solutions on cloud.
+businesses and governments can fully harness the
+power of AI. Its vast computational resources, scalable
+data storage, management, and analysis capabilities • Implement policies that address cybersecurity
+are crucial for developing and deploying AI applications. concerns. The PwC’s 2024 Global Digital Trust
+The Indian Government has led important cloud-first Insights survey finds that 52% of global business
+initiatives and focused on improving the public sector’s leaders have heightened concerns about cyber
+readiness for mass cloud adoption. As part of Meghraj attacks facilitated by generative AI usage,
+– the national cloud computing initiative that prioritises underscoring the importance of addressing the
+the adoption of cloud solutions over traditional security challenges to the cloud. Meanwhile,
+on-premise IT systems – the Ministry of Electronics AI can be harnessed to detect and analyse
+and Information Technology (MeitY) has implemented potential cybersecurity threats, strengthening
+a cloud-first policy and developed guidelines that help cybersecurity defences in India.
+Indian government departments with cloud adoption.
+Google Cloud: Bringing AI-driven security
+In order to maximise the benefits of AI, we recommend
+operations to India
+that governments:
+Google is committed to developing quality cloud
+• Continue to articulate and adopt a Cloud First
+services and using AI to strengthen cloud security
+policy. By showing the benefits of cloud-based AI
+in India. Google opened its first two Cloud regions
+solutions in delivering citizen services, the Indian
+in India in Mumbai (2017) and Delhi (2021) and
+Government can catalyse private sector use of AI
+expects further expansion over the next few years.
+tools on the cloud. Emerging homegrown cloud
+Additionally, Google Cloud announced the plan to
+solutions providers, such as NeevCloud which
+use Gemini in Google’s new security operations
+launched the country’s first AI SuperCloud, have
+(SecOps) region in India. Google Cloud’s AI-driven
+underscored the potential of cloud deployment
+security operations aim to supercharge our public
+in helping democratise access to AI and
+and private sector customers’ security operations,
+supercomputing for enterprises and startups.
+to reap the benefits of secure cloud infrastructure.
+• Establish clear frameworks to ensure successful
+government-industry collaboration, such as
+data governance and responsible AI guidelines,
+procurement guidelines, well-defined performance
+14Investing in Innovation Infrastructure
+Enhancing the accessibility and
+quality of open government datasets
+Data held by central and state government agencies To tap on the potential of its data to empower AI
+can be great enablers of growth and innovation. Enabling innovation, India will benefit from deepening efforts to
+access to these diverse, high-quality government make open government datasets easily accessible
+datasets is important to the commercialisation and across sectors and regions. India’s INDIAai
+scaling up of AI solutions in India. While India holds an programme, launched in 2021, was an important early
+advantage in the vast quantum of raw data that can sign of the Government’s commitment to opening up
+be used for training AI models, the fragmentation and the Government’s anonymised data to researchers and
+accessibility of government datasets can hinder AI start-ups.
+development and adoption in the country.
+Project Vaani
+A Google-funded initiative led by the Indian Institute of Science, Project Vaani aims to collect speech data of 1
+million Indians and open-source it for use in automatic speech recognition and speech-to-speech translation.
+Now one of the largest datasets of Indian dialects ever to exist, Vaani will contain more than 150,000 hours
+of audio across all districts in India upon the project’s completion. The vast data will boost the creation of an
+AI-based LLM that captures the diverse Indian languages and dialects. This will lead to the development of
+AI use cases that are relevant and tailored to Indians across the country.
+15Investing in Innovation Infrastructure
+Investing in R&D
+Sustained investment in long-term AI R&D, while India can also leverage its strong relationships with
+nurturing a culture of industry-academia collaboration, Global South countries to create a conducive global
+will be crucial to ensure the global competitiveness of R&D environment for AI. A novel approach which the
+India’s AI ecosystem and talent development. Indian Government could consider supporting globally
+to augment local AI research would be the establishment
+Public-private partnerships will be pivotal to of a Global Resource for AI Research (GRAIR) that
+accelerating research across the AI ecosystem in India. would pool financial, technical and data resources
+Both governments and industry can support academic across borders to help countries overcome resource
+and civil society researchers through programmes such constraints. If successful, the initiative could make AI
+as tech transfer frameworks, fellowships, and direct accessible to many more of the world’s entrepreneurs
+support for research. Google Research, for example, and scientists.
+has partnered with Indian academic institutions such as
+IIT Madras. Such public-private initiatives must include
+a broad range of participants to reflect the geographic,
+linguistic and cultural diversity of Indian society.
+Support the establishment of a Global Resource for AI Research
+Inspired by successful models such as European Center for Nuclear Research (CERN) and the International
+Space Station (ISS), the GRAIR would be a collaboratively governed, multinational AI research infrastructure
+and research consortium working to ensure ethical development, equitable access, and the pursuit of AI
+applications that foster local innovation. A collective computing resource such as the GRAIR would also help to
+address concerns about AI’s carbon footprint, as it would reduce duplicative efforts and environmental impact.
+The proposed GRAIR would comprise three key elements. A cloud-hosted Global Dataset Library would
+feature diverse, curated, high-quality datasets, with continuous programmes addressing representational
+gaps. A Distributed Compute Network would span data centres across multiple countries, particularly those
+currently lacking dedicated AI infrastructure, providing researchers worldwide with essential computational
+resources. An Operations Team would manage infrastructure, outreach programmes, and user initiatives to
+ensure smooth functioning of the resource.
+A GRAIR could undertake a range of activities, depending on the priorities of its members, including:
+• Issue periodic requests for proposals (RFPs) that would allow researchers and organisations to apply
+for compute time.
+• Solicit proposals focused on creating high-quality datasets where gaps exist e.g. data related to
+low-resource languages and cultural knowledge.
+• Support in-person or remote safety testing, evaluations, and red-teaming on AI models for locally relevant
+characteristics and development of associated benchmarks and testing suites.
+• Support countries at different levels of development in building up domestic AI workforce capabilities,
+including application developers, tech entrepreneurs and researchers, through training and accreditation
+programmes.
+16Investing in Innovation Infrastructure
+Building a responsible AI research ecosystem in India
+While AI has the potential to make our lives easier and address some of society’s most complex challenges —
+such as preventing disease, making cities work better and predicting natural disasters – there are important
+questions about fairness, bias, misinformation, security and the future of work. Answering these questions
+requires deep collaboration among industry, academia, governments and civil society. This is why Google is
+committed to building and supporting a responsible AI research ecosystem in India.
+In 2023, with the support of a USD 1 million grant from Google, the Indian Institute of Technology Madras
+(IIT Madras) opened its Centre for Responsible AI (CeRAI), a first-of-its kind multidisciplinary centre aimed
+at ensuring ethical and responsible development of real-world AI applications in India. CeRAI has convened
+responsible AI workshops to discuss key responsible AI challenges such as fairness, explainability and
+accountability, privacy, and security. CeRAI also continues to focus on producing high-quality research
+outputs, curating technical resources, and offering specialised training programmes on responsible AI. This
+commitment to supporting a robust responsible AI research ecosystem in India is aligned with Google’s efforts
+to share responsible AI best practices with the broader AI community.
+Last September, Google launched the Digital Futures Project, establishing a 20 million dollars fund, an initiative
+that aims to bring together a range of voices to promote efforts to understand and address the opportunities
+and challenges of artificial intelligence (AI). Through this project, we are supporting researchers, organising
+convenings and fostering debate on public policy solutions to encourage the responsible development of AI.
+In India, the Digital Futures Project has supported the Aapti Institute to conduct exploration and research
+on bias and digital integrity in the context of AI development and deployment. This research recognises the
+need to unpack the risks associated with large-scale AI deployment, while attempting to delineate strategies
+that leverage its transformative potential proactively.
+17Investing in Innovation Infrastructure
+Pro-Innovation Legal Frameworks
+AI is too important not to regulate – and too important India is actively formulating and implementing policy
+not to regulate well. At this moment, the challenge frameworks governing key aspects of AI regulation.
+faced by all policymakers is how to govern AI in a way Google believes that building and optimising holistic
+that mitigates risks and potential harms without policy frameworks can unlock public trust in AI and
+impeding beneficial innovation. There is a risk that AI-derived opportunities in India.
+conflicting and fragmented regulatory approaches
+will block innovators and governments around the
+world from harnessing trustworthy and beneficial AI
+applications to achieve strengthened economies, find
+cures for cancer, and ensure longer, better lives for
+billions of people.
+We believe there are seven major policies that policymakers in India should consider to ensure AI
+researchers and innovators can convert ideas and data into new discoveries, products, and services.
+1. Adopt a risk-based and proportionate approach to AI regulation focused on use cases: This is
+crucial to provide clarity to developers, deployers, and regulatory agencies about which risks to mitigate
+in specific contexts and which uses are completely disallowed. A risk-based approach will encourage
+alignment around addressing the most severe concerns related to particular AI applications. This
+approach recognises that AI is a general-purpose technology that will be applied in different ways in
+different contexts.
+2. A copyright framework that supports innovation and R&D: A strong predictor of a country’s leadership
+in AI is its copyright framework, particularly when it is able to support broad usage of data inputs and
+datasets by AI systems for learning and interaction with diverse information sources. To achieve this,
+copyright frameworks must incorporate input from users, scientists, innovators, researchers, and creators
+in the policymaking process. Creating exceptions to India’s Copyright Act (1957) to allow for innovation
+in AI development and model training could help ensure copyright owners are appropriately protected
+while not stifling innovation. A general AI framework must enable the limited use of copyrighted data
+that allows startups and innovation companies to keep the large language models updated and relevant.
+3. Facilitate better cross-border data flows: Deepening India’s links to the global data ecosystem will
+be essential for catalysing India’s indigenous AI development and deployment. Providing increased
+support to trusted cross-border data flows can enhance the capability of partners to work together
+to ensure AI systems are trained on demographically and geographically diverse datasets, which helps
+mitigate potential bias.
+Data flows also empower Indian firms by helping them significantly reduce IT costs, leverage AI
+technologies, serve cross-border customers and access global markets. A 2021 study published by
+the Information Technology and Innovation Foundation estimated that increasing data restrictions is
+associated with a 7% decrease in gross output traded and a 2.9% decrease in productivity over 5 years.
+Creating flexible mechanisms that enable cross-border data flows can help India maximise economic
+opportunity while safeguarding privacy and sovereign objectives.
+18Investing in Innovation Infrastructure
+4. Cohesive government AI policy: A cohesive approach to AI regulation is one that acknowledges
+the cross-cutting nature of the technology, focusing on end applications rather than the underlying
+technology. In India, AI governance typically requires participation from multiple agencies. It is therefore
+vital that India develops an inter-agency approach that effectively coordinates and balances the emerging
+AI-related work streams, avoiding a siloed approach to national AI regulations.
+5. Conduct a regulatory gaps analysis to assess relevant legislations’ application to AI: The Indian
+Government will benefit from undertaking holistic audits of regulations relevant to AI across the ecosystem,
+to have a clear view of the existing regulatory landscape. The focus should be on examining whether
+existing regulations sufficiently address the emerging risks from AI. Any new regulations on AI should
+only be considered and introduced where legislative gaps are identified.
+6. Promote international alignment and interoperability on AI regulations: India can be a pioneering
+force in promoting regulatory interoperability that helps advance AI innovation and adoption globally.
+As a founding member and the lead chair in 2024 of the Global Partnership on Artificial Intelligence
+(GPAI), India can spearhead important discussions around AI, including: promoting the use of common
+AI technical standards; amplifying the interests of the Global South in AI governance; and encouraging
+AI adoption among SMEs.
+7. Improve access to open datasets: Facilitating access to data is crucial for empowering Indian
+researchers and entrepreneurs to develop reliable, high-impact AI models. Building an open data
+ecosystem through initiatives that promote data commons and open government datasets, will play a
+key role in this. To support such efforts, it's essential to establish a robust data infrastructure, especially
+in critical areas like demographics, transportation, and environmental conditions.
+19Building an AI-ready workforce
+Building an AI-ready workforce
+AI will transform the world of work by changing the nature of existing roles and
+creating millions of new jobs and even new sectors. The required skills will also
+evolve. Students need to leave education AI-ready and workers require the
+ability to continually update their skills to remain relevant.
+Realising India’s global leadership on AI will require an AI-ready workforce – an
+area which India already has unique strengths. According to a recent Nasscom
+report, India has the third largest AI talent base globally. The 2024 Stanford
+University AI Index finds that India leads the world in AI skills penetration,
+with a remarkable 263% growth in AI talent concentration from 2016 to 2023.
+India produces a significant number of STEM graduates and its Institutes of
+Technology are known for producing high quality tech talent.
+Supported by its education system, India’s talent pool has fostered a thriving
+ecosystem for start-ups, with over 1,900 startups focused on AI-driven
+solutions in areas such as conversational AI, video analytics, deep fakes
+detection, and disease detection. Indian workers are also already more likely
+to be using AI in their day-to-day work, as highlighted in a report by Deloitte
+which notes that India has the highest proportion of generative AI users in
+Asia Pacific.
+To sustain this momentum, India should leverage these strong foundations to
+prepare workers for the potential disruption AI can bring. Addressing the AI
+skills gaps – estimated to be up to 300,000 in 2024 alone – and bridging
+the gender disparity in AI skills are crucial. India should also leverage its
+talent and skills to support the Government’s mission of building local AI
+models and engage the Indian diaspora in building AI infrastructure within India.
+Compared to prior waves of technology, AI will present unique challenges
+that will also require new solutions. The question then is: how can Indian
+policymakers equip the workforce to harness AI, so that it empowers
+workers, helps them become more productive, bumps up their expertise
+level, and makes their skills valuable? Additionally, how can potential risks to
+the workforce be mitigated through partnerships between the government,
+industry and civil society?
+20Building an AI-ready workforce
+Modernising Skilling Programs for
+Building an AI-empowered workforce will require
+the AI Era
+a shared vision – and a shared responsibility –
+across a number of sets of stakeholders:
+To tailor policy interventions, it will be important to
+understand how AI is both similar to and different
+• Industry has a crucial role to play in developing
+from prior waves of technology. Early research
+new skilling programmes that focus on AI
+indicates that generative AI may help up level certain
+preparedness. Given the transformative
+skills, enhance labour productivity, create new
+impact of AI across all sectors of the
+occupations, and democratise access to higher paid
+economy, individual company efforts would
+occupations. However, as generative AI can automate
+be insufficient on their own - companies
+non-routine cognitive tasks, it may impact a wider range
+will need to stand up new cross-sectoral
+of tasks and occupations than earlier technologies.
+AI training partnerships to ensure workers
+in all industries are ready to harness AI.
+We are only now building our understanding of what
+kinds of new skills AI-enabled work will require. There
+• Civil society, foundations, and academia
+are some things we know already. This includes the
+should drive new research to understand
+importance of basic AI literacy and how critical
+what has and hasn’t worked in the past
+thinking, cross-disciplinary problem-solving, effective
+in terms of worker preparedness for
+collaboration, and empathy are likely to increase in
+new technologies, and then apply those
+value. Nevertheless, there are other open questions
+insights to ensure that the benefits
+about AI’s impact on work that will need further study.
+of AI are able to be felt across society.
+These include how best to use AI to support re-skilling
+and how to minimise the risk of “skill atrophy”, as routine
+• Crucially, policymakers have an essential role
+tasks that previously provided training opportunities
+to play in making sure that India’s population
+for novice employees are increasingly automated.
+have the skills able to make the most of
+Companies, civil society, and policymakers will
+the AI opportunity. Policymakers must help
+need to constantly evolve skilling programmes to
+scale up AI training programmes so that they
+address these questions.
+reach all communities, while building more
+effective “trampolines” to catch workers that
+We need an education and training system that prepares
+are impacted by AI and reskill them so they
+workers to thrive in a dynamic environment and to
+can quickly bounce back into new and better
+augment their existing skills and talents with AI. This
+jobs. The expansion of the IndiaAI Future
+must extend beyond the secondary education system
+Skills programme will be an important part
+to equip all students and workers with foundational
+of ensuring that foundational AI skills reach
+AI skills. FutureSkills Prime, a joint initiative by the
+well beyond major Indian cities and into more
+MeitY and the trade association, Nasscom, is offering
+rural and underserved areas.
+affordable digital upskilling courses, including in AI.
+In a country with a burgeoning young population
+like India, treating AI as a core component of the
+education and professional development systems
+can deliver important benefits. According to a report
+by Educational Perspectives on Digital Technologies in
+Modeling and Management, integrating AI in vocational
+education and learning will significantly enhance skills
+acquisition in India by 2030. AI-based tutorial and
+simulation systems can meaningfully personalise
+learning and provide interactive educational content.
+21Building an AI-ready workforce
+Encouragingly, the Central Board of Secondary
+Education (CBSE) has introduced AI as a subject in Key steps that Indian policymakers can take to build
+its affiliated schools to familiarise students with AI an AI-empowered workforce and support workers
+concepts. It is important to build on and expand existing in transition include:
+government initiatives to leverage AI in the classroom
+and transform how students learn. • Encouraging companies that have developed
+career certificate and apprenticeship
+Looking ahead, India will benefit from further supporting programmes to work across sectors to develop
+educators to update curriculum frameworks, doubling more comprehensive cross-sectoral skilling
+down on STEM education with an emphasis on AI literacy and certificate programmes that reflect the
+(while avoiding narrow recommendations like ‘learn to full spectrum of skills needed for an AI-driven
+code’ that may be less relevant if generative AI can future.
+cover basic coding skills), and emphasising skills-based
+learning models, including apprenticeship programmes. • Building reskilling into the skills element of the
+IndiaAI Mission and ensuring that workers have
+the capability to update their skills at a variety
+Supporting workers in transition
+of points in their career. The $15 million AI
+Opportunity Fund: Asia-Pacific - a collaborative
+Every major technological revolution disrupts existing effort with Google.org and Asian Development
+roles while creating new ones, and AI will be no exception. Bank - is supporting underserved workers
+It is important for Indian workers across sectors, in both and job-seekers to build AI capabilities and
+urban and rural areas, to gain the skills that help them confidence across the region, including India.
+stay ahead of industry changes. This means that skills
+development must not stop when people leave school or • Developing an AI adjustment assistance
+college, and that one should instead embrace a “whole programme to provide support for workers
+career” approach to learning and skills. impacted by AI, with a tailored set of skilling
+options that can adapt to different worker
+AI is already helping to democratise access to skills needs in different geographies, and a focus on
+platforms, particularly benefiting underserved groups lower-wage workers and rural or underserved
+in rural areas historically excluded from technological communities.
+advancements. While the transition to an AI era may
+entail some job losses in the short term, there is long-
+term potential for AI to generate more jobs in India.
+India must continue developing programmes and
+strategies focused on skills for workers in transition
+and new entrants to the workforce. Google is
+continuing to update the Google Career Certificates
+(GCC) programmes to help learners in India attain
+critical digital skills. Over 80% of GCC graduates are
+already reporting a positive career outcome within six
+months of completion (e.g. a new job, promotion or
+raise). The continued evolution of the IndiaAI Future
+Skills programme should consider, in partnership with
+industry and academia, how the skills environment will
+continue to change and what that might mean for skills
+courses that are provided.
+22Promoting Inclusive Adoption and Accessibility
+Promoting Inclusive Adoption and
+Accessibility
+In addition to building AI and preparing students and workers, India will benefit
+from ensuring that AI is applied in a universally accessible and useful way to
+help solve real world problems. To do this, we have identified four key goals:
+1. Promote inclusive access to necessary infrastructure to access
+and benefit from AI, with particular attention to marginalised
+communities;
+2. Increase governmental adoption of AI to make people’s lives
+easier and better and address major public priorities;
+3. Ensure that small businesses and traditional industries are able
+to adopt AI applications; and
+4. Regulate AI applications in a way that facilitates their adoption
+across different industries.
+Promoting inclusive access to foundational
+infrastructure for AI, with particular attention to
+marginalised communities
+As earlier noted, AI has the potential to positively transform India’s society
+and economy significantly. Indeed, many of the most substantial benefits
+will be realised in rural areas and agriculture, where AI can play a crucial role
+in tackling poverty and bridging the urban-rural economic divide. However,
+fulfilling and maximising these benefits requires robust infrastructure to be in
+place throughout India.
+23Promoting Inclusive Adoption and Accessibility
+Bridging the urban-rural digital divide, especially in access help mature the quality and safety of commercial and
+to the internet, is crucial. There are a number of ways that enterprise AI products.
+India can ensure underserved and diverse communities
+are engaged in each element of the AI design and An integral element of governmental use of AI is ensuring
+implementation process: that AI is built into public services as part of India’s
+Digital Public Infrastructure (DPI). AI can shift DPI from
+• Building safeguards into model design to ensure being an important element of public service delivery to
+that different communities within India are taken using DPI to genuinely transform public services around
+into account. Google is continuing to undertake the citizen. AI can be used to analyse complex data sets,
+research into how fairness can be ensured with an anticipate potential issues such as financial distress
+often complex and sometimes overlapping range and craft proactive interventions. As early examples
+of social groups. of what is possible, Indian Government’s projects
+such as Bhashini have shown the benefits of ensuring
+• Inter-disciplinary and participatory design that digital services reach all citizens, regardless of
+processes, with AI developers working directly language.
+with different communities that might be impacted
+by their systems. Additionally, AI can revolutionise the delivery of
+welfare services. A Bengaluru-based NGO, Societal
+• The Government should incentivise fundamental Thinking, has highlighted that AI could empower India’s
+research on the development of responsible and underserved communities to better engage with the
+inclusive AI and ensure that stakeholders from state. For instance, AI-enabled personalisation can
+different groups are included in the research tailor services to individual needs of underserved
+process. This should also involve convening citizens. Furthermore, AI streamlines Indian citizens’
+research conferences and responsible AI interactions with government agencies. India’s diverse
+workshops to help socialise India’s own models of population also enriches datasets for AI development.
+fairness into the development of global responsible Finally, AI solutions can evolve over time in order to work
+AI frameworks. at scale, based on the data that becomes available on
+the effectiveness of their results.
+• Ensuring that a rich variety of datasets are utilised,
+including those of diverse and underserved groups. India will benefit from continuing to assess the most
+Such Indian specific datasets are crucial in making effective uses of AI in local and regional public service
+sure that AI solutions are developed for the local delivery. Based on such comprehensive national
+context. AI opportunity assessments, the Government can
+then consider whether such initiatives can be scaled
+nationally, potentially through partnering with the
+Government Adoption of AI industry. This process may include identifying and
+addressing any procurement barriers to AI adoption and
+moving towards more transparent rules that facilitate
+The Indian Government can lead by example in AI
+fair competition and accelerate AI adoption.
+adoption and, in turn, promote economy-wide adoption
+of AI in two ways. First, it can leverage AI to improve the
+It is also essential to build awareness and understanding
+delivery of services to citizens, which has the additional
+of AI within all government departments. Working with
+benefit of familiarising people with the underlying
+industry through training courses, such as Google’s
+technologies and building trust that AI can be used
+AI Essentials course, presents an effective way of
+in helpful ways. Second, by adopting AI, it can further
+equipping the public sector with foundational AI
+strengthen its domestic technology sector. The scale of
+knowledge.
+government deployment and investment can ultimately
+help further catalyse a domestic AI ecosystem and, by
+requiring standards for AI system performance, can also
+24Promoting Inclusive Adoption and Accessibility
+Finally, the Indian Government will need to build period. Flagship manufacturers are quickly introducing
+adequate AI expertise to effectively harness AI. AI into their factories, design processes and customer
+Policymakers should build and scale up “in-house” AI engagement. Tata Steel, for example, is using AI to
+skills for the government IT workforce. Google took help predict when machinery might fail and Mahindra
+a similar step a few years ago requiring all software Group is using AI for quality control and customer
+engineers to enrol in an internal machine-learning personalisation.
+curriculum.
+To fully harness AI’s potential for traditional industries
+like manufacturing and agriculture and fulfil the Indian
+Small Business and Traditional
+Government’s “Make In India” ambitions, it is important
+Industries that the Government identifies barriers to increasing
+the use of AI within these key sectors. As an example,
+India’s business services, finance, transportation, digital infrastructure and skills training will be essential
+education, retail, and healthcare are expected to for AI adoption in agriculture, particularly among
+benefit significantly from AI, driven by their focus on smallholders.
+digitalisation, productivity, efficiency, and personalised
+experiences. For start-ups and SMEs across sectors,
+early use of AI could prove transformative, boosting
+their productivity and ability to reach new customers. To further address this AI implementation gap,
+the Indian government should build on existing
+MSMEs form a key pillar of India’s economy, contributing work and:
+29% to GDP in 2021-2022. As MSMEs stand to benefit
+from greater AI adoption, government support on • Identify priority national sectors that have the
+MSMEs’ AI deployment becomes crucial. For example, highest need and/or the lowest uptake of AI
+the Ministry of Micro, Small & Medium Enterprises (M/o tools, such as the agriculture, manufacturing,
+MSME) can play a helpful role in engaging with MSMEs healthcare, and energy sectors, and work
+to evaluate their state of AI readiness. with these sectors on “proof of concept”
+initiatives to model effective AI deployment.
+The private sector also has a critical role to play in
+enabling MSMEs’ AI adoption. A useful step is to • Give small businesses a “digital jumpstart”
+give MSMEs access to the essential AI technical through new models of technical assistance
+infrastructure. A number of technology companies, and engagement, including digital coaches
+including Google, are working to improve access who can help businesses understand and
+to compute capacity for small businesses. leverage AI to capitalise on new opportunities.
+Private-sector solutions can also be invaluable in
+helping small business owners develop AI skills - the • Improve access to capital, including through
+Grow With Google Educators programme, for example, low-interest loan and grant programs
+provides digital upskilling for educators and teachers, designed to support AI-driven transformation.
+including those providing skills training within The Indian Government can build on its grant
+companies. Public-private initiatives to support the initiatives like those included in the IndiaAI
+creation of impactful AI use cases for small businesses Mission. Singapore’s Infocomm Media
+should also be encouraged, with Google’s Accelerator Development Authority (IMDA) recently
+Programme for Indian startups as a positive model. announced a plan to provide funding support
+to up to 300 SMEs to trial generative AI
+India’s manufacturing sector is rapidly adopting AI, enterprise solutions developed by IMDA.
+with 54% of Indian manufacturers already using AI and
+advanced analytics, a 20% increase over a two year
+25Promoting Inclusive Adoption and Accessibility
+• Target AI training resources towards small
+businesses and traditional industries
+in underserved communities to build
+confidence and competency.
+Enabling Regulatory Framework
+The Indian Government has proactively recognised
+the need to create frameworks that empower Indian
+enterprises, including SMEs and traditional industries,
+to embrace AI, rather than hinder their adoption. Indian
+regulators should further consider what approaches
+will facilitate the adoption of AI, including adoption by
+SMEs with fewer resources. Any AI regulation should
+therefore be proportionate, light touch, risk-based
+and focused on applications, recognising that AI is a
+general purpose technology. Regulatory requirements
+should be calibrated to the particular risk and use case
+to avoid inhibiting low risk AI innovation and adoption of
+AI technologies, at large.
+The use of common international and technical
+standards can also facilitate AI adoption and growth for
+SMEs. Common standards mean that where a SMEs is
+required to show its compliance with a regulation, it can
+do so by showing adherence to the common standard,
+rather than having to meet a bespoke requirement.
+It will be beneficial for the Government to maintain
+its engagement with international standards bodies
+focused on the responsible development of AI systems,
+in particular the ISO.
+26Conclusion
+As the Indian Government looks to realise the potential of AI technologies
+to serve Indian society, and increase the public’s trust in AI, it has a critical
+global role to play in developing AI policy frameworks whereby safety, security,
+innovation, and opportunity are addressed cohesively. We look forward to
+partnering with the Indian Government, industry, and civil society to build an
+AI-driven digital future that works for everyone.
+27
+
+****************************************************************************************************2021 AI Principles
+Progress Update2021 AI Principles Progress Update
+Table of contents
+Overview ...........................................................................................................................................2
+Internal governance and operations ........................................................................5
+Resources, research, tools, and responsible practices ......................... 8
+Product impact ..........................................................................................................................12
+Supporting global dialogue, standards, and policy ..................................14
+Conclusion .....................................................................................................................................16
+End Notes ........................................................................................................................................17
+12021 AI Principles Progress Update
+Overview
+AI continues to help people around the world with everyday tasks, like real-time
+translation, driving directions, and optimized video lighting so everyone is visible in virtual
+meetings. AI can also be used to address some of the world’s most challenging problems.
+It is already helping pathologists grade prostate cancer more quickly and consistently,
+optimizing the efficiency of traffic lights, predicting floods and other impacts of climate
+change, and informing COVID-19 policy decisions and drug discovery.
+Google’s approach to AI is a result of more than two decades of responsible innovation
+at the company. We began machine learning (ML) work in 2001, deep learning research
+in 2011, user research on algorithmic fairness in 2014, and a cross-functional ML Fairness
+initiative in 2016, supporting a number of projects in ML fairness, explainability, privacy,
+and safety. In 2017 we began developing an ethical charter to guide the development and
+use of AI, resulting in publication of the Google AI Principles in 2018. Since then we have
+been working to improve implementation, operationalization, and governance of the AI
+Principles at Google.
+The fact that AI carries risks, alongside enormous benefits, is increasingly recognized
+by the private sector as well as policymakers and civil society. AI principles, governance
+proposals, and regulations have proliferated around the world, with a growing focus on
+issues of fairness, safety, and privacy of AI systems. The OECD, G20, and G7 have
+adopted AI principles, and AI governance standards are being developed by IEEE, ISO,
+and national standards bodies such as NIST in the US. In April 2021, the EU released the
+first horizontal AI regulatory proposal, the AI Act, which outlines detailed requirements
+and a regulatory structure to manage high-risk AI systems. Korea’s Basic Act on
+Intelligent Information Society, which includes protections against potential risks of AI
+systems, went into effect in December 2020, and in September 2021, Brazil’s House of
+Representatives introduced draft legislation on AI governance. Other AI governance
+proposals are being developed in many countries, including India, Israel, Colombia, China,
+and the UK.
+Within Google, we’ve built a three-tiered governance program underpinned by industry-
+leading research and a growing library of resources, tools, and recommended practices.
+We’ve launched new features and options to empower our users with more control of
+their data, and explanations of how our products work. We’ve developed policies and
+frameworks to guide internal teams, and made tough decisions, for example in 2018
+affirming not to release general-purpose facial recognition APIs despite potential
+business opportunities. And we continue to work with governments and international
+organizations on AI standards and rules, recognizing the enormous importance of AI
+innovation and experimentation together with the need for regulation.
+While we have made a lot of progress, we are committed to continuing to learn and
+improve. For example, after a prominent researcher left Google in the past year, we
+updated our research review process to increase consistency and transparency,
+appointed HR specialists to review certain sensitive employee exits, and as part of our
+22021 AI Principles Progress Update
+ongoing racial equity commitments1 more than doubled the retention team to ensure we
+are meaningfully addressing experiences in the workplace, including relationships with
+managers and peers. In order to better coordinate and execute on advancing progress
+in this space, we also consolidated dozens of research and technical teams working in
+responsible and ethical AI into the same organization.
+There are a number of open technical questions. For example, we are still learning how to
+improve the development of machine vision systems that work well for a variety of skin
+tones. Earlier this year we launched our DermAssist tool to help users better understand
+skin conditions. While initial experiments demonstrate the tool performs well across
+self-reported ethnicities, more work needs to be done to understand its performance
+on the darkest and lightest skin tones. This year we also launched Real Tone, which helps
+our imaging products like the Pixel phone camera and Google Photos more accurately
+and beautifully represent a diverse range of skin tones. We developed Real Tone in
+collaboration with photographers, cinematographers, and directors known for their
+understanding of the challenges in lighting and capturing a spectrum of skin tones, and
+who also represented communities of people with darker skin tones. We will continue
+work on alternative and more inclusive measures that could be useful in the development
+of our products, in collaboration with scientific and medical experts as well as groups
+working with communities of color.
+While we still have a lot to learn—and will continue learning given the dynamic and evolving
+nature of technology and society—we remain committed to sharing our progress and
+findings. In this year’s report, we outline our progress in AI Principles implementation to date,
+highlighting advances in internal governance and operations; resources, research, tools, and
+responsible practices; product impact; and supporting global dialogue, standards, and policy.
+32021 AI Principles Progress Update
+Google AI Principles
+We will assess AI in view of the following objectives. We believe AI should:
+1. Be socially beneficial: with the likely benefit to people and society substantially exceeding the foreseeable
+risks and downsides.
+2. Avoid creating or reinforcing unfair bias: avoiding unjust impacts on people, particularly those related to
+sensitive characteristics such as race, ethnicity, gender, nationality, income, sexual orientation, ability and
+political or religious belief.
+3. Be built and tested for safety: designed to be appropriately cautious and in accordance with best practices
+in AI safety research, including testing in constrained environments and monitoring as appropriate.
+4. Be accountable to people: providing appropriate opportunities for feedback, relevant explanations and
+appeal, and subject to appropriate human direction and control.
+5. Incorporate privacy design principles: encouraging architectures with privacy safeguards, and providing
+appropriate transparency and control over the use of data.
+6. Uphold high standards of scientific excellence: Technology innovation is rooted in the scientific method
+and a commitment to open inquiry, intellectual rigor, integrity and collaboration.
+7. Be made available for uses that accord with these principles: We will work to limit potentially harmful or
+abusive applications.
+In addition to the above objectives, we will not design or deploy AI in the following application areas:
+1. Technologies that cause or are likely to cause overall harm. Where there is a material risk of harm, we will
+proceed only where we believe that the benefits substantially outweigh the risks, and will incorporate
+appropriate safety constraints.
+2. Weapons or other technologies whose principal purpose or implementation is to cause or directly facilitate
+injury to people.
+3. Technologies that gather or use information for surveillance violating internationally accepted norms.
+4. Technologies whose purpose contravenes widely accepted principles of international law and human rights.
+42021 AI Principles Progress Update
+Internal governance and operations
+At the same time as we announced the Google AI Principles in 2018, we founded a central
+Responsible Innovation team, drawing from existing specialists across the company
+to operationalize implementation. Starting with half a dozen full time employees,
+engagement in AI Principles governance has since grown in scale; today, hundreds of
+Google employees across dozens of teams with a wide range of expertise—human rights,
+user experience research, ethics, trust and safety, privacy, public policy, machine learning,
+and more—make up an internal AI Principles ecosystem that supports employees in
+incorporating responsible practices into their work.
+Privacy & Data
+Escalation Advanced Technology Review Council Protection Office
+(If needed) ATRC Steering
+Committee
+Review Health Ethics Central Responsible Product Area Privacy
+Innovation Review AI Principles Review Advisory
+processes Committee Committee Committees Council
+Dedicated Privacy
+User Product
+functions in Trust & Safety DEI Councils Working
+Experience Inclusion
+product teams* Groups
+*This is not an exhaustive list, and does not include product-specific teams (e.g., Search Quality)
+Google operationalizes responsible innovation practices via
+a three-tiered internal AI Principles Ecosystem.
+At the core of this internal ecosystem is a three-tiered governance structure. It starts with
+our product teams themselves, which include dedicated user experience (UX), privacy,
+and trust and safety (T&S) experts who provide deep functional expertise consistent with
+the AI Principles.
+The second tier is a set of dedicated review bodies and expert teams. The central
+Responsible Innovation team is available to support implementation across the company,
+and all Google employees are encouraged to engage with the AI Principles review process
+throughout the project development lifecycle. Some product areas have set up review
+bodies to address specific audiences and needs, such as enterprise offerings in Google
+Cloud, hardware in Devices and Services, and medical expertise in Health. In addition,
+the Privacy Advisory Council (PAC) reviews all projects for potential privacy concerns,
+including (but not exclusively) issues related to AI.
+52021 AI Principles Progress Update
+One example of a body in this second tier is the Health Ethics Committee. This is a forum
+for guidance and decision-making regarding ethical issues arising within the context
+of health products, health research, or health-related organizational decisions. It was
+created in 2020 to provide a forum for moral deliberation and decision-making on health-
+related initiatives to keep Google’s users and products safe with expertise across multiple
+domains. The Health Ethics Committee is a multidisciplinary forum that includes subject
+matter experts in bioethics, clinical medicine, policy, legal, privacy, compliance, research,
+and business. In 2021 the Google Bioethics Program created the Health Ethics Cafe, an
+informal forum to discuss bioethical questions with anyone in the company and at any
+stage of project development. The most vexing cases from the Health Ethics Cafe are
+escalated to the Health Ethics Committee for review.
+The second tier also includes review committees tailored for specific product areas. This
+includes Google Cloud’s Responsible AI Product and Deal Review Committees, which are
+designed to ensure Cloud’s AI products and projects align with the Google AI Principles in
+a systematic, repeatable way, and are built with ethics and responsibility by design, across
+products and geographies. The first committee focuses on the products built by Cloud
+AI & Industry Solutions. These reviews undertake a comprehensive analysis that includes
+an evaluation of the sociotechnical landscape, opportunity and harm assessments
+across each of the AI Principles, and live discussion with a cross-functional and diverse
+committee, resulting in an actionable alignment plan. The second review committee
+covers early stage customer engagements leveraging custom AI solutions beyond
+our generally available products. It is a committee composed of four cross-functional,
+senior executive members. All decisions require full agreement from all four committee
+members, and are escalated as needed. Relevant stakeholders across the AI Principles
+ecosystem at Google help inform these discussions; this input and involvement is critical
+to ensure decisions are not made in a vacuum.
+As one example of how these review processes combine to make and build on decisions,
+credit risk and worthiness have been noted as an area of concern for algorithmic
+unfairness at Google since 2017. In 2019, Cloud’s Responsible AI Product Review
+Committee evaluated product opportunities in this space. While our hope is that one
+day AI can provide access to credit and play a role in increasing financial inclusion and
+health, the Committee ultimately determined that a creditworthiness product—built with
+today’s technologies and data—could create disparate impact related to gender, race,
+and other marginalized groups, and conflict with Google’s AI Principle to “avoid creating
+or reinforcing unfair bias.” In mid-2020 the Product Review Committee re-evaluated
+and reaffirmed this decision. Over the course of last year, Cloud’s Responsible AI Deal
+Review Committee evaluated multiple proposed custom AI engagements related to the
+assessment of creditworthiness. Each engagement is evaluated for its particular use case,
+and the Deal Review Committee determined not to pursue many of these. These learnings
+over multiple years built on each other, leading to a decision to pause development of
+custom AI solutions related to creditworthiness until risks can be appropriately mitigated.
+This Cloud-wide policy went into effect last year, and remains in place today.
+62021 AI Principles Progress Update
+The third tier of our AI governance structure is the Advanced Technology Review Council
+(ATRC), a rotating committee of senior product, research, and business executives
+representing a broad cross section of Google. The ATRC addresses escalations and the
+most complex and precedent-setting cases, and establishes policies impacting multiple
+product areas. It has made a number of tough decisions, weighing potential business
+opportunities against the ethical risks of certain applications. In 2018 this executive council
+affirmed Google Cloud’s Product Review proposal to not offer general-purpose facial
+recognition APIs before working through important technology and policy questions, and
+advised the team to focus on narrowly focused solutions. Drawing on this decision, and
+following a multi-year effort with significant input from internal and external stakeholders,
+Google Cloud developed, sought approval from the ATRC, and then released a highly
+constrained and specifically designed Celebrity Recognition API2. One topic considered
+by the ATRC this year was the development of large language models. Following review,
+the ATRC determined that research involving large language models could continue
+cautiously, but that no such model should be launched without a full AI Principles review.
+72021 AI Principles Progress Update
+Resources, research, tools, and
+responsible practices
+Implementation of the AI Principles is underpinned by a growing body of company-wide
+input, training and education resources, technical tools, and recommended practices that
+equip Googlers across various functions and roles to develop and deploy AI responsibly.
+We’ve created more formalized channels for taking into account a wider variety of
+perspectives throughout the product development lifecycle and in our review processes.
+Our Responsible AI and Human Centered Technology team, which is growing to 200
+experts, is a consolidation of dozens of research and technical teams working in
+responsible and ethical AI. The team works with hundreds of partners in product, privacy,
+security, and other teams in the company, providing insights through research, tools,
+and other technical solutions. Our Product Inclusion team helps product teams tap into
+Google’s Employee Resource Groups to test for equitable product experiences with a
+range of different users and audiences. We’ve also created an AI Principles Ethics Fellows
+program, in which fellows share their perspectives on the responsible development
+of future technologies and develop hypothetical case studies to inform how Google
+prioritizes socially beneficial applications. In 2021 the fellows created timely case studies
+on topics including the responsible development of genome datasets and a COVID-19
+content moderation workflow. In late 2021 we complemented this fellowship effort with
+another internal program focused on scaling product fairness (ProFair) testing across
+Google. This ProFair program consists of more than 70 trusted and trained AI Principles
+advisors in 40 offices around the world. Each advisor has received dedicated training on
+tech ethics and algorithmic fairness, and engaged in projects such as identifying fairness
+concerns in an image dataset for a Next Billion Users product. We also continue
+collaborating with human rights experts to conduct Human Rights’ Impact Assessments
+for understanding new and emerging technologies.
+Our educational resources include the foundational Technology Ethics Training, which
+guides Googlers through the philosophy of technology ethics and how to assess potential
+benefits and harms, and a suite of courses that explain the Google AI Principles and
+internal governance practices. This year, we launched an AI Principles and responsible
+innovation training course for new employees in a variety of engineering and UX roles to
+understand Google’s ethical charter and available resources. In the two years since we
+began internal AI Principles training, these courses have been taken by more than 19,000
+Googlers in a variety of roles, including engineers, researchers, product managers, and
+account representatives. We continue to expand education to more employees.
+In 2021 we also launched interactive online puzzles3 designed to help employees build
+awareness of, and test their recall of, the AI Principles. More than 6,000 employees have
+engaged with the puzzles in the six months since launch. We continue to experiment
+with gamification of our education efforts to improve engagement and retention of key
+82021 AI Principles Progress Update
+takeaways. We have also piloted a two-day, live-video immersive “Moral Imagination”
+workshop for 15 product teams of 6-15 people who are working on a project that may
+lead to a potential AI product or feature. Through semi-structured conversation and
+various practical exercises, facilitators make new concepts concrete and actionable for
+the participating teams by walking them through the ethical implications of their project
+and coaching them to see their work from various points of view. The goal is to provide
+a pragmatic and constructive reflection of these often unexamined parts of the role of
+an engineer, researcher, or product manager. Teams are asked to articulate and interpret
+key ethics concepts and processes that relate to their project throughout the workshop,
+helping to instill these learnings. Feedback from the pilots has been positive and we will
+scale the program next year.
+Technical research informs our practices and tooling, and is another avenue for progress.
+Since 2018 Google has published more than 3300 research papers on a variety of topics,
+including more than 500 on responsible innovation. This year, publications included
+the impact of data cascades4 (downstream effects from poorly managed data used
+to train high-stakes AI applications), the environmental impact of large models5, and
+accountability frameworks6 for the data used in AI systems. In parallel we have developed
+a growing library of responsible AI tools, informed by how we put our AI Principles into
+practice. We also continue to expand our Responsible AI Toolkit7, launched in 2020; this
+year we added hands-on technical tutorials on topics such as privacy in machine
+learning8, Know Your Data (KYD)9 (a tool to better understand datasets and improve data
+quality), and an updated People + AI Research (PAIR) Guidebook10. We’ve also continued
+to improve the Language Interpretability Tool (LIT), designed to help identify and mitigate
+bias in language models. LIT Version 0.411, released in November 2021, adds a number of
+new features, including support for Google Cloud tools and the ability for developers to
+explore tabular and image data.
+Researchers are continuing to develop a technical infrastructure approach to supporting
+how fairness research is applied in Google products directly. For example, in the last
+year, we have been able to apply new, state-of-the-art tools developed and announced
+over the last couple of years, such as Fairness Indicators12 (launched in 201913) for model
+evaluation and our Min-Diff14 technique (launched in 202015) for remediation to a growing
+number of product use cases, enabling the scale of our learned best practices to
+proactively address fairness considerations. We are just at the beginning of the journey to
+scale these approaches, and are committed to doing so and sharing results responsibly.
+92021 AI Principles Progress Update
+This screenshot from Know Your Data shows a relationship between words associated with age and
+movement. KYD analysis can be used to identify and address potential unfair biases in data labels.
+To do so, we continue to develop practices for creating transparency documents around
+datasets used for fairness evaluation and training; this year we released new datasets and
+data cards—including for avoiding unfair bias in Translate16 and more inclusive annotations
+of people17—together with guidance on how to document these datasets responsibly via
+the Data Cards Playbook18, launched this year with an interactive external workshop19 at
+the 2021 FAccT (Fairness, Accountability and Transparency) conference.
+Important progress has also been made on privacy-preserving technologies. For example,
+federated learning20, used in products like Gboard, allows models to be centrally trained
+and updated based on real user interactions without collecting centralized data from
+individual users. Since releasing federated learning in 2017, Google researchers have
+developed federated analytics21, which uses similar techniques to get insight into how
+product features and models perform for different users without collecting centralized
+data. Among other things, federated analytics allows model developers to conduct certain
+types of fairness testing on federated systems despite not having access to raw user data,
+102021 AI Principles Progress Update
+overcoming a significant challenge with federated systems in the past. This year, the team
+released federated reconstruction22, a model-agnostic approach to faster, large-scale
+federated learning and personalization under privacy and communication constraints.
+Researchers have also continued to build on the 2020 GShard results23 for more compute-
+and energy-efficient models. This year the team developed GSPMD24, an automatic,
+compiler-based, and scalable parallelization system: compilation time stays constant with
+an increasing number of devices. The team has also used the combination of pre-training,
+self-training, and scaling up model size to enable significant efficiency improvements
+in other models25, matching state-of-the-art performance in an automatic speech
+recognition model with only 3% of the training data.
+Researchers and practitioners at Google continue to use and improve existing tools for
+examining fairness. For example, the research team developing novel techniques for an
+AI-based model for COVID-19 epidemiology26 published new findings27 this year on using
+the What-If Tool (WIT)28 and fairness analysis techniques to identify and address potential
+challenges that could impact public health. Another team used KYD to explore gender
+bias29 in the COCO Captions dataset, which includes over 300K human-captioned images
+used to train models in image labeling and classification tasks.
+Finally, we note the importance and responsible practice of continuing to build a
+strong and diverse team. Google is committed30 to building a workforce that is more
+representative of our users and a workplace that creates a sense of belonging for
+everyone. One goal is to improve leadership representation of Black+, Latinx+, and
+Native American+ Googlers in the US by 30% by 2025. We’ve already reached this goal
+and are on track to double the number of Black+ Googlers at all other levels by 2025. In
+addition, all VPs and above at Google are now evaluated on progress in diversity, equity,
+and inclusion. These efforts are crucial if we’re going to have a more representative set of
+researchers and engineers building future technologies. With respect to representation
+in AI, while there are dozens of Black+ and Hispanic/Latinx+ Googlers and hundreds of
+female Googlers on our AI teams, we continue to work to expand this representation. This
+includes attracting talent and building partnerships in regions with diverse talent pools,
+and investing in the external research community through grants, workshops, and other
+initiatives to support new voices entering into the field of computer science and more
+equitable outcomes.
+112021 AI Principles Progress Update
+Product impact
+Our progress in responsible innovation is reflected in improvements in our products. We
+are focused on user-centric design and our mission of universal accessibility and utility.
+This goes back to our earliest efforts to use AI to improve our flagship Search product.
+For example, in 2011, we announced Panda31, a machine learning algorithm that allowed
+us to take the overall content quality of a website into account and adjust its Search rank
+accordingly. Ten years later, our Search Quality team continues to leverage AI tools to
+improve results for users, address misleading information, and minimize user exposure to
+offensive query predictions.
+We continue to develop and improve Search responsibly, carefully testing and evaluating
+new features to ensure that they are beneficial to our users. A big advance this year was
+the announcement of our Multitask Unified Model (MUM)32, which will allow Search to
+understand information across a wide range of formats, like text, images, and video, and
+draw implicit connections between concepts, topics, and ideas about the world around
+us. Applying MUM will not only improve how people around the world find the information
+they need, but will also play a role in increasing economic opportunity for creators,
+publishers, startups, and small businesses. Ahead of MUM deployment in Search, the
+team is carefully analyzing quality gains and losses and examining the impact on a broad
+set of queries and specialized slices to identify any unexpected or concerning
+performance.
+Another area of progress in 2021 was improving the performance of our products
+for darker skin tones. The Pixel and Photos teams partnered with a diverse range of
+renowned image makers who are celebrated for their beautiful and accurate depictions
+of communities of color to help our teams understand where we needed to do better.
+With their help, we significantly increased the number of portraits of people of color in
+the image datasets that train our camera models. This culminated in our announcement
+of Real Tone33, a feature in the Pixel 6 and Pixel 6 Pro, enabling better performance of
+features like face detection, auto-exposure, and auto-enhance for users with darker skin
+tones.
+Accessibility in our products has also improved with the application of AI. In 2021, the
+Android team launched an updated version of Lookout34, an Android app developed for
+blind and low vision individuals which uses computer vision to provide information about
+a person’s surroundings. In June, Lookout v2.3 launched with a much-improved Explore
+mode: object identification is now faster and more accurate. At the same time, the
+Android team also released the latest version of Voice Access35, including improvements
+for entering passwords and the gaze detection beta. This year we also announced Project
+Relate36, which uses machine learning to help people with speech impairments
+communicate and use technology more easily.
+We have continued to refine Privacy Sandbox37, a collaboration with the digital ads
+industry to enhance privacy through the addition of AI-related techniques. For example,
+one Privacy Sandbox proposal is to use a technology called Federated Learning of
+Cohorts (FLoC) to enable the digital ads ecosystem to serve relevant ads to users without
+122021 AI Principles Progress Update
+tracking user identities across the web. While still a work in progress, Sandbox aspires to
+take a significant step forward in delivering a more private user experience while
+supporting publishers, advertisers and content creators and preserving the vitality of the
+open internet.
+Expert teams provide dedicated resources and consultations to product teams on AI
+Principles-related issues, so that product teams can learn about—and proactively avoid
+or mitigate—common failure modes. The product fairness (ProFair) team, for example,
+provides socio-technical advice and conducts proactive algorithmic fairness testing to
+ensure new AI technologies do not reflect or perpetuate sociological or socioeconomic
+inequalities. The team has also taken on responsibilities for investigating inclusion and
+equity of language in data labeling and diversity and representation in training data for
+AI. For instance, before launching a new feature called Style AI in Google Shopping38
+in countries like India and Brazil, ProFair held local focus groups in collaboration with
+Google’s Product Inclusion team. The process helped the Style AI team find diverse
+images and clothing for these specific demographics. In the past year, a variety of teams,
+including YouTube, Meet, Translate, and Lookout improved projects related to potential
+new product features consulted with ProFair testing.
+We also continue to evolve internal policies and frameworks to support product teams,
+gathering lessons learned from reviews and product engagements to guide teams on how
+to think about complex AI Principles challenges. For example, over the past year we have
+seen increases in reviews and consultations on surveillance, synthetic media, and affective
+technologies. To ensure a consistent and higher-throughput review process we are
+piloting a few frameworks on these topics with assessment guidelines, including objective
+criteria drawn from precedent centered around the concepts of dignity, autonomy and
+consent, guidance from human rights experts, and sample case studies developed by
+Google’s AI Principles Ethics Fellows.
+132021 AI Principles Progress Update
+Supporting global dialogue, standards,
+and policy
+Google remains committed to engaging with external experts and civil society
+stakeholders around the world. Establishing norms and best practices for responsible AI
+development will succeed only as a community endeavor, and it is vital to share learnings
+and receive feedback on our efforts from the wider community.
+This year, we have continued to support programs on inclusion, diversity, and equity in AI
+research and product development. We sponsored 114 conferences in computer science
+and related fields, including NeurIPS and ICML. And we continue to partner with the
+Algorithmic Fairness and Opacity Group (AFOG) at UC Berkeley, an interdisciplinary
+research group that bridges disciplinary boundaries to support the equitable
+development of AI systems. We continue to host quarterly Equitable AI Research
+Roundtables (EARR), launched in 2020 to focus on the potential downstream harms of AI
+with experts from the Othering and Belonging Institute at UC Berkeley, PolicyLink, and
+Emory University School of Law. In 2021, we co-created with our EARR partners a set of
+internal exercises for product teams to apply equitable research practices.
+We’re developing new engagements with students who may represent communities
+not currently represented in the technology industry. In fall 2021, for example, in the
+US, we’ve added sessions focused on responsible innovation topics including ethics in
+ML, applying AI principles, algorithmic unfairness, and bias in technology into two of
+Google’s classroom programs for Historically Black Colleges and Universities (HBCU),
+Google In Residence (GIR) and TechExchange. We continue to expand our engagements
+with a growing variety of educational institutions, through ongoing partnerships with
+schools such as Berea College, where we host hands-on app-development workshops
+focused on building critical thinking skills toward responsible development of advanced
+technology. Our Research Scholar39 Program, started this year, gave grants to more than
+50 universities in 15+ countries -- and 43% of the principal investigators identify as part
+of a group that’s been historically marginalized in tech. Similarly, our exploreCSR40 and CS
+Research Mentorship41 programs support thousands of undergrads from marginalized
+groups.
+We’ve also made a concerted effort to continue hands-on learning opportunities globally.
+Our global community educational outreach efforts have included partnerships42 with
+dozens of universities around the world to support development of new ML courses,
+diversity, and inclusion. We continue to host two-hour interactive digital ML for Policy
+Leaders workshops and other related trainings. Since their launch in May 2020, we have
+provided ML education to more than 450 policymakers and 150 organizations across
+North America, Latin America, Europe, Africa, and the Asia Pacific. And we continue to
+share recommended responsible AI practices via TensorFlow43, Cloud44, and Google AI45 to
+a range of audiences.
+142021 AI Principles Progress Update
+Governments have an important role to play in the responsible development of AI, and
+we remain committed to sharing our learnings and responsible practices and partnering
+with governments to support responsibility across the world’s AI ecosystem. For example,
+in addition to providing input on the OECD AI Principles, which were adopted by member
+countries in 2019, Google participates in the OECD Network of Experts on AI (ONE AI)
+trustworthy AI working group, developing practical guidance around policies that lead to
+trustworthy AI. Google also participates in the Global Partnership on AI (GPAI), a multi-
+stakeholder initiative established by the G7 which aims to bridge the gap between theory
+and practice on AI by supporting cutting-edge research and applied activities on AI-
+related priorities.
+In addition to international organizations, Google works with national governments around
+the world on AI policy. Google partners with governments to support small and medium
+enterprises and academics developing responsible AI techniques and services, including
+$5M support46 for the US National Science Foundation’s Human-AI Interaction and
+Collaboration research center and $2M in Google Cloud Platform credits47 to Portugal’s
+Foundation for Science and Technology (FCT) to support research in natural language
+understanding and responsible AI.
+AI is too important not to regulate, and we are working closely with governments to
+establish policies that support innovation while managing risk. This year we provided
+submissions48 to consultations from the EU on the draft AI Act and proposed reforms
+to the Product Liability Directive for AI, provided feedback on proposed AI legislation in
+Brazil, responded to a request for information on AI regulation in Israel, worked with NITI
+Aayog to develop AI policy proposals for India, submitted comments on the National AI
+Research Resource Task Force, and provided input on NIST’s growing body of responsible
+AI frameworks, including the AI Risk Management framework and Explainable AI
+framework, among many others. Standards is another key area of partnership and Google
+is also an active participant in a variety of efforts, including serving as a founding member
+of the International Organization for Standardization (ISO)’s SC42 working group49, and
+contributing to the Institute of Electrical and Electronics Engineers (IEEE) AI standards50.
+152021 AI Principles Progress Update
+Conclusion
+Responsible AI at Google has come a long way since we launched our AI Principles in 2018.
+We remain committed to these principles, and in the last three years we have expanded
+our AI Principles governance and support functions from a small internal “start-up” to a
+cross-functional ecosystem.
+There is still a lot we don’t know. Foundational questions like how to define fairness for AI
+systems are not yet fully answered, and techniques to assess and manage AI risks are still
+being refined. AI technology also continues to evolve, introducing new potential benefits
+and challenges. Synthetic data, for instance, has the potential to replace the use of
+sensitive data in model training, but we are still learning how to generate and use synthetic
+data responsibly and safely. Similarly, emergent areas like large multipod models and
+affective computing promise exciting new capabilities, but also introduce new risks that
+we must learn to understand and manage.
+We are improving our ability to implement responsible AI through research, tools,
+frameworks, recommended practices, and engagement with a range of experts and
+institutions, and will continue to share progress reports (as we have in 2019,51 202052) and
+product case studies at ai.google/responsibilities53.
+162021 AI Principles Progress Update
+End Notes
+1. https://blog.google/outreach-initiatives/diversity/racial-equity-update-nov-2021/
+2. https://cloud.google.com/blog/products/ai-machine-learning/celebrity-recognition-now-
+available-to-approved-media-entertainment-customers
+3. https://blog.google/technology/ai/crossword-puzzle-big-purpose/
+4. https://dl.acm.org/doi/10.1145/3411764.3445518
+5. https://arxiv.org/abs/2104.10350
+6. https://arxiv.org/pdf/2010.13561.pdf
+7. https://www.tensorflow.org/responsible_ai?hl=ro
+8. https://www.tensorflow.org/responsible_ai/privacy/guide?hl=ro
+9. https://knowyourdata.withgoogle.com/
+10. https://pair.withgoogle.com/guidebook/
+11. https://github.com/PAIR-code/lit/blob/main/RELEASE.md
+12. https://www.tensorflow.org/responsible_ai/fairness_indicators/guide
+13. https://ai.googleblog.com/2019/12/fairness-indicators-scalable.html
+14. https://www.tensorflow.org/responsible_ai/model_remediation
+15. https://ai.googleblog.com/2020/11/mitigating-unfair-bias-in-ml-models.html
+16. https://storage.googleapis.com/gresearch/translate-gender-challenge-sets/Data%20Card.pdf
+17. https://storage.googleapis.com/openimages/open_images_extended_miap/Open%20Images%20
+Extended%20-%20MIAP%20-%20Data%20Card.pdf
+18. https://pair-code.github.io/datacardsplaybook/
+19. https://facctconference.org/2021/acceptedcraftsessions.html#data_cards
+20. https://federated.withgoogle.com/
+21. https://ai.googleblog.com/2020/05/federated-analytics-collaborative-data.html
+22. https://arxiv.org/abs/2102.03448
+23. https://arxiv.org/abs/2006.16668
+24. https://arxiv.org/abs/2105.04663
+25. https://arxiv.org/abs/2109.13226
+26. https://cloud.google.com/blog/products/ai-machine-learning/google-cloud-is-releasing-the-
+covid-19-public-forecasts
+27. https://ai.googleblog.com/2021/10/an-ml-based-framework-for-covid-19.html
+28. https://pair-code.github.io/what-if-tool/
+29. https://ai.googleblog.com/2021/08/a-dataset-exploration-case-study-with.html
+30. https://blog.google/outreach-initiatives/diversity/racial-equity-update-nov-2021/
+31. https://googleblog.blogspot.com/2011/02/finding-more-high-quality-sites-in.html
+32. https://www.blog.google/products/search/introducing-MUM/
+33. https://store.google.com/intl/en/discover/realtone/
+34. https://support.google.com/accessibility/android/answer/9031274?hl=en
+35. https://support.google.com/accessibility/android/answer/6151848?hl=en&ref_topic=6151842
+36. https://blog.google/outreach-initiatives/accessibility/project-relate/
+172021 AI Principles Progress Update
+37. https://privacysandbox.com/
+38. https://blog.google/technology/ai/this-googlers-team-is-making-shopping-more-inclusive/
+39. https://ai.googleblog.com/2021/04/announcing-2021-research-scholar.html
+40. https://research.google/outreach/explore-csr/
+41. https://research.google/outreach/csrmp/
+42. https://blog.tensorflow.org/2021/06/2021-request-for-proposals-ml-faculty-awards.html
+43. https://www.tensorflow.org/responsible_ai
+44. https://cloud.google.com/responsible-ai
+45. https://ai.google/responsibilities/
+46. https://blog.google/technology/ai/partnering-nsf-human-ai-collaboration/
+47. https://portugal.googleblog.com/2021/07/2-milhoes-de-dolares-para-apoiar.html
+48. https://ai.google/responsibilities/public-policy-perspectives/
+49. https://www.iso.org/committee/6794475.html
+50. https://standards.ieee.org/initiatives/artificial-intelligence-systems/index.html
+51. https://ai.google/static/documents/ai-principles-2019-progress-update.pdf
+52. https://ai.google/static/documents/ai-principles-2020-progress-update.pdf
+53. https://ai.google/responsibilities
+18
+
+****************************************************************************************************
