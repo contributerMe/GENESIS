@@ -1,5 +1,5 @@
 
-# **GENESIS:  : Genrative AI for Strategy and Industry Solutions**
+# **GENESIS  : Genrative AI for Strategy and Industry Solutions**
 
 
 
