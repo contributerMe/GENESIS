@@ -6,11 +6,14 @@ import pdfplumber
 from googlesearch import search
 from sentence_transformers import SentenceTransformer
 import faiss
+
 from langchain.chains import RetrievalQA
 from langchain_openai import OpenAI
 import pinecone
 import mimetypes
+
 from urllib.parse import urlparse
+from fake_useragent import UserAgent
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain #need a fix: ~RunnableSequence
 from langchain_core.runnables import RunnableSequence
@@ -19,6 +22,7 @@ from langchain_community.vectorstores import FAISS, Pinecone
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI #need a lil fix: langchain_openai import ChatOpenAI
 import os
+
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 import warnings
@@ -90,7 +94,7 @@ def scrape_webpage(url):
             return ""
         
         # Scrape HTML content
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=10, headers={'User-Agent': UserAgent().random})
         response.raise_for_status()
         soup = BeautifulSoup(response.content, "html.parser")
         paragraphs = soup.find_all("p")
@@ -166,6 +170,31 @@ def is_valid_pdf_metadata(url, max_size_mb=10, max_pages=30):
         print(f"Error checking metadata for {url}: {e}")
         return False
 
+
+
+
+def scrape_webpage1(url):
+    try:
+        # accessing url from search result objecct
+        url = url.url
+        path = urlparse(url).path
+        file_type = mimetypes.guess_type(path)[0]
+        
+        response = requests.get(url, timeout=10, headers={'User-Agent': UserAgent().random})
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, "html.parser")
+        paragraphs = soup.find_all("p")
+
+        content = " ".join([p.get_text() for p in paragraphs])
+        
+        return content.strip()
+
+    except Exception as e:
+        print(f"Error scraping {url}: {e}")
+        return ""
+
+
+
 def find_and_download_pdfs(company_name, industry_name, num_results=3):
     """
     Search, download, and parse information-dense PDFs related to a company and industry.
@@ -178,10 +207,11 @@ def find_and_download_pdfs(company_name, industry_name, num_results=3):
     Returns:
         list[dict]: List of parsed PDF metadata and content.
     """
+
     query = f"{company_name} {industry_name} industry standards OR current technology OR AI applications OR generative AI OR future trends filetype:pdf"
     pdf_texts = []
 
-    # Use a search engine or custom search method to gather URLs (Here, we're using a placeholder)
+    
     search_results = search(query, num_results=num_results)  # Assuming 'search' is your search method
     
     for url in search_results:
@@ -207,15 +237,13 @@ def find_and_download_pdfs(company_name, industry_name, num_results=3):
                 })
 
                 # os.remove(pdf_filename)  # Clean up temporary PDF file
+                # optional: We can also store the PDFs in a separate folder for further analysis
             except Exception as e:
                 print(f"Error downloading or processing PDF from {url}: {e}")
 
     return pdf_texts
 
 
-
-
-# # Example usage
 # # google_pdfs = find_and_download_pdfs("Google", "Technology")
 # # tesla_pdfs = find_and_download_pdfs("Tesla", "Automotive")
 
@@ -243,6 +271,7 @@ def find_and_download_pdfs(company_name, industry_name, num_results=3):
 # # Step 4: Create RAG system
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
+
 
 
 def create_rag_system(contents, chunk_size=1000, chunk_overlap=200):
@@ -356,6 +385,54 @@ def retrieve_and_enrich_with_subqueries(retriever, company_name, industry_name):
         return ""
 
 
+
+
+def extract_keywords_from_text1(input_text):
+    """
+    Extracts keywords from the provided input text using an LLM.
+
+    Args:
+        input_text (str): The input text from which keywords are to be extracted.
+
+    Returns:
+        List[str]: A list of extracted keywords.
+    """
+    llm = ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0.7,
+        max_tokens=500,
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
+
+    prompt_template = """
+    You are an AI assistant that specializes in extracting relevant keywords from a given text. These keywords will be used to search for relevant datasets on Kaggle and other platforms.
+    Your task is to analyze the provided content and generate a concise list of important keywords or phrases
+    that will help in finding relevant datasets.
+
+    Text to analyze:
+    {input_text}
+
+    Provide the most important 4,5 extracted keywords keeping in mind that those are helpful for relevant dataset search as a comma-separated list.
+    """
+
+    prompt = PromptTemplate(
+        input_variables=["input_text"],
+        template=prompt_template.strip()
+    )
+
+    chain = LLMChain(llm=llm, prompt=prompt)
+
+    try:
+        response = chain.invoke(input={"input_text": input_text})
+        keywords = response.get("text", "").strip().split(",")
+        return [kw.strip() for kw in keywords if kw.strip()]
+    except Exception as e:
+        print(f"Error during keyword extraction: {e}")
+        return []
+
+
+
+
 # # Extract Insights
 # Extract Insights with Subquery Enrichment
 def extract_insights(retriever, company_name, industry_name):
@@ -421,6 +498,9 @@ def extract_insights(retriever, company_name, industry_name):
         return ["Failed to generate insights due to an error."]
 
 
+
+
+
 def extract_keywords_from_text(input_text):
     """
     Extracts keywords from the provided input text using an LLM.
@@ -464,6 +544,34 @@ def extract_keywords_from_text(input_text):
         print(f"Error during keyword extraction: {e}")
         return []
 
+def evaluate_usecases(usecases):
+    """
+    Evaluate the suggested use cases with the user and decide whether to proceed or revisit.
+
+    Args:
+        usecases (List[str]): List of suggested use cases.
+
+    Returns:
+        bool: True if the use cases are feasible and user wants to proceed, False otherwise.
+    """
+    
+    
+    while True:
+        user_input = input("\nAre these use cases feasible? (yes/no): ").strip().lower()
+        if user_input == "yes":
+            print("Great! Proceeding with dataset search...")
+            return True
+
+        elif user_input == "no":
+            print("Understood. Redirecting to the researcher agent for refinement...")
+            return False
+
+        else:
+            print("Invalid input. Please type 'yes' or 'no'.")
+
+
+
+
 
 def search_datasets(keywords):
     """
@@ -479,9 +587,17 @@ def search_datasets(keywords):
     for keyword in keywords:
         datasets = api.dataset_list(search=keyword, sort_by="hottest")
         results[keyword] = [
-            (dataset.ref, dataset.title, dataset.size, dataset.voteCount) for dataset in datasets[:5]
+            (dataset.ref,
+             dataset.title,
+              dataset.size,
+               dataset.voteCount
+               ) 
+               for dataset in datasets[:5]
         ]
     return results
+
+
+
 
 
 def display_dataset_choices(results):
@@ -556,9 +672,15 @@ def main():
         print(f"\nKey insights for {company_name} in the {industry_name} industry:")
         print(insights)
 
+        eval = evaluate_usecases(insights)
+
+        if not eval:
+            main()
+
         print("Extraction of keywords from the insights")
         
         keywords = extract_keywords_from_text(" ".join(insights))
+
         print("Extracted Keywords:", keywords)
         # Search for datasets based on keywords
         search_results = search_datasets(keywords)
@@ -595,4 +717,5 @@ if __name__ == "__main__":
 
 
 #31 dec working fine 
-#task 1 : add feedback, hf dataset extracter agent
+#task 1 : add feedback, add search agent 
+#task 2 : langchain to autogen
