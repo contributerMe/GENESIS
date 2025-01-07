@@ -1,22 +1,30 @@
-import os
 from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
 from PyPDF2 import PdfReader
 import pdfplumber
 from googlesearch import search
-from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 import faiss
-from langchain_community.vectorstores import FAISS, Pinecone
 from langchain.chains import RetrievalQA
 from langchain_openai import OpenAI
 import pinecone
 import mimetypes
 from urllib.parse import urlparse
-from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
-
+from langchain.chains import LLMChain #need a fix: ~RunnableSequence
+from langchain_core.runnables import RunnableSequence
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS, Pinecone
+from langchain_openai import OpenAIEmbeddings
+from langchain_openai import ChatOpenAI #need a lil fix: langchain_openai import ChatOpenAI
+import os
+from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+import warnings
+import pandas as pd
+from kaggle.api.kaggle_api_extended import KaggleApi
+warnings.filterwarnings("ignore")
 
 
 # Load environment variables
@@ -32,6 +40,8 @@ hf_model = SentenceTransformer(hf_model_name)
 # Initialize OpenAI API
 llm = OpenAI(openai_api_key=openai_api_key)
 
+api = KaggleApi()
+api.authenticate()
 
 # Step 1: Search for relevant web pages
 
@@ -233,12 +243,7 @@ def find_and_download_pdfs(company_name, industry_name, num_results=3):
 # # Step 4: Create RAG system
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-
-
-# # RAG System Creation
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 def create_rag_system(contents, chunk_size=1000, chunk_overlap=200):
     """
@@ -267,6 +272,7 @@ def create_rag_system(contents, chunk_size=1000, chunk_overlap=200):
             chunk_overlap=chunk_overlap,
             separators=["\n\n", "\n", ".", " "],  # Prefer splitting at paragraphs, sentences, or words
         )
+        # contents is list of strings
         documents = text_splitter.create_documents(contents)
 
         print(f"Number of chunks created: {len(documents)}")
@@ -278,7 +284,7 @@ def create_rag_system(contents, chunk_size=1000, chunk_overlap=200):
 
         # Create retriever
         print("Creating retriever...")
-        retriever = vector_store.as_retriever(search_kwargs={"k": 3})
+        retriever = vector_store.as_retriever(search_kwargs={"k": 2})
 
         print("RAG system successfully created.")
         return retriever
@@ -287,67 +293,7 @@ def create_rag_system(contents, chunk_size=1000, chunk_overlap=200):
         print(f"An error occurred: {e}")
         return None
 
-# # Extract Insights
-# Extract Insights with Subquery Enrichment
-def extract_insights(retriever, company_name, industry_name):
-    """
-    Extract key insights for a company and industry based on the retrieved and enriched content.
 
-    Args:
-        retriever: The retriever object for the content.
-        company_name (str): The name of the company.
-        industry_name (str): The name of the industry.
-
-    Returns:
-        List[str]: A list of key insights for the company.
-    """
-    llm = ChatOpenAI(
-        model="gpt-4o-mini",
-        temperature=0.7,
-        max_tokens=1000,
-        openai_api_key=os.getenv("OPENAI_API_KEY")
-    )
-
-    # Step 1: Retrieve and enrich content with subqueries
-    enriched_content = retrieve_and_enrich_with_subqueries(retriever, company_name, industry_name)
-
-    if not enriched_content.strip():
-        print("No enriched content generated from the subqueries.")
-        return ["No insights could be generated due to insufficient data."]
-
-    # Step 2: Define a prompt template for extracting insights
-    prompt_template = """
-    You are an AI assistant specializing in business insights. Based on the provided data:
-    - Highlight key strengths and opportunities for the company ({company_name}) in the {industry_name} industry.
-    - Identify risks, challenges, and market trends relevant to the company.
-    - Provide actionable recommendations or innovations the company could explore.
-
-    Use the following enriched content for your analysis:
-    {enriched_content}
-    """
-
-    # Step 3: Generate insights using the enriched content
-    prompt = PromptTemplate(
-        input_variables=["company_name", "industry_name", "enriched_content"],
-        template=prompt_template.strip()
-    )
-    chain = LLMChain(llm=llm, prompt=prompt)
-    
-    try:
-        response = chain.invoke(
-            company_name=company_name,
-            industry_name=industry_name,
-            enriched_content=enriched_content
-        )
-        # Extract and return insights
-        insights = [line.strip() for line in response.splitlines() if line.strip()]
-        return insights
-    except Exception as e:
-        print(f"Error during LLM chain execution: {e}")
-        return ["Failed to generate insights due to an error."]
-
-from langchain.chains import LLMChain
-# Retrieve and Enrich with Subqueries
 def retrieve_and_enrich_with_subqueries(retriever, company_name, industry_name):
     """
     Retrieve and enrich content using targeted subqueries to ensure comprehensive coverage.
@@ -377,17 +323,20 @@ def retrieve_and_enrich_with_subqueries(retriever, company_name, industry_name):
         retrieved_texts.extend([doc.page_content for doc in relevant_docs])
 
     # Combine retrieved content
+    print(type(retrieved_texts))
     combined_text = " ".join(retrieved_texts)
-
+    print(len(retrieved_texts))
+    # print("COMBINED TEXT\n", combined_text)
     if not combined_text.strip():
         return ""
 
     # Enrich the retrieved text using a Generative AI model
     print("Using Generative AI for enrichment...")
+
     enrichment_prompt = """
     You are an expert in AI and ML. Based on the following text:
     ---
-    {retrieved_text}
+    {combined_text}
     ---
     Provide:
     1. Key challenges in the company or industry for Generative AI.
@@ -396,19 +345,175 @@ def retrieve_and_enrich_with_subqueries(retriever, company_name, industry_name):
     4. Suggest some innovative AI applications for the company.    
     """
     llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
-    prompt = PromptTemplate(input_variables=["retrieved_text"], template=enrichment_prompt)
-    chain = LLMChain(llm=llm, prompt=prompt)
+    prompt = PromptTemplate(input_variables=["combined_text"], template=enrichment_prompt)
+    chain = LLMChain(llm=llm, prompt=prompt) 
 
     try:
-        enriched_text = chain.invoke(retrieved_text=combined_text)
+        enriched_text = chain.invoke(input={"combined_text": combined_text})
         return enriched_text
     except Exception as e:
         print(f"Error during enrichment: {e}")
         return ""
 
-# # Main workflow
+
+# # Extract Insights
+# Extract Insights with Subquery Enrichment
+def extract_insights(retriever, company_name, industry_name):
+    """
+    Extract key insights for a company and industry based on the retrieved and enriched content.
+
+    Args:
+        retriever: The retriever object for the content.
+        company_name (str): The name of the company.
+        industry_name (str): The name of the industry.
+
+    Returns:
+        List[str]: A list of key insights for the company.
+    """
+    llm = ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0.7,
+        max_tokens=1000,
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
+
+    # Step 1: Retrieve and enrich content with subqueries
+    enriched_content = retrieve_and_enrich_with_subqueries(retriever, company_name, industry_name)
+
+    enriched_content = enriched_content.get("text", "")
+    if not enriched_content.strip():
+        print("No enriched content generated from the subqueries.")
+        return ["No insights could be generated due to insufficient data."]
+
+    # Step 2: Define a prompt template for extracting insights
+    prompt_template = """
+    You are an AI assistant specializing in business insights. Based on the provided data:
+    - Highlight key strengths and opportunities for the company ({company_name}) in the {industry_name} industry.
+    - Identify risks, challenges, and market trends relevant to the company.
+    - Provide actionable recommendations or innovations the company could explore.
+
+    Use the following enriched content for your analysis:
+    {enriched_content}
+    """
+
+    # Step 3: Generate insights using the enriched content
+    prompt = PromptTemplate(
+        input_variables=["company_name", "industry_name", "enriched_content"],
+        template=prompt_template.strip()
+    )
+    chain = LLMChain(llm=llm, prompt=prompt)
+    
+    try:
+        response = chain.invoke(
+            input={"company_name" : company_name,
+            "industry_name" : industry_name,
+            "enriched_content": enriched_content
+            }
+        )
+        
+        # print("RESPONSEEEEE")
+        # print(response)
+        response = response.get("enriched_content", "")
+        insights = [line.strip() for line in response.splitlines() if line.strip()]
+        return insights
+    except Exception as e:
+        print(f"Error during LLM chain execution: {e}")
+        return ["Failed to generate insights due to an error."]
+
+
+def extract_keywords_from_text(input_text):
+    """
+    Extracts keywords from the provided input text using an LLM.
+
+    Args:
+        input_text (str): The input text from which keywords are to be extracted.
+
+    Returns:
+        List[str]: A list of extracted keywords.
+    """
+    llm = ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0.7,
+        max_tokens=500,
+        openai_api_key=os.getenv("OPENAI_API_KEY")
+    )
+
+    prompt_template = """
+    You are an AI assistant that specializes in extracting relevant keywords from a given text. These keywords will be used to search for relevant datasets on Kaggle and other platforms.
+    Your task is to analyze the provided content and generate a concise list of important keywords or phrases
+    that will help in finding relevant datasets.
+
+    Text to analyze:
+    {input_text}
+
+    Provide the most important 4,5 extracted keywords keeping in mind that those are helpful for relevant dataset search as a comma-separated list.
+    """
+
+    prompt = PromptTemplate(
+        input_variables=["input_text"],
+        template=prompt_template.strip()
+    )
+
+    chain = LLMChain(llm=llm, prompt=prompt)
+
+    try:
+        response = chain.invoke(input={"input_text": input_text})
+        keywords = response.get("text", "").strip().split(",")
+        return [kw.strip() for kw in keywords if kw.strip()]
+    except Exception as e:
+        print(f"Error during keyword extraction: {e}")
+        return []
+
+
+def search_datasets(keywords):
+    """
+    Search Kaggle datasets using the provided keywords and return top results.
+
+    Args:
+        keywords (List[str]): List of keywords to search for.
+
+    Returns:
+        Dict[str, List[Tuple[str, str, str, int]]]: A dictionary of keywords and their corresponding top datasets.
+    """
+    results = {}
+    for keyword in keywords:
+        datasets = api.dataset_list(search=keyword, sort_by="hottest")
+        results[keyword] = [
+            (dataset.ref, dataset.title, dataset.size, dataset.voteCount) for dataset in datasets[:5]
+        ]
+    return results
+
+
+def display_dataset_choices(results):
+    """
+    Display dataset options for each keyword and allow the user to select from them.
+
+    Args:
+        results (Dict[str, List[Tuple[str, str, str, int]]]): The dictionary of datasets per keyword.
+
+    Returns:
+        List[Tuple[str, str]]: The list of selected dataset references and titles.
+    """
+    print("Dataset search results:")
+    selected_datasets = []
+
+    for keyword, datasets in results.items():
+        print(f"\nKeyword: {keyword}")
+        for i, (ref, title, size, votes) in enumerate(datasets, 1):
+            print(f"  {i}. {title} (Votes: {votes}, Size: {size}) [Ref: {ref}]")
+
+        print("\nEnter the numbers of the datasets you want to select for this keyword (comma-separated):")
+        user_input = input("Your choice: ").strip()
+        if user_input:
+            choices = [int(choice) - 1 for choice in user_input.split(",") if choice.isdigit()]
+            selected_datasets.extend([datasets[i][:2] for i in choices if 0 <= i < len(datasets)])
+
+    return selected_datasets
+
+
 def main():
     try:
+        # Step 1: Gather company and industry names
         company_name = input("Enter the company name: ").strip()
         industry_name = input("Enter the industry name: ").strip()
 
@@ -444,13 +549,41 @@ def main():
         print(f"First 5 elements of all_texts: {all_texts[:5]}")
         retriever = create_rag_system(all_texts)
 
-        # Extract insights
+        # Step 5: Extract insights
         print("Extracting important insights...")
         insights = extract_insights(retriever, company_name, industry_name)
 
         print(f"\nKey insights for {company_name} in the {industry_name} industry:")
-        for idx, insight in enumerate(insights, 1):
-            print(f"{idx}. {insight}")
+        print(insights)
+
+        print("Extraction of keywords from the insights")
+        
+        keywords = extract_keywords_from_text(" ".join(insights))
+        print("Extracted Keywords:", keywords)
+        # Search for datasets based on keywords
+        search_results = search_datasets(keywords)
+
+    # Display choices and let the user select datasets
+        selected_datasets = display_dataset_choices(search_results)
+
+        if not selected_datasets:
+            print("No datasets were selected.")
+        else:
+            print("\nYou selected the following datasets:")
+            for ref, title in selected_datasets:
+                print(f"  - {title} [Ref: {ref}]")
+
+        # Download selected datasets
+        download_path = "data/selected_datasets"
+        os.makedirs(download_path, exist_ok=True)
+        for ref, title in selected_datasets:
+            print(f"\nDownloading dataset: {title}...")
+            api.dataset_download_files(ref, path=download_path, unzip=True)
+
+        print(f"\nDatasets downloaded to {download_path}.")
+        for file in os.listdir(download_path):
+            print(f"  - {file}")
+
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -458,3 +591,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+#31 dec working fine 
+#task 1 : add feedback, hf dataset extracter agent
