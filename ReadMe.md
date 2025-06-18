@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>MAS for AI/GenAI use case identification and implementation</strong>
+  <strong>MAS for AI use case identification and implementation</strong>
 </p>
 
 ---
@@ -27,14 +27,14 @@ GENESIS streamlines the process of identifying and implementing AI/GenAI solutio
 
 
 <p align="center">
-  <img src="https://github.com/contributerMe/GENESIS/blob/master/Genesis1.png" alt="Demo" width="800">
+  <img src="https://github.com/contributerMe/GENESIS/blob/master/Genesis1.png" alt="Demo" width="1200">
 </p>
 
 
 
 ---
 
-## ⚙️ Environment Setup
+##  Environment Setup
 
 Create `.env` file:
 ```env
@@ -70,13 +70,4 @@ VECTOR_STORE_PATH=./data/vector_store
 4. **Access Interface**
    - Choose between **Chat** or **Report Generation** modes
 
-## ⚙️ Environment Setup
 
-Create `.env` file:
-```env
-OPENAI_API_KEY=your_api_key_here
-OPENAI_MODEL=gpt-4-turbo-preview
-SCRAPING_DELAY_MIN=1
-SCRAPING_DELAY_MAX=3
-VECTOR_STORE_PATH=./data/vector_store
-```
