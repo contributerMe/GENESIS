@@ -1,0 +1,7 @@
+Analyze the provided corporate market research data and extract key entities and relationships to build a Knowledge Graph.
+
+Target Entity Types:
+- Company, Competitor, Product, Financial Metric, Technology Gap, Industry Trend
+
+Target Relationship Types:
+- COMPETES_WITH, REQUIRES_TECH, FACING_CHALLENGE, SUPPLIES, REVENUE_IMPACT
