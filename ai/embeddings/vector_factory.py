@@ -19,6 +19,19 @@ class VectorStoreFactory:
     """
 
     @staticmethod
+    def create_job_index(documents: List[Document], embeddings: Embeddings, job_id: str):
+        """Create an in-memory Chroma collection scoped to one research job."""
+        from langchain_community.vectorstores import Chroma
+
+        index = Chroma(collection_name=f"research_{job_id}", embedding_function=embeddings)
+        try:
+            index.add_documents(documents)
+        except Exception:
+            index.delete_collection()
+            raise
+        return index
+
+    @staticmethod
     def create_vector_store(
         documents: List[Document],
         embeddings: Embeddings,

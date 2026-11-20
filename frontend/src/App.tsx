@@ -1,12 +1,21 @@
 import { FormEvent, useEffect, useState } from "react";
+import skyline from "./assets/genesis-skyline.webp";
 import {
+  askResearchQuestion,
   createResearch,
   getResearch,
+  type ChatAnswer,
+  type ResearchMode,
   type ResearchJob,
   type AIUseCase,
   type DatasetReference,
   type SourceCitation,
 } from "./api";
+
+const researchModels = [
+  { id: "gemini-3.1-flash-lite", label: "Gemini 3.1 Flash-Lite" },
+  { id: "gemini-3.5-flash-lite", label: "Gemini 3.5 Flash-Lite" },
+] as const;
 
 // ─── Demo data mirrors the full backend ResearchReportData shape ──────────────
 const demoReport = {
@@ -83,12 +92,12 @@ const STEP_LABELS: Record<string, string> = {
 // ─── Skeleton loader shown while job is running ───────────────────────────────
 function Skeleton() {
   return (
-    <div style={{ padding: "8px 0" }}>
+    <div className="skeleton" aria-hidden="true">
       <div className="skeleton-block short" />
       <div className="skeleton-block" />
       <div className="skeleton-block" />
-      <div className="skeleton-block tall" style={{ marginTop: 20 }} />
-      <div className="skeleton-block short" style={{ marginTop: 20 }} />
+      <div className="skeleton-block tall" />
+      <div className="skeleton-block short" />
       <div className="skeleton-block" />
       <div className="skeleton-block xshort" />
     </div>
@@ -113,7 +122,7 @@ function UseCaseCard({ item, index }: { item: AIUseCase; index: number }) {
         <h4>{item.title}</h4>
         <p>{item.ai_solution}</p>
         {item.expected_benefits && (
-          <ul style={{ margin: "6px 0 0", paddingLeft: 16, fontSize: 13, color: "#9eb6a8" }}>
+          <ul className="usecase-benefits">
             {item.expected_benefits.map((b) => (
               <li key={b}>{b}</li>
             ))}
@@ -137,7 +146,7 @@ function DatasetRow({ ds }: { ds: DatasetReference }) {
             {ds.title}
           </a>
         ) : (
-          <span style={{ color: "#9eb6a8", fontStyle: "italic" }}>{ds.title}</span>
+          <span className="unverified">{ds.title}</span>
         )}
       </span>
       <small>
@@ -149,13 +158,11 @@ function DatasetRow({ ds }: { ds: DatasetReference }) {
 }
 
 function CitationRow({ c }: { c: SourceCitation }) {
-  const isUrl = c.url_or_path.startsWith("http");
+  const isUrl = /^https?:\/\//i.test(c.url_or_path);
   return (
     <div className="citation-row">
-      <span style={{ fontFamily: '"DM Mono", monospace', fontSize: 11, color: "#b7e86a", marginRight: 8 }}>
-        {c.citation_id}
-      </span>
-      <span style={{ flex: 1 }}>
+      <span className="source-tag">{c.citation_id}</span>
+      <span className="source-title">
         {isUrl ? (
           <a href={c.url_or_path} target="_blank" rel="noreferrer">
             {c.title}
@@ -170,74 +177,174 @@ function CitationRow({ c }: { c: SourceCitation }) {
 }
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
+function ResearchChat({ jobId }: { jobId: string }) {
+  const [question, setQuestion] = useState("");
+  const [turns, setTurns] = useState<(ChatAnswer & { question: string })[]>([]);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  async function ask(event: FormEvent) {
+    event.preventDefault();
+    const text = question.trim();
+    if (!text || sending) return;
+    setSending(true);
+    setError("");
+    try {
+      const history = turns.slice(-3).map((turn) => ({
+        question: turn.question,
+        answer: turn.answer.slice(0, 1200),
+      }));
+      const reply = await askResearchQuestion(jobId, text, history);
+      setTurns((previous) => [...previous, { question: text, ...reply }]);
+      setQuestion("");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not answer this question.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <section className="research-chat" aria-labelledby="chat-heading">
+      <div className="chat-heading">
+        <h2 id="chat-heading">Ask about these sources</h2>
+        {turns.length > 0 && (
+          <button type="button" className="secondary chat-clear" disabled={sending} onClick={() => {
+            setTurns([]);
+            setError("");
+          }}>Clear chat</button>
+        )}
+      </div>
+      {turns.length > 0 && (
+        <div className="chat-transcript" role="log" aria-label="Research conversation">
+          {turns.map((turn, index) => (
+            <div className="chat-turn" key={index}>
+              <p className="chat-question">{turn.question}</p>
+              <p className="chat-answer">{turn.answer}</p>
+              {turn.citations.map((citation) => <CitationRow key={citation.citation_id} c={citation} />)}
+            </div>
+          ))}
+        </div>
+      )}
+      <form onSubmit={ask} className="chat-composer">
+        <label htmlFor="chat-question">Question</label>
+        <div>
+          <input id="chat-question" placeholder="What challenges did the sources identify?" value={question}
+            onChange={(event) => setQuestion(event.target.value)} required maxLength={1000} readOnly={sending} />
+          <button type="submit" disabled={sending || !question.trim()}>{sending ? "Searching…" : "Ask"}</button>
+        </div>
+      </form>
+      {error && <p className="error" role="alert">{error}</p>}
+    </section>
+  );
+}
+
 function App() {
   const [company, setCompany] = useState("Tesla");
   const [industry, setIndustry] = useState("Electric Vehicles");
+  const [model, setModel] = useState<(typeof researchModels)[number]>(researchModels[0]);
+  const [activeModel, setActiveModel] = useState("");
   const [job, setJob] = useState<ResearchJob | null>(null);
   const [demo, setDemo] = useState(true);
   const [error, setError] = useState("");
+  const [starting, setStarting] = useState(false);
+  const jobId = job?.id;
+  const isRunning = job?.status === "queued" || job?.status === "running";
 
   // Poll every 2s while job is running or queued
   useEffect(() => {
-    if (!job || !["queued", "running"].includes(job.status)) return;
-    const timer = window.setInterval(async () => {
+    if (!jobId || !isRunning) return;
+    let active = true;
+    let failures = 0;
+    let timer: number;
+    const poll = async () => {
       try {
-        setJob(await getResearch(job.id));
+        const nextJob = await getResearch(jobId);
+        if (!active) return;
+        failures = 0;
+        setError("");
+        setJob(nextJob);
+        if (nextJob.status === "queued" || nextJob.status === "running") {
+          timer = window.setTimeout(poll, 2000);
+        }
       } catch (reason) {
+        if (!active) return;
         setError(reason instanceof Error ? reason.message : "Polling failed");
+        if (++failures < 3) {
+          timer = window.setTimeout(poll, 2000);
+        } else {
+          setJob((previous) => previous?.id === jobId ? { ...previous, status: "failed" } : previous);
+        }
       }
-    }, 2000);
-    return () => window.clearInterval(timer);
-  }, [job]);
+    };
+    timer = window.setTimeout(poll, 2000);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [jobId, isRunning]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
+    if (starting) return;
+    const submitter = (event.nativeEvent as SubmitEvent).submitter;
+    const mode: ResearchMode = submitter instanceof HTMLButtonElement && submitter.value === "chat" ? "chat" : "report";
     setError("");
     setJob(null);
+    setActiveModel("");
     if (demo) {
       setJob({
         id: "demo",
         status: "completed",
         company_name: company,
         industry,
+        mode: "report",
+        chat_ready: false,
         errors: [],
         report: demoReport,
       });
       return;
     }
+    setStarting(true);
     try {
-      setJob(
-        await createResearch({
-          company_name: company,
-          industry,
-          provider: "gemini",
-          retrieval_mode: "graph_rag",
-          vector_db_choice: "chroma",
-        })
-      );
+      const startedJob = await createResearch({
+        company_name: company,
+        industry,
+        provider: "gemini",
+        model_name: model.id,
+        retrieval_mode: "graph_rag",
+        vector_db_choice: "chroma",
+        mode,
+      });
+      setActiveModel(model.label);
+      setJob(startedJob);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Unable to start research");
+    } finally {
+      setStarting(false);
     }
   }
 
   const report = job?.report;
-  const isRunning = job?.status === "queued" || job?.status === "running";
 
   return (
     <main>
-      <header>
-        <p className="eyebrow">GENESIS / AI STRATEGY PLATFORM</p>
-        <h1>
-          Evidence-led AI strategy,
-          <br />
-          built from the real world.
-        </h1>
-        <p className="lede">
-          Turn company and market signals into a research brief with transparent workflow status.
-        </p>
+      <header className="masthead">
+        <div className="brand">
+          <span className="brand-mark" aria-hidden="true">G</span>
+          <span>GENESIS</span>
+        </div>
+        <a className="workspace-link" href="#research">Research workspace <span aria-hidden="true">↓</span></a>
       </header>
 
-      <section className="workspace">
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="hero-copy">
+          <h1 id="hero-title"><span className="hero-line">Evidence-led</span><br />AI strategy<span className="hero-accent">.</span></h1>
+          <p className="lede">Turn company and market signals into a research brief, then ask questions about the sources.</p>
+        </div>
+        <div className="hero-visual" aria-hidden="true">
+          <img src={skyline} alt="" fetchPriority="high" width="1400" height="788" />
+        </div>
+      </section>
+
+      <section className="workspace" id="research">
         {/* ── Left: Input Form ── */}
         <form onSubmit={submit} className="panel">
           <h2>Start research</h2>
@@ -253,7 +360,20 @@ function App() {
             <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />
             Demo mode <small>No provider calls</small>
           </label>
-          <button type="submit">{demo ? "Open demo brief" : "Run live research"}</button>
+          {!demo && (
+            <fieldset className="model-picker" disabled={starting}>
+              <legend>Generation model</legend>
+              {researchModels.map((option) => (
+                <label key={option.id} className="model-option">
+                  <input type="radio" name="research-model" value={option.id} checked={model.id === option.id}
+                    onChange={() => setModel(option)} />
+                  {option.label}
+                </label>
+              ))}
+            </fieldset>
+          )}
+          <button type="submit" disabled={starting}>{demo ? "Open demo brief" : "Run live research"}</button>
+          {!demo && <button type="submit" value="chat" className="secondary prepare-chat" disabled={starting}>Prepare sources for chat</button>}
           {error && <p className="error">{error}</p>}
         </form>
 
@@ -262,23 +382,23 @@ function App() {
           {/* Empty state */}
           {!job && (
             <div className="empty">
-              <span>01</span>
+              <div className="empty-mark" aria-hidden="true"><span /></div>
               <h2>Ready for analysis</h2>
-              <p>Use demo mode for a presentation-ready preview, or connect the API for live research.</p>
+              <p>Open a demo brief or start a live run to see findings and sources here.</p>
             </div>
           )}
 
           {job && (
             <>
               {/* Status badge + live step label */}
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <div className="status">
+              <div className="status-row" aria-live="polite">
+                <div className={`status ${job.status}`}>
                   <span className={`dot ${job.status}`} />
                   {job.status === "partial" ? "Completed with retrieval warnings" : job.status}
                 </div>
                 {isRunning && (
-                  <span style={{ fontSize: 12, color: "#9eb6a8" }}>
-                    Agents working — this takes 60–120 s…
+                  <span className="status-detail">
+                    {job.mode === "chat" ? "Preparing source documents…" : "Research is running…"}
                   </span>
                 )}
               </div>
@@ -286,6 +406,7 @@ function App() {
               <p className="eyebrow">
                 {job.company_name} / {job.industry}
               </p>
+              {activeModel && <p className="job-model">Selected model: {activeModel}</p>}
 
               {/* Per-agent warnings */}
               {job.errors.map((item) => (
@@ -297,6 +418,8 @@ function App() {
 
               {/* Skeleton while running */}
               {isRunning && <Skeleton />}
+
+              {job.chat_ready && <ResearchChat key={job.id} jobId={job.id} />}
 
               {/* Full report */}
               {report && (
@@ -328,7 +451,7 @@ function App() {
                   {/* Datasets */}
                   {report.datasets_found?.length > 0 && (
                     <>
-                      <h3 style={{ marginTop: 32 }}>Supporting datasets</h3>
+                      <h3 className="report-subheading">Supporting datasets</h3>
                       {report.datasets_found.map((ds) => (
                         <DatasetRow key={ds.ref + ds.keyword_matched} ds={ds} />
                       ))}
@@ -338,7 +461,7 @@ function App() {
                   {/* Citations */}
                   {report.citations?.length > 0 && (
                     <>
-                      <h3 style={{ marginTop: 32 }}>Sources</h3>
+                      <h3 className="report-subheading">Sources</h3>
                       {report.citations.map((c) => (
                         <CitationRow key={c.citation_id} c={c} />
                       ))}

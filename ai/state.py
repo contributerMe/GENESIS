@@ -1,6 +1,19 @@
 from copy import deepcopy
-from typing import List, Dict, Optional, Any, TypedDict
+from dataclasses import dataclass
+from typing import List, Dict, Optional, Any, TypedDict, TYPE_CHECKING
 from pydantic import BaseModel, Field, field_validator
+
+if TYPE_CHECKING:
+    from ai.rag.hybrid_retriever import HybridReRankRetriever
+
+
+@dataclass
+class ResearchRunContext:
+    """Private runtime data for a web research job."""
+
+    job_id: str
+    chat_only: bool = False
+    retriever: Optional["HybridReRankRetriever"] = None
 
 
 class CompanyInputs(BaseModel):

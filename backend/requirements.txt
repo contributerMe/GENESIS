@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic-settings
+litellm
+langgraph
+langchain-community
+langchain-text-splitters
+langchain-google-genai
+chromadb
+networkx
+requests
+beautifulsoup4
+fake-useragent
+pdfplumber
+firecrawl-py
+tavily-python
+langfuse>=4.7,<5

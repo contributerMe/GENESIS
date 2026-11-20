@@ -1,10 +1,13 @@
 export type JobStatus = "queued" | "running" | "completed" | "partial" | "failed";
+export type ResearchMode = "report" | "chat";
 
 export type ResearchJob = {
   id: string;
   status: JobStatus;
   company_name: string;
   industry: string;
+  mode: ResearchMode;
+  chat_ready: boolean;
   error?: string | null;
   errors: string[];
   report?: Report | null;
@@ -55,9 +58,13 @@ type ResearchInput = {
   company_name: string;
   industry: string;
   provider: string;
+  model_name: string;
   retrieval_mode: string;
   vector_db_choice: string;
+  mode: ResearchMode;
 };
+
+export type ChatAnswer = { answer: string; citations: SourceCitation[] };
 
 export async function createResearch(input: ResearchInput): Promise<ResearchJob> {
   const response = await fetch("/api/research", {
@@ -72,5 +79,22 @@ export async function createResearch(input: ResearchInput): Promise<ResearchJob>
 export async function getResearch(id: string): Promise<ResearchJob> {
   const response = await fetch(`/api/research/${id}`);
   if (!response.ok) throw new Error("Could not retrieve the research job.");
+  return response.json();
+}
+
+export async function askResearchQuestion(
+  jobId: string,
+  question: string,
+  history: { question: string; answer: string }[],
+): Promise<ChatAnswer> {
+  const response = await fetch(`/api/research/${encodeURIComponent(jobId)}/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question, history }),
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    throw new Error(typeof body?.detail === "string" ? body.detail : "Could not answer this question.");
+  }
   return response.json();
 }
