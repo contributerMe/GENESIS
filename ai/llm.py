@@ -71,7 +71,11 @@ class LiteLLMRouter:
         wait=wait_exponential(multiplier=1.5, min=2, max=10),
         retry=(retry_if_exception_type(litellm.exceptions.ServiceUnavailableError) | retry_if_exception_type(litellm.exceptions.RateLimitError) | retry_if_exception_type(litellm.exceptions.APIConnectionError)),
         reraise=True,
-        before_sleep=lambda retry_state: logger.warning(f"Retrying litellm.completion (attempt {retry_state.attempt_number}) due to {retry_state.outcome.exception()}")
+        before_sleep=lambda retry_state: logger.warning(
+            "Retrying litellm.completion (attempt %s) after %s",
+            retry_state.attempt_number,
+            type(retry_state.outcome.exception()).__name__,
+        ),
     )
     def _execute_with_retries(kwargs: Dict[str, Any], response_format: Optional[Type[T]] = None) -> Any:
         model_id = kwargs.get("model")
@@ -125,6 +129,7 @@ class LiteLLMRouter:
         max_tokens: Optional[int] = None,
         response_format: Optional[Type[T]] = None,
         timeout: Optional[float] = None,
+        private: bool = False,
     ) -> Any:
         """
         Execute completion using litellm.completion() with automatic fallback capabilities.
@@ -151,6 +156,8 @@ class LiteLLMRouter:
             base_kwargs["timeout"] = timeout
         if response_format:
             base_kwargs["response_format"] = response_format
+        if private:
+            base_kwargs["no-log"] = True
 
         # Construct primary kwargs
         kwargs = base_kwargs.copy()
@@ -161,6 +168,9 @@ class LiteLLMRouter:
         try:
             return LiteLLMRouter._execute_with_retries(kwargs, response_format)
         except Exception as primary_exc:
+            if private:
+                # Uploaded document excerpts stay with the selected provider.
+                raise
             logger.error(f"Primary model '{primary_model_id}' failed: {primary_exc}")
             
             # Execute Fallback Chain

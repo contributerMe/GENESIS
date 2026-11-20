@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import List, Dict, Any, Optional
+from typing import Callable, List, Dict, Any, Optional
 from langchain_core.documents import Document
 from ai.state import ResearchState, SourceCitation
 from ai.llm import LiteLLMRouter, EmbeddingFactory
@@ -125,12 +125,26 @@ class DynamicRAGChatEngine:
         history: Optional[List[Dict[str, str]]] = None,
     ) -> Dict[str, Any]:
         """Answer against an existing index, with citations from the retrieved documents."""
+        return self.answer_from_search(question, retriever.retrieve, top_k, history)
+
+    def answer_from_search(
+        self,
+        question: str,
+        search: Callable[[str, int], List[Document]],
+        top_k: int = 4,
+        history: Optional[List[Dict[str, str]]] = None,
+        *,
+        private: bool = False,
+    ) -> Dict[str, Any]:
         history = history or []
         search_query = f"{history[-1]['question']}\n{question}" if history else question
-        documents = retriever.retrieve(search_query, top_k=top_k)
+        documents = search(search_query, top_k)
+        unavailable = (
+            "I couldn't find enough evidence in the uploaded PDFs to answer that."
+            if private else "I couldn't find relevant evidence in this job's sources."
+        )
         if not documents:
-            return {"answer": "I couldn't find relevant evidence in this job's sources.",
-                    "citations": [], "sources_retrieved": 0}
+            return {"answer": unavailable, "citations": [], "sources_retrieved": 0}
 
         passages = []
         citations = {}
@@ -138,25 +152,38 @@ class DynamicRAGChatEngine:
             tag = doc.metadata["citation_id"]
             title = doc.metadata["title"]
             url = doc.metadata.get("url_or_path", "")
-            passages.append(f"Source {tag} ({title}):\n{doc.page_content[:1500]}")
+            page = doc.metadata.get("page")
+            label = f"{title}, PDF page {page}" if page is not None else title
+            passages.append(f"Source {tag} ({label}):\n{doc.page_content[:1500]}")
             citations[tag] = SourceCitation(
                 citation_id=tag,
                 title=title,
                 source_type=doc.metadata.get("source_type", "web"),
                 url_or_path=url,
             ).model_dump()
+            if private:
+                citations[tag].update(document_id=doc.metadata["document_id"], page=page)
 
-        messages = LiteLLMRouter.build_messages(LiteLLMRouter.load_prompt("chat_engine"), {
+        prompt = "document_chat" if private else "chat_engine"
+        messages = LiteLLMRouter.build_messages(LiteLLMRouter.load_prompt(prompt), {
             "user_question": question,
             "conversation_history": history,
             "context_documents": passages,
         })
         answer = LiteLLMRouter.completion(
             provider=self.provider, model_name=self.model_name, api_key=self.api_key,
-            messages=messages, max_tokens=1000, timeout=25,
+            messages=messages, max_tokens=1000, timeout=25, private=private,
         )
         if not isinstance(answer, str) or not answer.strip():
             raise ValueError("The model returned an empty chat answer.")
+        if private:
+            cited_ids = dict.fromkeys(re.findall(r"\[SRC-\d+\]", answer))
+            supported = bool(cited_ids) and all(tag in citations for tag in cited_ids)
+            return {
+                "answer": answer.strip() if supported else unavailable,
+                "citations": [citations[tag] for tag in cited_ids] if supported else [],
+                "sources_retrieved": len(documents),
+            }
         answer = re.sub(r"\[SRC-\d+\]", lambda tag: tag[0] if tag[0] in citations else "", answer)
         return {"answer": answer.strip(), "citations": list(citations.values()),
                 "sources_retrieved": len(documents)}
