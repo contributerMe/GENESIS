@@ -1,4 +1,5 @@
 import logging
+import re
 from typing import List, Dict, Any, Optional
 from langchain_core.documents import Document
 from ai.state import ResearchState, SourceCitation
@@ -88,39 +89,8 @@ class DynamicRAGChatEngine:
             )
 
             retriever = HybridReRankRetriever(vectorstore=vectorstore, documents=documents)
-            retrieved_docs = retriever.retrieve(user_query, top_k=top_k)
-
-            # Build context string with explicit citations
-            context_blocks = []
-            used_citations = []
-            for doc in retrieved_docs:
-                cit_id = doc.metadata.get("citation_id", "")
-                title = doc.metadata.get("title", "")
-                url_or_path = doc.metadata.get("url_or_path", "")
-                context_blocks.append(f"Source {cit_id} ({title}):\n{doc.page_content[:1500]}")
-                if cit_id in citation_map:
-                    used_citations.append(citation_map[cit_id])
-                else:
-                    used_citations.append({
-                        "citation_id": cit_id,
-                        "title": title,
-                        "url_or_path": url_or_path,
-                        "source_type": doc.metadata.get("source_type", "web")
-                    })
-
-            system_prompt = LiteLLMRouter.load_prompt("chat_engine")
-            user_data = {
-                "user_question": user_query,
-                "context_documents": context_blocks
-            }
-            messages = LiteLLMRouter.build_messages(system_prompt, user_data)
-
-            raw_answer = LiteLLMRouter.completion(
-                provider=self.provider,
-                model_name=self.model_name,
-                api_key=self.api_key,
-                messages=messages
-            )
+            result = self.answer_from_retriever(user_query, retriever, top_k=top_k)
+            used_citations = [citation_map.get(c["citation_id"], c) for c in result["citations"]]
 
             # Append citation symlinks footer
             footer_lines = ["\n\n### 🔗 Sources & Symlinks:"]
@@ -131,12 +101,12 @@ class DynamicRAGChatEngine:
                 c_type = cit.get("source_type", "web")
                 footer_lines.append(f"- **{c_id}** [{c_title}]({c_url}) *({c_type})*")
 
-            final_answer = raw_answer + "\n" + "\n".join(footer_lines)
+            final_answer = result["answer"] + "\n" + "\n".join(footer_lines)
 
             return {
                 "answer": final_answer,
                 "citations": used_citations,
-                "sources_retrieved": len(retrieved_docs)
+                "sources_retrieved": result["sources_retrieved"]
             }
 
         except Exception:
@@ -146,3 +116,47 @@ class DynamicRAGChatEngine:
                 "citations": [],
                 "sources_retrieved": 0
             }
+
+    def answer_from_retriever(
+        self,
+        question: str,
+        retriever: HybridReRankRetriever,
+        top_k: int = 4,
+        history: Optional[List[Dict[str, str]]] = None,
+    ) -> Dict[str, Any]:
+        """Answer against an existing index, with citations from the retrieved documents."""
+        history = history or []
+        search_query = f"{history[-1]['question']}\n{question}" if history else question
+        documents = retriever.retrieve(search_query, top_k=top_k)
+        if not documents:
+            return {"answer": "I couldn't find relevant evidence in this job's sources.",
+                    "citations": [], "sources_retrieved": 0}
+
+        passages = []
+        citations = {}
+        for doc in documents:
+            tag = doc.metadata["citation_id"]
+            title = doc.metadata["title"]
+            url = doc.metadata.get("url_or_path", "")
+            passages.append(f"Source {tag} ({title}):\n{doc.page_content[:1500]}")
+            citations[tag] = SourceCitation(
+                citation_id=tag,
+                title=title,
+                source_type=doc.metadata.get("source_type", "web"),
+                url_or_path=url,
+            ).model_dump()
+
+        messages = LiteLLMRouter.build_messages(LiteLLMRouter.load_prompt("chat_engine"), {
+            "user_question": question,
+            "conversation_history": history,
+            "context_documents": passages,
+        })
+        answer = LiteLLMRouter.completion(
+            provider=self.provider, model_name=self.model_name, api_key=self.api_key,
+            messages=messages, max_tokens=1000, timeout=25,
+        )
+        if not isinstance(answer, str) or not answer.strip():
+            raise ValueError("The model returned an empty chat answer.")
+        answer = re.sub(r"\[SRC-\d+\]", lambda tag: tag[0] if tag[0] in citations else "", answer)
+        return {"answer": answer.strip(), "citations": list(citations.values()),
+                "sources_retrieved": len(documents)}

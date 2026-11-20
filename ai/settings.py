@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     # Providers and model availability differ by account. Configure verified
     # fallbacks explicitly rather than spending retries on stale defaults.
     llm_fallback_models: str = Field("", description="Comma-separated list of verified fallback models")
-    litellm_drop_params: bool = Field(True, description="Drop unsupported provider kwargs during fallbacks")
+    litellm_drop_params: bool = Field(True, description="Drop unsupported provider parameters for model calls")
     # Comma-separated list of allowed CORS origins. Override in staging/prod via env.
     cors_origins: str = Field(
         "http://localhost:5173",

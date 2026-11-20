@@ -1,8 +1,10 @@
 import unittest
+from unittest.mock import patch
 from pydantic import ValidationError
 
 from ai.state import CompanyInputs, redact_state_for_persistence
 from ai.llm import LiteLLMRouter
+from ai.settings import Settings
 
 
 class CompanyInputsTests(unittest.TestCase):
@@ -18,6 +20,15 @@ class CompanyInputsTests(unittest.TestCase):
 
     def test_gemini_uses_the_configured_current_model_identifier(self):
         self.assertEqual(LiteLLMRouter.get_model_identifier("gemini"), "gemini/gemini-3.6-flash")
+
+    def test_primary_model_drops_unsupported_provider_parameters_when_enabled(self):
+        settings = Settings(_env_file=None, litellm_drop_params=True)
+        with (
+            patch("ai.llm.get_settings", return_value=settings),
+            patch.object(LiteLLMRouter, "_execute_with_retries", return_value="test") as completion,
+        ):
+            LiteLLMRouter.completion(provider="gemini", model_name="gemini-3.5-flash-lite", prompt="test")
+        self.assertTrue(completion.call_args.args[0]["drop_params"])
 
 
 class StateRedactionTests(unittest.TestCase):

@@ -50,10 +50,18 @@ class ModernWebScraper:
                 if web_results:
                     for item in web_results:
                         get_value = item.get if isinstance(item, dict) else lambda key, default="": getattr(item, key, default)
+                        metadata = get_value("metadata", None)
+                        if isinstance(metadata, dict):
+                            source_title = metadata.get("title")
+                            source_url = metadata.get("source_url") or metadata.get("sourceURL") or metadata.get("url")
+                        else:
+                            source_title = getattr(metadata, "title", None)
+                            source_url = getattr(metadata, "source_url", None) or getattr(metadata, "url", None)
+
                         results.append({
-                            "title": get_value("title", f"{company_name} Search Result"),
-                            "url": get_value("url", ""),
-                            "content": get_value("markdown", "") or get_value("content", ""),
+                            "title": get_value("title", "") or source_title or f"{company_name} Search Result",
+                            "url": get_value("url", "") or source_url or "",
+                            "content": get_value("markdown", "") or get_value("content", "") or get_value("description", "") or "",
                             "category": "search_result",
                             "source_type": "web"
                         })
@@ -81,7 +89,7 @@ class ModernWebScraper:
                 ]
 
                 for query in queries:
-                    search_res = tavily.search(query=query, max_results=3)
+                    search_res = tavily.search(query=query, search_depth="basic", max_results=3)
                     for item in search_res.get("results", []):
                         results.append({
                             "title": item.get("title", f"{company_name} Search Result"),
