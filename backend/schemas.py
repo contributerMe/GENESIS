@@ -1,4 +1,5 @@
 from typing import Annotated, Literal, Self
+from uuid import UUID
 
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
@@ -46,3 +47,33 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     answer: str
     citations: list[SourceCitation]
+
+
+DocumentModel = Literal["gemini-3.1-flash-lite", "gemini-3.5-flash-lite"]
+
+
+class DocumentFile(BaseModel):
+    name: str
+    indexed_pages: int = 0
+    warning: str | None = None
+
+
+class DocumentSessionResponse(BaseModel):
+    req_id: UUID
+    status: Literal["queued", "running", "completed", "partial", "failed"] = "queued"
+    model_name: DocumentModel
+    files: list[DocumentFile]
+    error: str | None = None
+
+
+class CreatedDocumentSession(DocumentSessionResponse):
+    session_token: str
+
+
+class DocumentCitation(SourceCitation):
+    document_id: UUID
+    page: int = Field(ge=1)
+
+
+class DocumentChatResponse(ChatResponse):
+    citations: list[DocumentCitation]

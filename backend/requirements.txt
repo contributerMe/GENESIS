@@ -12,6 +12,7 @@ requests
 beautifulsoup4
 fake-useragent
 pdfplumber
+python-multipart
 firecrawl-py
 tavily-python
 langfuse>=4.7,<5
