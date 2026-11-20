@@ -16,6 +16,9 @@ litellm.suppress_debug_info = True
 # Enable Langfuse observability if keys are configured
 _settings = get_settings()
 if _settings.langfuse_enabled:
+    os.environ.setdefault("LANGFUSE_PUBLIC_KEY", _settings.langfuse_public_key)
+    os.environ.setdefault("LANGFUSE_SECRET_KEY", _settings.langfuse_secret_key)
+    os.environ.setdefault("LANGFUSE_HOST", _settings.langfuse_host)
     litellm.success_callback = ["langfuse"]
     litellm.failure_callback = ["langfuse"]
     logger.info("Langfuse Observability & Traceability enabled for LiteLLM completions.")
@@ -120,7 +123,8 @@ class LiteLLMRouter:
         api_key: Optional[str] = None,
         temperature: float = 0.1,
         max_tokens: Optional[int] = None,
-        response_format: Optional[Type[T]] = None
+        response_format: Optional[Type[T]] = None,
+        timeout: Optional[float] = None,
     ) -> Any:
         """
         Execute completion using litellm.completion() with automatic fallback capabilities.
@@ -139,8 +143,12 @@ class LiteLLMRouter:
             "messages": messages,
             "temperature": temperature,
         }
+        if settings.litellm_drop_params:
+            base_kwargs["drop_params"] = True
         if max_tokens:
             base_kwargs["max_tokens"] = max_tokens
+        if timeout is not None:
+            base_kwargs["timeout"] = timeout
         if response_format:
             base_kwargs["response_format"] = response_format
 
@@ -180,9 +188,6 @@ class LiteLLMRouter:
                     fb_kwargs["model"] = fb_model
                     if fb_key:
                         fb_kwargs["api_key"] = fb_key
-                    if settings.litellm_drop_params:
-                        fb_kwargs["drop_params"] = True
-                        
                     return LiteLLMRouter._execute_with_retries(fb_kwargs, response_format)
                 except Exception as fb_exc:
                     logger.error(f"Fallback model '{fb_model}' failed: {fb_exc}")

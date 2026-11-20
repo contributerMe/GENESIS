@@ -78,12 +78,12 @@ class HybridReRankRetriever:
         doc_map: Dict[str, Document] = {}
 
         for rank, doc in enumerate(dense_docs):
-            doc_id = doc.page_content[:100]
+            doc_id = doc.metadata.get("chunk_id") or doc.page_content[:100]
             doc_map[doc_id] = doc
             scores[doc_id] = scores.get(doc_id, 0.0) + (1.0 / (k + rank + 1))
 
         for rank, doc in enumerate(lexical_docs):
-            doc_id = doc.page_content[:100]
+            doc_id = doc.metadata.get("chunk_id") or doc.page_content[:100]
             doc_map[doc_id] = doc
             scores[doc_id] = scores.get(doc_id, 0.0) + (1.0 / (k + rank + 1))
 

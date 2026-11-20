@@ -2,9 +2,9 @@
 Links Researcher, Knowledge, Strategist, Dataset, and Writer Agent Nodes in a resilient graph workflow.
 """
 import logging
-from typing import Dict, Any
 from langgraph.graph import StateGraph, END
-from ai.state import ResearchState
+from langgraph.runtime import Runtime
+from ai.state import ResearchRunContext, ResearchState
 from ai.agents.researcher import researcher_node
 from ai.agents.knowledge import knowledge_node
 from ai.agents.strategist import strategist_node
@@ -13,11 +13,15 @@ from ai.agents.writer import writer_node
 
 logger = logging.getLogger(__name__)
 
+def _after_knowledge(_state: ResearchState, runtime: Runtime[ResearchRunContext]) -> str:
+    return END if runtime.context and runtime.context.chat_only else "strategist"
+
+
 def build_market_research_graph() -> StateGraph:
     """
     Construct and compile the Multi-Agent LangGraph workflow.
     """
-    workflow = StateGraph(ResearchState)
+    workflow = StateGraph(ResearchState, context_schema=ResearchRunContext)
 
     # 1. Add Agent Nodes
     workflow.add_node("researcher", researcher_node)
@@ -29,7 +33,7 @@ def build_market_research_graph() -> StateGraph:
     # 2. Add Graph Edges
     workflow.set_entry_point("researcher")
     workflow.add_edge("researcher", "knowledge")
-    workflow.add_edge("knowledge", "strategist")
+    workflow.add_conditional_edges("knowledge", _after_knowledge, ["strategist", END])
     workflow.add_edge("strategist", "dataset")
     workflow.add_edge("dataset", "writer")
     workflow.add_edge("writer", END)

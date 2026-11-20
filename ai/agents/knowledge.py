@@ -1,7 +1,10 @@
 import logging
+from weakref import finalize
 from typing import Dict, Any, List
 from langchain_core.documents import Document
-from ai.state import ResearchState, SourceCitation
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langgraph.runtime import Runtime
+from ai.state import ResearchRunContext, ResearchState, SourceCitation
 from ai.llm import EmbeddingFactory
 from ai.embeddings.vector_factory import VectorStoreFactory
 from ai.rag.graph_rag import GraphRAGEngine
@@ -10,7 +13,7 @@ from ai.settings import get_settings
 
 logger = logging.getLogger(__name__)
 
-def knowledge_node(state: ResearchState) -> ResearchState:
+def knowledge_node(state: ResearchState, runtime: Runtime[ResearchRunContext] | None = None) -> ResearchState:
     """
     LangGraph Node: Builds Vector Store & Knowledge Graph via LiteLLM over web & user uploaded docs.
     """
@@ -26,6 +29,7 @@ def knowledge_node(state: ResearchState) -> ResearchState:
     api_key = inputs.get("api_key")
     vector_db_choice = inputs.get("vector_db_choice", "chroma")
     retrieval_mode = inputs.get("retrieval_mode", "graph_rag")
+    run = runtime.context if runtime else None
 
     settings = get_settings()
     all_raw_docs = (scraped + uploaded)[:settings.max_sources_per_run]
@@ -67,11 +71,14 @@ def knowledge_node(state: ResearchState) -> ResearchState:
                 )
             )
 
+    if not documents:
+        return {"citations": citations_list, "current_step": "knowledge_skipped"}
+
     research_findings: Dict[str, str] = {}
     graph_rag_data = None
     node_errors: list = []
 
-    if retrieval_mode == "graph_rag":
+    if retrieval_mode == "graph_rag" and not (run and run.chat_only):
         try:
             logger.info("Executing GraphRAG Knowledge Graph Extraction via LiteLLM...")
             graph_engine = GraphRAGEngine(provider=provider, model_name=model_name, api_key=api_key)
@@ -83,14 +90,26 @@ def knowledge_node(state: ResearchState) -> ResearchState:
 
     try:
         embeddings = EmbeddingFactory.get_embeddings(provider=provider, api_key=api_key)
-        vectorstore = VectorStoreFactory.create_vector_store(
-            documents=documents,
-            embeddings=embeddings,
-            vector_db_choice=vector_db_choice,
-            collection_name=f"genesis_{company_name.lower().replace(' ', '_')}"
-        )
-
+        if run and vector_db_choice == "chroma":
+            splitter = RecursiveCharacterTextSplitter(chunk_size=1600, chunk_overlap=200)
+            documents = splitter.split_documents(documents)
+            for index, document in enumerate(documents):
+                document.metadata["chunk_id"] = str(index)
+            vectorstore = VectorStoreFactory.create_job_index(documents, embeddings, run.job_id)
+        else:
+            vectorstore = VectorStoreFactory.create_vector_store(
+                documents=documents,
+                embeddings=embeddings,
+                vector_db_choice=vector_db_choice,
+                collection_name=f"genesis_{company_name.lower().replace(' ', '_')}",
+            )
         hybrid_retriever = HybridReRankRetriever(vectorstore=vectorstore, documents=documents)
+        if run and vector_db_choice == "chroma":
+            cleanup = finalize(hybrid_retriever, vectorstore.delete_collection)
+            cleanup.atexit = False
+            run.retriever = hybrid_retriever
+        if run and run.chat_only:
+            return {"citations": citations_list, "current_step": "knowledge_completed"}
         
         queries = {
             "company_overview": f"What is {company_name}? History, background, and business model.",
@@ -108,7 +127,7 @@ def knowledge_node(state: ResearchState) -> ResearchState:
     except Exception as e:
         logger.error(f"Vector store indexing failed: {e}. Populating direct summary fallback.")
         research_findings["company_overview"] = all_raw_docs[0].get("content", "")[:2000] if all_raw_docs else ""
-        node_errors.append(f"Knowledge (VectorStore): {e}")
+        node_errors.append("Knowledge (VectorStore): source indexing or retrieval failed")
 
     logger.info(f"Knowledge Node completed. Indexed {len(documents)} documents across {len(citations_list)} citations.")
     result = {
