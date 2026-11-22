@@ -151,8 +151,48 @@ main {
   grid-template-columns: minmax(255px, 316px) minmax(0, 1fr);
   align-items: start;
   gap: 20px;
-  margin-top: 26px;
+}
+
+.workspace[hidden] {
+  display: none;
+}
+
+.workspace-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 26px 0 14px;
   scroll-margin-top: 20px;
+}
+
+.workspace-switch button {
+  width: auto;
+}
+
+.workspace-switch button[aria-pressed="true"] {
+  border-color: #926b5a;
+  background: #292734;
+  color: #ffd7be;
+}
+
+.upload-note,
+.document-list small {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.document-list {
+  margin: 12px 0;
+  padding-left: 20px;
+  overflow-wrap: anywhere;
+}
+
+.document-list li {
+  margin: 8px 0;
+}
+
+.document-list small {
+  display: block;
 }
 
 .panel {

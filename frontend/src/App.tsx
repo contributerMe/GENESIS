@@ -1,10 +1,16 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useId, useState } from "react";
 import skyline from "./assets/genesis-skyline.webp";
 import {
+  askDocumentQuestion,
   askResearchQuestion,
   createResearch,
+  endDocumentSession,
+  getDocumentSession,
   getResearch,
+  uploadPdfs,
   type ChatAnswer,
+  type ChatHistory,
+  type DocumentSession,
   type ResearchMode,
   type ResearchJob,
   type AIUseCase,
@@ -16,6 +22,28 @@ const researchModels = [
   { id: "gemini-3.1-flash-lite", label: "Gemini 3.1 Flash-Lite" },
   { id: "gemini-3.5-flash-lite", label: "Gemini 3.5 Flash-Lite" },
 ] as const;
+
+type GenerationModel = (typeof researchModels)[number];
+
+function ModelPicker({ model, onChange, disabled }: {
+  model: GenerationModel;
+  onChange: (model: GenerationModel) => void;
+  disabled: boolean;
+}) {
+  const group = useId();
+  return (
+    <fieldset className="model-picker" disabled={disabled}>
+      <legend>Generation model</legend>
+      {researchModels.map((option) => (
+        <label key={option.id} className="model-option">
+          <input type="radio" name={group} value={option.id} checked={model.id === option.id}
+            onChange={() => onChange(option)} />
+          {option.label}
+        </label>
+      ))}
+    </fieldset>
+  );
+}
 
 // ─── Demo data mirrors the full backend ResearchReportData shape ──────────────
 const demoReport = {
@@ -171,13 +199,19 @@ function CitationRow({ c }: { c: SourceCitation }) {
           c.title
         )}
       </span>
-      <small>{c.source_type}</small>
+      <small>{c.page ? `PDF page ${c.page}` : c.source_type}</small>
     </div>
   );
 }
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
-function ResearchChat({ jobId }: { jobId: string }) {
+function ChatPanel({ askQuestion, title, placeholder }: {
+  askQuestion: (question: string, history: ChatHistory) => Promise<ChatAnswer>;
+  title: string;
+  placeholder: string;
+}) {
+  const headingId = useId();
+  const questionId = useId();
   const [question, setQuestion] = useState("");
   const [turns, setTurns] = useState<(ChatAnswer & { question: string })[]>([]);
   const [sending, setSending] = useState(false);
@@ -194,7 +228,7 @@ function ResearchChat({ jobId }: { jobId: string }) {
         question: turn.question,
         answer: turn.answer.slice(0, 1200),
       }));
-      const reply = await askResearchQuestion(jobId, text, history);
+      const reply = await askQuestion(text, history);
       setTurns((previous) => [...previous, { question: text, ...reply }]);
       setQuestion("");
     } catch (reason) {
@@ -205,9 +239,9 @@ function ResearchChat({ jobId }: { jobId: string }) {
   }
 
   return (
-    <section className="research-chat" aria-labelledby="chat-heading">
+    <section className="research-chat" aria-labelledby={headingId}>
       <div className="chat-heading">
-        <h2 id="chat-heading">Ask about these sources</h2>
+        <h2 id={headingId}>{title}</h2>
         {turns.length > 0 && (
           <button type="button" className="secondary chat-clear" disabled={sending} onClick={() => {
             setTurns([]);
@@ -216,7 +250,7 @@ function ResearchChat({ jobId }: { jobId: string }) {
         )}
       </div>
       {turns.length > 0 && (
-        <div className="chat-transcript" role="log" aria-label="Research conversation">
+        <div className="chat-transcript" role="log" aria-label={title}>
           {turns.map((turn, index) => (
             <div className="chat-turn" key={index}>
               <p className="chat-question">{turn.question}</p>
@@ -227,9 +261,9 @@ function ResearchChat({ jobId }: { jobId: string }) {
         </div>
       )}
       <form onSubmit={ask} className="chat-composer">
-        <label htmlFor="chat-question">Question</label>
+        <label htmlFor={questionId}>Question</label>
         <div>
-          <input id="chat-question" placeholder="What challenges did the sources identify?" value={question}
+          <input id={questionId} placeholder={placeholder} value={question}
             onChange={(event) => setQuestion(event.target.value)} required maxLength={1000} readOnly={sending} />
           <button type="submit" disabled={sending || !question.trim()}>{sending ? "Searching…" : "Ask"}</button>
         </div>
@@ -239,10 +273,145 @@ function ResearchChat({ jobId }: { jobId: string }) {
   );
 }
 
+function DocumentWorkspace({ hidden }: { hidden: boolean }) {
+  const [model, setModel] = useState<GenerationModel>(researchModels[0]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [session, setSession] = useState<DocumentSession | null>(null);
+  const [sessionToken, setSessionToken] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const [pollPaused, setPollPaused] = useState(false);
+  const reqId = session?.req_id;
+  const indexing = session?.status === "queued" || session?.status === "running";
+
+  useEffect(() => {
+    if (!reqId || !indexing || pollPaused) return;
+    let active = true;
+    let failures = 0;
+    let timer: number;
+    const poll = async () => {
+      try {
+        const next = await getDocumentSession({ req_id: reqId, session_token: sessionToken });
+        if (!active) return;
+        failures = 0;
+        setError("");
+        setSession((previous) => previous?.req_id === reqId ? next : previous);
+        if (next.status !== "queued" && next.status !== "running") return;
+      } catch (reason) {
+        if (!active) return;
+        setError(reason instanceof Error ? reason.message : "Could not check indexing status.");
+        if (++failures >= 3) {
+          setPollPaused(true);
+          return;
+        }
+      }
+      timer = window.setTimeout(poll, 1200);
+    };
+    timer = window.setTimeout(poll, 1200);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [indexing, pollPaused, reqId, sessionToken]);
+
+  async function prepare(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending || session || !files.length) return;
+    const form = event.currentTarget;
+    setPending(true);
+    setError("");
+    try {
+      const { session_token, ...started } = await uploadPdfs(files, model.id);
+      setSessionToken(session_token);
+      setSession(started);
+      setFiles([]);
+      form.reset();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not upload these PDFs.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function endSession() {
+    if (!reqId || pending) return;
+    setPending(true);
+    setError("");
+    try {
+      await endDocumentSession({ req_id: reqId, session_token: sessionToken });
+      setSession(null);
+      setSessionToken("");
+      setPollPaused(false);
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not end the PDF session.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <section className="workspace" aria-label="PDF workspace" hidden={hidden}>
+      <form className="panel" onSubmit={prepare}>
+        <h2>Chat with PDFs</h2>
+        <label>
+          PDF files
+          <input type="file" accept=".pdf,application/pdf" multiple required disabled={pending || Boolean(session)}
+            onChange={(event) => setFiles(Array.from(event.target.files ?? []))} />
+        </label>
+        <p className="upload-note">Choose up to five PDFs with selectable text. Text is sent to Google to index the PDFs and answer questions. Sessions expire after one hour.</p>
+        <ModelPicker model={model} onChange={setModel} disabled={pending || Boolean(session)} />
+        {session ? (
+          <button className="secondary" type="button" disabled={pending} onClick={endSession}>End PDF session</button>
+        ) : (
+          <button type="submit" disabled={pending || !files.length || files.length > 5}>
+            {pending ? "Uploading…" : "Prepare PDFs for chat"}
+          </button>
+        )}
+        {files.length > 5 && <p className="error" role="alert">Choose no more than five PDFs.</p>}
+        {error && <p className="error" role="alert">{error}</p>}
+      </form>
+      <section className="panel results">
+        {session ? (
+          <>
+            <h2>Session documents</h2>
+            <div aria-live="polite">
+              <p>{pollPaused ? "Indexing status is unavailable." : indexing ? "Indexing PDF pages…" : session.error || "PDF indexing finished."}</p>
+              <ul className="document-list">
+                {session.files.map((file, index) => (
+                  <li key={index}>
+                    <strong>{file.name}</strong>
+                    {!indexing && <small>{file.indexed_pages} pages indexed</small>}
+                    {file.warning && <p className="warning">{file.warning}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {pollPaused && (
+              <button className="secondary" type="button" disabled={pending} onClick={() => setPollPaused(false)}>
+                Check indexing status
+              </button>
+            )}
+            {(session.status === "completed" || session.status === "partial") && (
+              <ChatPanel key={session.req_id} title="Ask about your PDFs" placeholder="What does the document say about…?"
+                askQuestion={(question, history) => askDocumentQuestion(
+                  { req_id: session.req_id, session_token: sessionToken }, question, history,
+                )} />
+            )}
+          </>
+        ) : (
+          <div className="empty">
+            <div className="empty-mark" aria-hidden="true"><span /></div>
+            <h2>Ready for your documents</h2>
+            <p>Upload PDFs to ask questions and see which pages support the answers.</p>
+          </div>
+        )}
+      </section>
+    </section>
+  );
+}
+
 function App() {
+  const [workspace, setWorkspace] = useState<"research" | "documents">("research");
   const [company, setCompany] = useState("Tesla");
   const [industry, setIndustry] = useState("Electric Vehicles");
-  const [model, setModel] = useState<(typeof researchModels)[number]>(researchModels[0]);
+  const [model, setModel] = useState<GenerationModel>(researchModels[0]);
   const [activeModel, setActiveModel] = useState("");
   const [job, setJob] = useState<ResearchJob | null>(null);
   const [demo, setDemo] = useState(true);
@@ -344,7 +513,16 @@ function App() {
         </div>
       </section>
 
-      <section className="workspace" id="research">
+      <div className="workspace-switch" id="research" role="group" aria-label="Workspace">
+        <button type="button" className="secondary" aria-pressed={workspace === "research"}
+          onClick={() => setWorkspace("research")}>Company research</button>
+        <button type="button" className="secondary" aria-pressed={workspace === "documents"}
+          onClick={() => setWorkspace("documents")}>Chat with PDFs</button>
+      </div>
+
+      <DocumentWorkspace hidden={workspace !== "documents"} />
+
+      <section className="workspace" hidden={workspace !== "research"} aria-label="Company research workspace">
         {/* ── Left: Input Form ── */}
         <form onSubmit={submit} className="panel">
           <h2>Start research</h2>
@@ -360,18 +538,7 @@ function App() {
             <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />
             Demo mode <small>No provider calls</small>
           </label>
-          {!demo && (
-            <fieldset className="model-picker" disabled={starting}>
-              <legend>Generation model</legend>
-              {researchModels.map((option) => (
-                <label key={option.id} className="model-option">
-                  <input type="radio" name="research-model" value={option.id} checked={model.id === option.id}
-                    onChange={() => setModel(option)} />
-                  {option.label}
-                </label>
-              ))}
-            </fieldset>
-          )}
+          {!demo && <ModelPicker model={model} onChange={setModel} disabled={starting} />}
           <button type="submit" disabled={starting}>{demo ? "Open demo brief" : "Run live research"}</button>
           {!demo && <button type="submit" value="chat" className="secondary prepare-chat" disabled={starting}>Prepare sources for chat</button>}
           {error && <p className="error">{error}</p>}
@@ -419,7 +586,11 @@ function App() {
               {/* Skeleton while running */}
               {isRunning && <Skeleton />}
 
-              {job.chat_ready && <ResearchChat key={job.id} jobId={job.id} />}
+              {job.chat_ready && (
+                <ChatPanel key={job.id} title="Ask about these sources"
+                  placeholder="What challenges did the sources identify?"
+                  askQuestion={(question, history) => askResearchQuestion(job.id, question, history)} />
+              )}
 
               {/* Full report */}
               {report && (
